@@ -29,3 +29,7 @@ export PASS02466="<Password>"
 setx USER02466 "<Username>"
 setx PASS02466 "<Password>"
 ```
+
+### Installing dataset
+1. Complete instructions above
+2. Run importdataset.py
