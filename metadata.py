@@ -66,7 +66,7 @@ def parse_timestamp(filename):
                         time_str.split('h')[1].split('m')[0], 
                         time_str.split('m')[1].split('s')[0]])
     total_seconds = h * 3600 + m * 60 + s
-    return f"{total_seconds:.2f}h"
+    return f"{total_seconds:.0f}s"
 
 # Collect metadata
 metadata = []
