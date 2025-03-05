@@ -23,7 +23,7 @@ def main():
     data_filename = "dataset.tar" # MD5 Checksum: 3D6D34509E88B9741BF1614C1D6F1990
     url = f"https://mathias.eksworld.dk/files/{data_filename}"
 
-    if not os.path.exists(data_filename):
+    if not os.path.exists(extract_dir):
         print("Downloading dataset...")
         try:
             with requests.get(url, auth=(user, pswd), timeout=2, stream=True, verify=False) as response:
