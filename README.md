@@ -32,4 +32,4 @@ setx PASS02466 "<Password>"
 
 ### Installing dataset
 1. Complete instructions above
-2. Run importdataset.py
+2. Run download_dataset.py
