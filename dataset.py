@@ -12,9 +12,9 @@ class NKCellDataset(Dataset):
         self.transform = transform
 
         # Paths
-        self.fluorescent_with_masks_img = os.path.join(dataset_dir, 'fluorescent', 'with_masks', 'images')
-        self.fluorescent_with_masks_mask = os.path.join(dataset_dir, 'fluorescent', 'with_masks', 'masks')
-        self.fluorescent_without_masks = os.path.join(dataset_dir, 'fluorescent', 'without_masks')
+        self.labeled_fluorescent_img = os.path.join(dataset_dir, 'fluorescent', 'with_masks', 'images')
+        self.labeled_fluorescent_mask = os.path.join(dataset_dir, 'fluorescent', 'with_masks', 'masks')
+        self.unlabeled_fluorescent = os.path.join(dataset_dir, 'fluorescent', 'without_masks')
 
         # Metadata (optional filtering, e.g., t>28h)
         metadata_path = os.path.join(dataset_dir, 'metadata.csv')
@@ -26,21 +26,21 @@ class NKCellDataset(Dataset):
         self.is_labeled = []
         
         # Labeled (with masks)
-        if os.path.exists(self.fluorescent_with_masks_img):
-            for img_name in os.listdir(self.fluorescent_with_masks_img):
-                if img_name.endswith('.jpg'):
-                    img_path = os.path.join(self.fluorescent_with_masks_img, img_name)
-                    mask_name = img_name.replace('.jpg', '_mask.tiff')
-                    mask_path = os.path.join(self.fluorescent_with_masks_mask, mask_name)
+        if os.path.exists(self.labeled_fluorescent_img):
+            for img_name in os.listdir(self.labeled_fluorescent_img):
+                if img_name.endswith('.tif'):
+                    img_path = os.path.join(self.labeled_fluorescent_img, img_name)
+                    mask_name = img_name.replace('.tif', '_GT.tif')
+                    mask_path = os.path.join(self.labeled_fluorescent_mask, mask_name)
                     self.image_paths.append(img_path)
                     self.mask_paths.append(mask_path)
                     self.is_labeled.append(True)
         
         # Unlabeled (without masks)
-        if os.path.exists(self.fluorescent_without_masks):
-            for img_name in os.listdir(self.fluorescent_without_masks):
-                if img_name.endswith('.jpg'):
-                    img_path = os.path.join(self.fluorescent_without_masks, img_name)
+        if os.path.exists(self.unlabeled_fluorescent):
+            for img_name in os.listdir(self.unlabeled_fluorescent):
+                if img_name.endswith('.tif'):
+                    img_path = os.path.join(self.unlabeled_fluorescent, img_name)
                     self.image_paths.append(img_path)
                     self.mask_paths.append(None)
                     self.is_labeled.append(False)
