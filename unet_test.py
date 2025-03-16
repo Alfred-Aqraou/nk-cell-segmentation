@@ -9,6 +9,7 @@ import torch.optim as optim
 
 import segmentation_models_pytorch as smp
 import numpy as np
+import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     # Example transform
@@ -24,15 +25,12 @@ if __name__ == '__main__':
         T.ToTensor(),
     ])
 
-
-
     dataset_dir = "dataset"
 
     full_dataset = NKCellDataset(
         dataset_dir=dataset_dir, 
         transform=train_transform
     )
-
 
     # Filter labeled subset only (where mask_path is not None)
     labeled_indices = [
@@ -41,49 +39,47 @@ if __name__ == '__main__':
     ]
     labeled_dataset = torch.utils.data.Subset(full_dataset, labeled_indices)
 
-    # For demonstration, let's do a train/val split, say 80/20
+    # Train/val split
     val_size = int(0.2 * len(labeled_dataset))
     train_size = len(labeled_dataset) - val_size
-
     train_dataset, val_dataset = random_split(labeled_dataset, [train_size, val_size])
 
-    BATCH_SIZE = 1
-
+    BATCH_SIZE = 2
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     val_loader   = DataLoader(val_dataset,   batch_size=BATCH_SIZE, shuffle=False)
 
-    # For a simple binary segmentation:
+    # Define model
     model = smp.Unet(
-        encoder_name="resnet34",  # you can choose other encoders like "resnet50", "efficientnet-b0"...
-        encoder_weights="imagenet",  # use None if you don't want pre-training
-        in_channels=3,  # the number of input channels
-        classes=1,      # the number of output channels (1 for binary segmentation)
+        encoder_name="resnet34",
+        encoder_weights="imagenet",
+        in_channels=3,
+        classes=1,
     )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
 
-    criterion = nn.BCEWithLogitsLoss()  
+    criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
-    num_epochs = 1  # Just a short run for demonstration
+    num_epochs = 4  # short run for demonstration
+
+    # Lists to store loss values for plotting
+    train_losses = []
+    val_losses = []
 
     for epoch in range(num_epochs):
-        print("Epoch", epoch)
         model.train()
         train_loss = 0.0
 
-        idk = 1
-        
         for images, masks, label_flags in train_loader:
-            print(idk := idk + 1, end='\r')
             images = images.to(device)
             masks = masks.to(device)
             
             # Forward
             outputs = model(images)
             
-            # We only compute the loss where label_flag=1 (i.e., labeled)
+            # Only compute loss where label_flag == 1
             labeled_indices = (label_flags == 1).nonzero(as_tuple=True)[0]
             if len(labeled_indices) > 0:
                 labeled_outputs = outputs[labeled_indices]
@@ -97,7 +93,8 @@ if __name__ == '__main__':
                 train_loss += loss.item() * len(labeled_indices)
         
         avg_train_loss = train_loss / len(train_dataset)
-        
+        train_losses.append(avg_train_loss)
+
         # Validation
         model.eval()
         val_loss = 0.0
@@ -118,14 +115,27 @@ if __name__ == '__main__':
                     val_loss += loss.item() * len(labeled_indices)
         
         avg_val_loss = val_loss / len(val_dataset)
-        
-        print(f"Epoch [{epoch+1}/{num_epochs}], "
-            f"Train Loss: {avg_train_loss:.4f}, "
-            f"Val Loss: {avg_val_loss:.4f}")
+        val_losses.append(avg_val_loss)
 
+        print(f"Epoch [{epoch+1}/{num_epochs}], "
+              f"Train Loss: {avg_train_loss:.4f}, "
+              f"Val Loss: {avg_val_loss:.4f}")
+
+    # -- Plot the training and validation loss --
+    epochs_range = range(1, num_epochs + 1)
+    plt.figure(figsize=(8, 5))
+    plt.plot(epochs_range, train_losses, label='Training Loss', color='blue')
+    plt.plot(epochs_range, val_losses, label='Validation Loss', color='orange')
+    plt.title('Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    # Evaluate Dice score
     model.eval()
     dice_scores = []
-
     with torch.no_grad():
         for images, masks, label_flags in val_loader:
             images = images.to(device)
