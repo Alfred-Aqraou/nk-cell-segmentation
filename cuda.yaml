@@ -2,7 +2,6 @@ name: '02466'
 channels:
   - conda-forge
   - nodefaults
-channel_priority: strict
 dependencies:
   - python=3.12
   - conda-forge::numpy
