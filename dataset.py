@@ -123,7 +123,7 @@ class NKCellDataset(Dataset):
             if downloaded_hash != expected_hash:
                 print(f"Checksum mismatch! Expected {expected_hash}, got {downloaded_hash}")
                 os.remove(self._dataset_tar_path)
-                print("Redownload required.")
+                print("Redownload required, sorry...")
                 return False
             print("Download completed and checksum verified!")
 
@@ -136,7 +136,7 @@ class NKCellDataset(Dataset):
         try:
             with tarfile.open(self._dataset_tar_path, 'r') as tar:
                 tar.extractall(path=".", filter="fully_trusted", numeric_owner=True)
-        except PermissionError:
+        except:
             print("Could not extract dataset due to permission errors, please do it manually in terminal with:")
             print("tar -xvf dataset.tar")
             return False
