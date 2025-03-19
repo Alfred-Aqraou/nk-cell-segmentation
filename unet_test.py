@@ -34,8 +34,7 @@ if __name__ == '__main__':
 
     # Filter labeled subset only (where mask_path is not None)
     labeled_indices = [
-        i for i, mask_path in enumerate(full_dataset.mask_paths) 
-        if mask_path is not None
+        i for i, mask_path in enumerate(full_dataset.mask_paths) if mask_path is not None
     ]
     labeled_dataset = torch.utils.data.Subset(full_dataset, labeled_indices)
 
@@ -51,10 +50,28 @@ if __name__ == '__main__':
     # Define model
     model = smp.Unet(
         encoder_name="resnet34",
-        encoder_weights="imagenet",
+        encoder_weights=None,
         in_channels=3,
         classes=1,
     )
+
+    # Load your custom weights
+    custom_weights_path = "weights.pt"
+    custom_weights = torch.load(custom_weights_path, map_location="cpu")  # Load weights to CPU first
+
+    # Option 1: Load weights into the encoder only (if weights.pt contains encoder weights)
+    try:
+        model.encoder.load_state_dict(custom_weights)
+        print("Loaded custom weights into the encoder successfully.")
+    except RuntimeError as e:
+        print(f"Error loading weights into encoder: {e}")
+        # Option 2: Load weights into the full model (if weights.pt contains the entire UNet)
+        try:
+            model.load_state_dict(custom_weights)
+            print("Loaded custom weights into the full model successfully.")
+        except RuntimeError as e:
+            print(f"Error loading weights into full model: {e}")
+            raise ValueError("The weights in 'weights.pt' do not match the model architecture.")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
@@ -62,7 +79,7 @@ if __name__ == '__main__':
     criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
-    num_epochs = 4  # short run for demonstration
+    num_epochs = 2  # short run for demonstration
 
     # Lists to store loss values for plotting
     train_losses = []
