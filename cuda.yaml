@@ -1,0 +1,17 @@
+name: '02466'
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - conda-forge::numpy
+  - conda-forge::matplotlib
+  - conda-forge::pandas
+  - conda-forge::pillow
+  - conda-forge::requests
+  - conda-forge::tqdm
+  - conda-forge::segmentation-models-pytorch
+  - pip
+  - pip:
+    - torch --index-url https://download.pytorch.org/whl/cu126
+    - torchvision --index-url https://download.pytorch.org/whl/cu126
+    - torchaudio --index-url https://download.pytorch.org/whl/cu126
