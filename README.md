@@ -51,12 +51,22 @@ nano authorized_keys
 ```
 Paste your public key from step 1) by pressing: `Ctrl+Shift+V`. Now save and exit by pressing `Ctrl+X`, followed by `Y` and `Enter`. Now you should be able to connect to the HPC without VPN. If you plan on adding more devices to connect from, simply add a new line and paste that public key, then save and exit.
 
-## Working with HPC
+## Working manually with HPC
 1. Login to HPC and use: `linuxsh`.
 2. Go to shared folder: `cd /work3/s234843/02466-Project`
 3. Activate conda with: `source /work3/s234843/bin/miniconda3/bin/activate`
 4. Activate environment with: `conda activate 02466`
-5. Should be all good!
+5. Should be all good! Now you can run scripts manually.
+
+## Creating batch jobs for GPU usage
+Check out the `run.sh` file for a working example.
+### BSUB options:
+[For reference](https://www.hpc.dtu.dk/?page_id=1416)
+- Specify queue: `#BSUB -q <gpu>` (see list of available gpu's [here](https://www.hpc.dtu.dk/?page_id=2759))
+- ...
+
+## Copying large files to HPC
+...
 
 # Working with Git
 ## dinov2-fork
