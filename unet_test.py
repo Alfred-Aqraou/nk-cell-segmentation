@@ -165,8 +165,8 @@ if __name__ == '__main__':
     # -- Plot the training and validation loss --
     epochs_range = range(1, num_epochs + 1)
     plt.figure(figsize=(8, 5))
-    plt.plot(epochs_range, train_losses, label='Training Loss', color='blue')
-    plt.plot(epochs_range, val_losses, label='Validation Loss', color='orange')
+    plt.plot(epochs_range[:len(train_losses)], train_losses, label='Training Loss', color='blue')
+    plt.plot(epochs_range[:len(val_losses)], val_losses, label='Validation Loss', color='orange')
     plt.title('Loss')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
