@@ -4,8 +4,8 @@
 #BSUB -q gpuv100
 ### -- set the job Name --
 #BSUB -J 02466_Project
-### -- ask for number of cores (default: 1) --
-#BSUB -n 8
+### -- ask for number of cores (default: 1), 4 cores per gpu, so 16 for 4 gpus --
+#BSUB -n 16
 ### -- Select the resources: 4 gpu in exclusive process mode --
 #BSUB -gpu "num=4:mode=exclusive_process"
 ### -- set walltime limit: hh:mm --  maximum 24 hours for GPU-queues right now
