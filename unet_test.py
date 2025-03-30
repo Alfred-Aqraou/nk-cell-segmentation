@@ -10,18 +10,26 @@ import torch.optim as optim
 import segmentation_models_pytorch as smp
 import numpy as np
 import matplotlib.pyplot as plt
+import tqdm
 
 if __name__ == '__main__':
     # Example transform
     train_transform = T.Compose([
-        T.Pad((0, 0, 34, 0)),
-        T.Resize((256, 256)),
+        T.CenterCrop((960, 960)),
+        T.RandomHorizontalFlip(p=0.5),       # Flip horizontally with 50% probability
+        T.RandomVerticalFlip(p=0.5),         # Flip vertically with 50% probability
+        T.RandomRotation(degrees=30),
+        T.ColorJitter(
+            brightness=0.2,
+            contrast=0.2,
+            saturation=0.2,
+            hue=0.1
+        ),
         T.ToTensor(),
     ])
 
     val_transform = T.Compose([
-        T.Pad((0, 0, 34, 0)),
-        T.Resize((256, 256)),
+        T.CenterCrop((960, 960)),
         T.ToTensor(),
     ])
 
@@ -43,35 +51,35 @@ if __name__ == '__main__':
     train_size = len(labeled_dataset) - val_size
     train_dataset, val_dataset = random_split(labeled_dataset, [train_size, val_size])
 
-    BATCH_SIZE = 2
+    BATCH_SIZE = 16
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     val_loader   = DataLoader(val_dataset,   batch_size=BATCH_SIZE, shuffle=False)
 
     # Define model
     model = smp.Unet(
         encoder_name="resnet34",
-        encoder_weights=None,
+        encoder_weights="imagenet",
         in_channels=3,
         classes=1,
     )
 
-    # Load your custom weights
-    custom_weights_path = "weights.pt"
-    custom_weights = torch.load(custom_weights_path, map_location="cpu")  # Load weights to CPU first
+    # Load custom weights
+    # custom_weights_path = "weights.pt"
+    # custom_weights = torch.load(custom_weights_path, map_location="cpu")  # Load weights to CPU first
 
-    # Option 1: Load weights into the encoder only (if weights.pt contains encoder weights)
-    try:
-        model.encoder.load_state_dict(custom_weights)
-        print("Loaded custom weights into the encoder successfully.")
-    except RuntimeError as e:
-        print(f"Error loading weights into encoder: {e}")
-        # Option 2: Load weights into the full model (if weights.pt contains the entire UNet)
-        try:
-            model.load_state_dict(custom_weights)
-            print("Loaded custom weights into the full model successfully.")
-        except RuntimeError as e:
-            print(f"Error loading weights into full model: {e}")
-            raise ValueError("The weights in 'weights.pt' do not match the model architecture.")
+    # # Option 1: Load weights into the encoder only (if weights.pt contains encoder weights)
+    # try:
+    #     model.encoder.load_state_dict(custom_weights)
+    #     print("Loaded custom weights into the encoder successfully.")
+    # except RuntimeError as e:
+    #     print(f"Error loading weights into encoder: {e}")
+    #     # Option 2: Load weights into the full model (if weights.pt contains the entire UNet)
+    #     try:
+    #         model.load_state_dict(custom_weights)
+    #         print("Loaded custom weights into the full model successfully.")
+    #     except RuntimeError as e:
+    #         print(f"Error loading weights into full model: {e}")
+    #         raise ValueError("The weights in 'weights.pt' do not match the model architecture.")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
@@ -79,13 +87,16 @@ if __name__ == '__main__':
     criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
-    num_epochs = 2  # short run for demonstration
-
+    num_epochs = 100  # short run for demonstration
+    patience = 10
+    best_val_loss = float('inf')
+    patience_counter = 0
+    best_model_state = None
     # Lists to store loss values for plotting
     train_losses = []
     val_losses = []
 
-    for epoch in range(num_epochs):
+    for epoch in tqdm.tqdm(range(num_epochs)):
         model.train()
         train_loss = 0.0
 
@@ -137,6 +148,19 @@ if __name__ == '__main__':
         print(f"Epoch [{epoch+1}/{num_epochs}], "
               f"Train Loss: {avg_train_loss:.4f}, "
               f"Val Loss: {avg_val_loss:.4f}")
+        
+        if avg_val_loss < best_val_loss:
+            best_val_loss = avg_val_loss
+            best_model_state = model.state_dict()  # Save best weights
+            patience_counter = 0
+            print("Validation loss improved - model saved.")
+        else:
+            patience_counter += 1
+            print(f"No improvement. Patience: {patience_counter}/{patience}")
+
+        if patience_counter >= patience:
+            print("Early stopping triggered.")
+            break
 
     # -- Plot the training and validation loss --
     epochs_range = range(1, num_epochs + 1)
