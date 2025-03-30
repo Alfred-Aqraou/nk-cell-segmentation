@@ -150,6 +150,8 @@ if __name__ == '__main__':
         avg_val_loss = val_loss / len(val_dataset)
         val_losses.append(avg_val_loss)
 
+        tolerance = 0.015
+
         print(f"Epoch [{epoch+1}/{num_epochs}], "
               f"Train Loss: {avg_train_loss:.4f}, "
               f"Val Loss: {avg_val_loss:.4f}")
@@ -159,25 +161,29 @@ if __name__ == '__main__':
             best_model_state = model.state_dict()  # Save best weights
             patience_counter = 0
             print("Validation loss improved - model saved.")
+        elif avg_val_loss < best_val_loss + tolerance:  
+            # Within tolerance, do not update best_val_loss but reset patience  
+            patience_counter = 0  
+            print("No improvement on validation loss, but within tolerance - patience reset.") 
         else:
             patience_counter += 1
-            print(f"No improvement. Patience: {patience_counter}/{patience}")
+            print(f"No improvement on validation loss. Patience: {patience_counter}/{patience}")
 
         if patience_counter >= patience:
             print("Early stopping triggered.")
             break
 
     # -- Plot the training and validation loss --
-    epochs_range = range(1, num_epochs + 1)
+    epochs_range = range(1, len(train_losses) + 1) # Set range to actual number of epochs run
     plt.figure(figsize=(8, 5))
-    plt.plot(epochs_range[:len(train_losses)], train_losses, label='Training Loss', color='blue')
-    plt.plot(epochs_range[:len(val_losses)], val_losses, label='Validation Loss', color='orange')
+    plt.plot(epochs_range, train_losses, label='Training Loss', color='blue')
+    plt.plot(epochs_range, val_losses, label='Validation Loss', color='orange')
     plt.title('Loss')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
     plt.grid(True)
-    plt.savefig(f'loss_{num_epochs}')
+    plt.savefig(f'loss_{len(epochs_range)}')
     plt.show()
 
     # Evaluate Dice score
