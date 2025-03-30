@@ -113,6 +113,11 @@ conda env create -f cpu.yaml
 conda activate 02466_cpu
 ```
 
+If the yaml file was updated since you installed it, you can update it using:
+```bash
+conda env update --file <file>.yaml --prune
+```
+
 
 # Dataset
 ## Setting environment variables
