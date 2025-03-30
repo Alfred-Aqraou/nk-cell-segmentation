@@ -1,7 +1,7 @@
 #!/bin/sh
 ### General options
 ### –- specify queue --
-#BSUB -q gpuv100
+#BSUB -q gpua100
 ### -- set the job Name --
 #BSUB -J 02466_Project
 ### -- ask for number of cores (default: 1) --
@@ -34,4 +34,4 @@ module load cuda/12.6
 # /appl/cuda/12.4.1/samples/bin/x86_64/linux/release/deviceQuery
 source /work3/s234843/bin/miniconda3/bin/activate
 conda activate 02466
-python /work3/s234843/02466-Project/main.py
+python /work3/s234843/02466-Project/unet_test.py
