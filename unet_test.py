@@ -82,7 +82,12 @@ if __name__ == '__main__':
     #         raise ValueError("The weights in 'weights.pt' do not match the model architecture.")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = model.to(device)
+
+    if torch.cuda.device_count() > 1:
+        print("We use", torch.cuda.device_count(), "GPUs!")
+        model = nn.DataParallel(model)
+
+    model.to(device)
 
     criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-4)
