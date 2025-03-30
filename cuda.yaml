@@ -13,6 +13,7 @@ dependencies:
   - conda-forge::segmentation-models-pytorch
   - conda-forge::transformers
   - conda-forge::scikit-learn
+  - conda-forge::accelerate
   - pip
   - pip:
     - torch --index-url https://download.pytorch.org/whl/cu126
