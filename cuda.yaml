@@ -1,4 +1,4 @@
-name: '02466'
+name: '02466_cuda'
 channels:
   - conda-forge
   - nodefaults
@@ -11,6 +11,8 @@ dependencies:
   - conda-forge::requests
   - conda-forge::tqdm
   - conda-forge::segmentation-models-pytorch
+  - conda-forge::transformers
+  - conda-forge::scikit-learn
   - pip
   - pip:
     - torch --index-url https://download.pytorch.org/whl/cu126

@@ -23,14 +23,14 @@ Connecting from outside DTU's network is almost like connecting from inside, you
 
 ### 2) Accessing from DTU network
 The LSF 10 cluster can be accessed through 4 different login-nodes:  
-`userid@login1.gbar.dtu.dk`  
-`userid@login1.hpc.dtu.dk`  
-`userid@login2.gbar.dtu.dk`  
-`userid@login2.hpc.dtu.dk`  
+`<userid>@login1.gbar.dtu.dk`  
+`<userid>@login1.hpc.dtu.dk`  
+`<userid>@login2.gbar.dtu.dk`  
+`<userid>@login2.hpc.dtu.dk`  
 
-The `userid` must be replaced by your DTU student id, e.g. `s234843@login1.hpc.dtu.dk`. I usually just use this login node. Use ssh to login:
+The `<userid>` must be replaced by your DTU student id, e.g. `s234843@login1.hpc.dtu.dk`. I usually just use this login node. Use ssh to login:
 ```bash
-ssh -i ~/.ssh/dtuhpc userid@login1.hpc.dtu.dk
+ssh -i ~/.ssh/dtuhpc <userid>@login1.hpc.dtu.dk
 ```
 The `-i <private key>` argument specifies the location of your newly generated private key. If prompted for password, use your DTU login. If you created a password for the ssh-key, this usually comes first.
 
@@ -51,22 +51,30 @@ nano authorized_keys
 ```
 Paste your public key from step 1) by pressing: `Ctrl+Shift+V`. Now save and exit by pressing `Ctrl+X`, followed by `Y` and `Enter`. Now you should be able to connect to the HPC without VPN. If you plan on adding more devices to connect from, simply add a new line and paste that public key, then save and exit.
 
-## Working manually with HPC
+## Working with HPC
 1. Login to HPC and use: `linuxsh`.
 2. Go to shared folder: `cd /work3/s234843/02466-Project`
 3. Activate conda with: `source /work3/s234843/bin/miniconda3/bin/activate`
 4. Activate environment with: `conda activate 02466`
 5. Should be all good! Now you can run scripts manually.
 
-## Creating batch jobs for GPU usage
-Check out the `run.sh` file for a working example.
-### BSUB options:
+### Creating batch jobs for GPU usage
+Check out some of the `.sh` files for working examples.
+#### BSUB options:
 [For reference](https://www.hpc.dtu.dk/?page_id=1416)
 - Specify queue: `#BSUB -q <gpu>` (see list of available gpu's [here](https://www.hpc.dtu.dk/?page_id=2759))
 - ...
 
-## Copying large files to HPC
-...
+### bstat commands
+- Viewing job queue: `bstat`
+- Killing job: `bkill <JOBID>`
+
+
+### Transfering large files to HPC
+It is instructed to use their transfer nodes instead of login nodes for faster and perhaps more stable transferral.
+```bash
+scp -i ~/.ssh/dtuhpc <local file> <userid>@transfer.gbar.dtu.dk:<hpc location>
+```
 
 # Working with Git
 ## dinov2-fork
@@ -94,10 +102,15 @@ conda activate dinov2
 
 
 ## Our Project
-The normal environment can be setup with the `conda.yaml` or `cuda.yaml` located in the root directory: `02466-Project`:
+The normal environment can be setup with the `cpu.yaml` or `cuda.yaml` located in the root directory: `02466-Project`:
 ```bash
 conda env create -f cuda.yaml
-conda activate 02466
+conda activate 02466_cuda
+```
+or for cpu:
+```bash
+conda env create -f cpu.yaml
+conda activate 02466_cpu
 ```
 
 
@@ -124,6 +137,8 @@ nano ~/.bashrc
 export USER02466="<Username>"
 export PASS02466="<Password>"
 ```
+
+NOTE: If you are planning to use the HPC, you should also do this for yourself with the same `~/.bashrc` file as above. This file is personal for your own user on the HPC cluster.
 
 ### Windows
 ```cmd
