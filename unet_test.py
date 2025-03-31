@@ -83,11 +83,6 @@ if __name__ == '__main__':
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    if torch.cuda.device_count() > 1:
-        print("We use", torch.cuda.device_count(), "GPUs!")
-        # model = nn.DataParallel(model)
-        model = nn.parallel.DistributedDataParallel(model) # It was recommended to use this instead
-
     model.to(device)
 
     criterion = nn.BCEWithLogitsLoss()
