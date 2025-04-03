@@ -86,7 +86,7 @@ if __name__ == '__main__':
 
     model.to(device)
 
-    criterion = nn.BCEWithLogitsLoss()
+    criterion = DiceLoss(model='binary',from_logits=True)
     optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
     num_epochs = 100  # short run for demonstration
