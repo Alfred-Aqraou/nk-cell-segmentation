@@ -54,9 +54,10 @@ Paste your public key from step 1) by pressing: `Ctrl+Shift+V`. Now save and exi
 ## Working with HPC
 1. Login to HPC and use: `linuxsh`.
 2. Go to shared folder: `cd /work3/s234843/02466-Project`
-3. Activate conda with: `source /work3/s234843/bin/miniconda3/bin/activate`
-4. Activate environment with: `conda activate 02466`
-5. Should be all good! Now you can run scripts manually.
+
+(If you cannot access this directory, contact Mathias)
+
+3. Activate environment with: `source hpc_init.sh`
 
 ### Creating batch jobs for GPU usage
 Check out some of the `.sh` files for working examples.
@@ -66,6 +67,7 @@ Check out some of the `.sh` files for working examples.
 - ...
 
 ### bstat commands
+- Starting a job: `bsub < <file>`
 - Viewing job queue: `bstat`
 - Killing job: `bkill <JOBID>`
 
@@ -77,6 +79,42 @@ scp -i ~/.ssh/dtuhpc <local file> <userid>@transfer.gbar.dtu.dk:<hpc location>
 ```
 
 # Working with Git
+## Setting git user config
+Initially, you must give git some information about yourself:
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your_email@example.com"
+```
+Continue to [Setting up ssh](#setting-up-ssh).
+
+## Setting up ssh
+Using git for the first time on hpc requires that you set up an ssh key that is recognized by your personal GitHub profile. Here is a step by step guide for doing this:
+1. Create a github key on your HPC user and copy the output from `cat github.pub` command:
+```bash
+cd ~/.ssh
+ssh-keygen -t ed25519 -C "your_email@example.com" -f github
+cat github.pub
+```
+2. [Add the key to GitHub](https://github.com/settings/ssh/new). The title you can just call `DTU HPC` and in the key input field you must insert the output copied from the `cat github.pub` command. Click `Add SSH key`.
+3. Back in the HPC terminal, run:
+```bash
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/github
+```
+And for extra measures do the following:
+```bash
+nano ~/.ssh/config
+```
+Write in:
+```bash
+Host github.com
+  User git
+  IdentityFile ~/.ssh/github
+```
+Close and save with `CTRL + X`, then `y`, then `Enter`.
+
+You should be done now and can begin working with git!
+
 ## dinov2-fork
 In this project, we will be using a fork of dinov2 with our changes, i.e. implementation of dinov2. The fork works by acting as a "sub-repository" (aka submodule). You can download the submodule initially using:
 ```bash
@@ -154,3 +192,12 @@ setx PASS02466 "<Password>"
 ## Installing dataset
 1. Complete instructions above
 2. Run download_dataset.py
+
+# Useful commands
+## Giving access to directory (for Mathias):
+```bash
+chgrp -R 10196 /work3/s234843/02466-Project &
+chgrp -R 10196 /work3/s234843/bin &
+chmod -R g+rwxs /work3/s234843/02466-Project &
+chmod -R g+rwxs /work3/s234843/bin &
+```
