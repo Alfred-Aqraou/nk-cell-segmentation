@@ -1,6 +1,10 @@
 dataset/
 dataset.tar
 
+# Private files, add it with:
+# git config --local core.excludesFile .gitignore-private
+.gitignore-private
+
 # Models
 *.pt
 *.pth
