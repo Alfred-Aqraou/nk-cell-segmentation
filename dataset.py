@@ -4,6 +4,7 @@ from PIL import Image
 import pandas as pd
 from torch.utils.data import Dataset
 import torch
+from typing import Tuple
 
 class NKCellDataset(Dataset):
     def __init__(self, dataset_dir="dataset", transform=None, metadata_filter=None):
@@ -45,10 +46,10 @@ class NKCellDataset(Dataset):
                     self.mask_paths.append(None)
                     self.is_labeled.append(False)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.image_paths)
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx) -> Tuple[Image.Image, torch.Tensor, int]:
         img_path = self.image_paths[idx]
         mask_path = self.mask_paths[idx]
         
@@ -64,7 +65,7 @@ class NKCellDataset(Dataset):
         else:  # Unlabeled
             return image, torch.zeros_like(image[0:1]), 0  # Dummy mask, 0 indicates unlabeled
 
-    def _compute_md5(self, file_path):
+    def _compute_md5(self, file_path) -> str:
         """ Compute the MD5 checksum of a file. """
         hash_md5 = hashlib.md5()
         with open(file_path, "rb") as f:
@@ -72,7 +73,7 @@ class NKCellDataset(Dataset):
                 hash_md5.update(chunk)
         return hash_md5.hexdigest().upper()
 
-    def download(self, verify=False):
+    def download(self, verify=False) -> bool:
         '''
         Download the dataset
 

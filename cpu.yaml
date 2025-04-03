@@ -1,0 +1,22 @@
+name: '02466_cpu'
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.12
+  - conda-forge::numpy
+  - conda-forge::matplotlib
+  - conda-forge::pandas
+  - conda-forge::pillow
+  - conda-forge::requests
+  - conda-forge::tqdm
+  - conda-forge::segmentation-models-pytorch
+  - conda-forge::transformers
+  - conda-forge::scikit-learn
+  - conda-forge::accelerate
+  - pip
+  - pip:
+    - torch --index-url https://download.pytorch.org/whl/cpu
+    - torchvision --index-url https://download.pytorch.org/whl/cpu
+    - torchaudio --index-url https://download.pytorch.org/whl/cpu
+    

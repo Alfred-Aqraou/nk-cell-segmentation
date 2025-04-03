@@ -1,0 +1,17 @@
+Loaded module: cuda/12.6
+  0%|          | 0/100 [00:00<?, ?it/s]  1%|          | 1/100 [05:23<8:53:01, 323.04s/it]  2%|▏         | 2/100 [10:43<8:44:54, 321.37s/it]  3%|▎         | 3/100 [16:03<8:38:29, 320.72s/it]  4%|▍         | 4/100 [21:21<8:31:44, 319.84s/it]  5%|▌         | 5/100 [26:40<8:25:38, 319.35s/it]  6%|▌         | 6/100 [31:59<8:20:28, 319.46s/it]  7%|▋         | 7/100 [37:19<8:15:06, 319.43s/it]  8%|▊         | 8/100 [42:38<8:09:28, 319.23s/it]  9%|▉         | 9/100 [47:55<8:03:14, 318.62s/it] 10%|█         | 10/100 [53:13<7:57:47, 318.52s/it] 11%|█         | 11/100 [58:32<7:52:28, 318.52s/it] 12%|█▏        | 12/100 [1:03:50<7:47:15, 318.59s/it] 13%|█▎        | 13/100 [1:09:09<7:42:02, 318.65s/it] 13%|█▎        | 13/100 [1:14:27<8:18:17, 343.65s/it]
+Traceback (most recent call last):
+  File "/work3/s234843/02466-Project/unet_test.py", line 168, in <module>
+    plt.plot(epochs_range, train_losses, label='Training Loss', color='blue')
+  File "/work3/s234843/bin/miniconda3/envs/02466/lib/python3.12/site-packages/matplotlib/pyplot.py", line 3827, in plot
+    return gca().plot(
+           ^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466/lib/python3.12/site-packages/matplotlib/axes/_axes.py", line 1777, in plot
+    lines = [*self._get_lines(self, *args, data=data, **kwargs)]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 297, in __call__
+    yield from self._plot_args(
+               ^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 494, in _plot_args
+    raise ValueError(f"x and y must have same first dimension, but "
+ValueError: x and y must have same first dimension, but have shapes (100,) and (14,)
