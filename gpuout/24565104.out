@@ -1,0 +1,178 @@
+Thu Apr  3 11:52:36 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.124.06             Driver Version: 570.124.06     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla V100-PCIE-32GB           On  |   00000000:D8:00.0 Off |                    0 |
+| N/A   26C    P0             25W /  250W |       1MiB /  32768MiB |      0%   E. Process |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Epoch [1/100], Train Loss: 0.4840, Val Loss: 0.5574
+Validation loss improved - model saved.
+Epoch [2/100], Train Loss: 0.4554, Val Loss: 0.5771
+No improvement on validation loss. Patience: 1/10
+Epoch [3/100], Train Loss: 0.4599, Val Loss: 0.5493
+Validation loss improved - model saved.
+Epoch [4/100], Train Loss: 0.4457, Val Loss: 0.5710
+No improvement on validation loss. Patience: 1/10
+Epoch [5/100], Train Loss: 0.4356, Val Loss: 0.5833
+No improvement on validation loss. Patience: 2/10
+Epoch [6/100], Train Loss: 0.4441, Val Loss: 0.6246
+No improvement on validation loss. Patience: 3/10
+Epoch [7/100], Train Loss: 0.4244, Val Loss: 0.6516
+No improvement on validation loss. Patience: 4/10
+Epoch [8/100], Train Loss: 0.4149, Val Loss: 0.6104
+No improvement on validation loss. Patience: 5/10
+Epoch [9/100], Train Loss: 0.4227, Val Loss: 0.5866
+No improvement on validation loss. Patience: 6/10
+Epoch [10/100], Train Loss: 0.4151, Val Loss: 0.5342
+Validation loss improved - model saved.
+Epoch [11/100], Train Loss: 0.4107, Val Loss: 0.4868
+Validation loss improved - model saved.
+Epoch [12/100], Train Loss: 0.4167, Val Loss: 0.5131
+No improvement on validation loss. Patience: 1/10
+Epoch [13/100], Train Loss: 0.4103, Val Loss: 0.5357
+No improvement on validation loss. Patience: 2/10
+Epoch [14/100], Train Loss: 0.4034, Val Loss: 0.5253
+No improvement on validation loss. Patience: 3/10
+Epoch [15/100], Train Loss: 0.3877, Val Loss: 0.4942
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [16/100], Train Loss: 0.3955, Val Loss: 0.4592
+Validation loss improved - model saved.
+Epoch [17/100], Train Loss: 0.4056, Val Loss: 0.4602
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [18/100], Train Loss: 0.3974, Val Loss: 0.4623
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [19/100], Train Loss: 0.3988, Val Loss: 0.4763
+No improvement on validation loss. Patience: 1/10
+Epoch [20/100], Train Loss: 0.3877, Val Loss: 0.4429
+Validation loss improved - model saved.
+Epoch [21/100], Train Loss: 0.3963, Val Loss: 0.4467
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [22/100], Train Loss: 0.3918, Val Loss: 0.4698
+No improvement on validation loss. Patience: 1/10
+Epoch [23/100], Train Loss: 0.3881, Val Loss: 0.4766
+No improvement on validation loss. Patience: 2/10
+Epoch [24/100], Train Loss: 0.3968, Val Loss: 0.4411
+Validation loss improved - model saved.
+Epoch [25/100], Train Loss: 0.3827, Val Loss: 0.4477
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [26/100], Train Loss: 0.3798, Val Loss: 0.4402
+Validation loss improved - model saved.
+Epoch [27/100], Train Loss: 0.3795, Val Loss: 0.4559
+No improvement on validation loss. Patience: 1/10
+Epoch [28/100], Train Loss: 0.3872, Val Loss: 0.4452
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [29/100], Train Loss: 0.3824, Val Loss: 0.4821
+No improvement on validation loss. Patience: 1/10
+Epoch [30/100], Train Loss: 0.3783, Val Loss: 0.4565
+No improvement on validation loss. Patience: 2/10
+Epoch [31/100], Train Loss: 0.3898, Val Loss: 0.4637
+No improvement on validation loss. Patience: 3/10
+Epoch [32/100], Train Loss: 0.3846, Val Loss: 0.4531
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [33/100], Train Loss: 0.3831, Val Loss: 0.4451
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [34/100], Train Loss: 0.3857, Val Loss: 0.4530
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [35/100], Train Loss: 0.3792, Val Loss: 0.4269
+Validation loss improved - model saved.
+Epoch [36/100], Train Loss: 0.3791, Val Loss: 0.4093
+Validation loss improved - model saved.
+Epoch [37/100], Train Loss: 0.3911, Val Loss: 0.4267
+No improvement on validation loss. Patience: 1/10
+Epoch [38/100], Train Loss: 0.3821, Val Loss: 0.4346
+No improvement on validation loss. Patience: 2/10
+Epoch [39/100], Train Loss: 0.3759, Val Loss: 0.4398
+No improvement on validation loss. Patience: 3/10
+Epoch [40/100], Train Loss: 0.3858, Val Loss: 0.4462
+No improvement on validation loss. Patience: 4/10
+Epoch [41/100], Train Loss: 0.3809, Val Loss: 0.4352
+No improvement on validation loss. Patience: 5/10
+Epoch [42/100], Train Loss: 0.3790, Val Loss: 0.4600
+No improvement on validation loss. Patience: 6/10
+Epoch [43/100], Train Loss: 0.3781, Val Loss: 0.4512
+No improvement on validation loss. Patience: 7/10
+Epoch [44/100], Train Loss: 0.3896, Val Loss: 0.4177
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [45/100], Train Loss: 0.3783, Val Loss: 0.4580
+No improvement on validation loss. Patience: 1/10
+Epoch [46/100], Train Loss: 0.3801, Val Loss: 0.4458
+No improvement on validation loss. Patience: 2/10
+Epoch [47/100], Train Loss: 0.3789, Val Loss: 0.4355
+No improvement on validation loss. Patience: 3/10
+Epoch [48/100], Train Loss: 0.3736, Val Loss: 0.4372
+No improvement on validation loss. Patience: 4/10
+Epoch [49/100], Train Loss: 0.3801, Val Loss: 0.4571
+No improvement on validation loss. Patience: 5/10
+Epoch [50/100], Train Loss: 0.3755, Val Loss: 0.4214
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [51/100], Train Loss: 0.3732, Val Loss: 0.4288
+No improvement on validation loss. Patience: 1/10
+Epoch [52/100], Train Loss: 0.3728, Val Loss: 0.4301
+No improvement on validation loss. Patience: 2/10
+Epoch [53/100], Train Loss: 0.3783, Val Loss: 0.4286
+No improvement on validation loss. Patience: 3/10
+Epoch [54/100], Train Loss: 0.3737, Val Loss: 0.4304
+No improvement on validation loss. Patience: 4/10
+Epoch [55/100], Train Loss: 0.3638, Val Loss: 0.4490
+No improvement on validation loss. Patience: 5/10
+Epoch [56/100], Train Loss: 0.3806, Val Loss: 0.4362
+No improvement on validation loss. Patience: 6/10
+Epoch [57/100], Train Loss: 0.3860, Val Loss: 0.4099
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [58/100], Train Loss: 0.3796, Val Loss: 0.4284
+No improvement on validation loss. Patience: 1/10
+Epoch [59/100], Train Loss: 0.3816, Val Loss: 0.4116
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [60/100], Train Loss: 0.3707, Val Loss: 0.4439
+No improvement on validation loss. Patience: 1/10
+Epoch [61/100], Train Loss: 0.3715, Val Loss: 0.4314
+No improvement on validation loss. Patience: 2/10
+Epoch [62/100], Train Loss: 0.3783, Val Loss: 0.4355
+No improvement on validation loss. Patience: 3/10
+Epoch [63/100], Train Loss: 0.3737, Val Loss: 0.4210
+No improvement on validation loss, but within tolerance - patience reset.
+Epoch [64/100], Train Loss: 0.3719, Val Loss: 0.4476
+No improvement on validation loss. Patience: 1/10
+Epoch [65/100], Train Loss: 0.3769, Val Loss: 0.4285
+No improvement on validation loss. Patience: 2/10
+Epoch [66/100], Train Loss: 0.3684, Val Loss: 0.4399
+No improvement on validation loss. Patience: 3/10
+Epoch [67/100], Train Loss: 0.3778, Val Loss: 0.4287
+No improvement on validation loss. Patience: 4/10
+Epoch [68/100], Train Loss: 0.3696, Val Loss: 0.4008
+Validation loss improved - model saved.
+Epoch [69/100], Train Loss: 0.3763, Val Loss: 0.4287
+No improvement on validation loss. Patience: 1/10
+Epoch [70/100], Train Loss: 0.3807, Val Loss: 0.4241
+No improvement on validation loss. Patience: 2/10
+Epoch [71/100], Train Loss: 0.3795, Val Loss: 0.4285
+No improvement on validation loss. Patience: 3/10
+Epoch [72/100], Train Loss: 0.3846, Val Loss: 0.4225
+No improvement on validation loss. Patience: 4/10
+Epoch [73/100], Train Loss: 0.3809, Val Loss: 0.4417
+No improvement on validation loss. Patience: 5/10
+Epoch [74/100], Train Loss: 0.3656, Val Loss: 0.4829
+No improvement on validation loss. Patience: 6/10
+Epoch [75/100], Train Loss: 0.3769, Val Loss: 0.4846
+No improvement on validation loss. Patience: 7/10
+Epoch [76/100], Train Loss: 0.3662, Val Loss: 0.4960
+No improvement on validation loss. Patience: 8/10
+Epoch [77/100], Train Loss: 0.3746, Val Loss: 0.4567
+No improvement on validation loss. Patience: 9/10
+Epoch [78/100], Train Loss: 0.3765, Val Loss: 0.4314
+No improvement on validation loss. Patience: 10/10
+Early stopping triggered.
+Mean Dice on Validation Set: 0.5061
