@@ -1,9 +1,20 @@
-# training/train.py
+import os
+import sys
+
+# Add the project root (one directory up) to Python's module search path.
+project_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+sys.path.append(project_root)
+
+# Get the absolute path to the current file (training/train.py)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the path to the dataset folder located in the root of the project
+dataset_dir = os.path.join(current_dir, "..", "dataset")
 
 import torch
 import torch.optim as optim
 import torchvision.transforms as T
-from torch.utils.data import DataLoader, Subset
+from torch.utils.data import DataLoader, Subset, random_split
 import matplotlib.pyplot as plt
 import numpy as np
 import tqdm
@@ -13,10 +24,10 @@ from models.unet import create_unet
 from segmentation_models_pytorch.losses import DiceLoss
 
 def main():
-    # Set device
+    # Set the device.
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    # Define transforms for training and validation
+    # Define transformation pipelines for training and validation.
     train_transform = T.Compose([
         T.CenterCrop((960, 960)),
         T.RandomHorizontalFlip(p=0.5),
@@ -36,35 +47,31 @@ def main():
         T.ToTensor(),
     ])
 
-    dataset_dir = "dataset"
-
-    # Create two dataset instances:
-    
+    # Create separate dataset instances for training and validation using different transforms.
     full_dataset_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transform)
     full_dataset_val   = NKCellDataset(dataset_dir=dataset_dir, transform=val_transform)
     
-    # Filter labeled samples (where mask_path is not None)
-    # (Assumes that the order of file names is identical between the two dataset instances.)
+    # Filter labeled samples (where mask_path is not None).
     labeled_indices = [i for i, mask_path in enumerate(full_dataset_train.mask_paths) if mask_path is not None]
     
-    # Shuffle and split the labeled indices into training and validation sets
+    # Shuffle labeled indices and split into training and validation sets.
     np.random.seed(42)
     labeled_indices = np.array(labeled_indices)
     np.random.shuffle(labeled_indices)
     total_count = len(labeled_indices)
     val_count = int(0.2 * total_count)
-    train_indices = labeled_indices[:-val_count]
-    val_indices   = labeled_indices[-val_count:]
+    train_indices = labeled_indices[:-val_count].tolist()
+    val_indices   = labeled_indices[-val_count:].tolist()
     
-    # Create Subset objects using the respective dataset instances
-    train_dataset = Subset(full_dataset_train, train_indices.tolist())
-    val_dataset   = Subset(full_dataset_val, val_indices.tolist())
+    # Create Subset objects for training and validation.
+    train_dataset = Subset(full_dataset_train, train_indices)
+    val_dataset   = Subset(full_dataset_val, val_indices)
     
     BATCH_SIZE = 16
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     val_loader   = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
     
-    # Create the U-Net model (with encoder freezing as configured)
+    # Create the U-Net model (with encoder freezing if desired) and move it to device.
     model = create_unet(
         encoder_name="resnet34", 
         encoder_weights="imagenet", 
@@ -74,23 +81,22 @@ def main():
     )
     model.to(device)
     
-    # Set up loss function and optimizer
+    # Set up the loss function and optimizer.
     criterion = DiceLoss(mode='binary', from_logits=True)
     optimizer = optim.Adam(model.parameters(), lr=1e-4)
     
-    num_epochs = 100  # number of training epochs
+    num_epochs = 100  # For demonstration; adjust as needed.
     patience = 10
     best_val_loss = float('inf')
     patience_counter = 0
 
-    # Lists for storing losses for plotting
     train_losses = []
     val_losses = []
     
-    # Training loop
+    # Training Loop
     for epoch in tqdm.tqdm(range(num_epochs), desc="Training Epochs"):
         model.train()
-        train_loss = 0.0
+        epoch_train_loss = 0.0
 
         for images, masks, label_flags in train_loader:
             images = images.to(device)
@@ -98,25 +104,25 @@ def main():
             
             outputs = model(images)
             
-            # Compute loss only for labeled samples in this batch
-            labeled_indices_batch = (label_flags == 1).nonzero(as_tuple=True)[0]
-            if len(labeled_indices_batch) > 0:
-                labeled_outputs = outputs[labeled_indices_batch]
-                labeled_masks   = masks[labeled_indices_batch]
+            # Compute loss only for labeled samples.
+            labeled_batch_idx = (label_flags == 1).nonzero(as_tuple=True)[0]
+            if len(labeled_batch_idx) > 0:
+                labeled_outputs = outputs[labeled_batch_idx]
+                labeled_masks = masks[labeled_batch_idx]
                 loss = criterion(labeled_outputs, labeled_masks)
-
+                
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
                 
-                train_loss += loss.item() * len(labeled_indices_batch)
+                epoch_train_loss += loss.item() * len(labeled_batch_idx)
         
-        avg_train_loss = train_loss / len(train_dataset)
+        avg_train_loss = epoch_train_loss / len(train_dataset)
         train_losses.append(avg_train_loss)
 
-        # Validation phase
+        # Validation Phase.
         model.eval()
-        val_loss = 0.0
+        epoch_val_loss = 0.0
         with torch.no_grad():
             for images, masks, label_flags in val_loader:
                 images = images.to(device)
@@ -124,24 +130,25 @@ def main():
                 
                 outputs = model(images)
                 
-                labeled_indices_batch = (label_flags == 1).nonzero(as_tuple=True)[0]
-                if len(labeled_indices_batch) > 0:
-                    labeled_outputs = outputs[labeled_indices_batch]
-                    labeled_masks   = masks[labeled_indices_batch]
+                labeled_batch_idx = (label_flags == 1).nonzero(as_tuple=True)[0]
+                if len(labeled_batch_idx) > 0:
+                    labeled_outputs = outputs[labeled_batch_idx]
+                    labeled_masks = masks[labeled_batch_idx]
                     loss = criterion(labeled_outputs, labeled_masks)
-                    val_loss += loss.item() * len(labeled_indices_batch)
+                    epoch_val_loss += loss.item() * len(labeled_batch_idx)
         
-        avg_val_loss = val_loss / len(val_dataset)
+        avg_val_loss = epoch_val_loss / len(val_dataset)
         val_losses.append(avg_val_loss)
-
-        tolerance = 0.015
+        
         print(f"Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}")
         
+        tolerance = 0.015
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
             patience_counter = 0
             print("Validation loss improved - model updated.")
         elif avg_val_loss < best_val_loss + tolerance:
+            # Within tolerance; reset patience.
             patience_counter = 0
             print("No significant improvement on validation loss, but within tolerance - patience reset.")
         else:
@@ -152,7 +159,7 @@ def main():
             print("Early stopping triggered.")
             break
 
-    # Plot the training and validation loss curves
+    # Plot training and validation loss curves.
     epochs_range = range(1, len(train_losses) + 1)
     plt.figure(figsize=(8, 5))
     plt.plot(epochs_range, train_losses, label='Training Loss', color='blue')
@@ -165,7 +172,7 @@ def main():
     plt.savefig(f'loss_curve_{len(epochs_range)}epochs.png')
     plt.show()
 
-    # Evaluate model performance on the validation set (mean Dice score)
+    # Evaluate Dice score on the validation set.
     model.eval()
     dice_scores = []
     with torch.no_grad():
@@ -176,12 +183,12 @@ def main():
             outputs = model(images)
             preds = (torch.sigmoid(outputs) > 0.5).float()
             
-            labeled_indices_batch = (label_flags == 1).nonzero(as_tuple=True)[0]
-            if len(labeled_indices_batch) == 0:
+            labeled_batch_idx = (label_flags == 1).nonzero(as_tuple=True)[0]
+            if len(labeled_batch_idx) == 0:
                 continue
 
-            labeled_preds = preds[labeled_indices_batch]
-            labeled_masks = masks[labeled_indices_batch]
+            labeled_preds = preds[labeled_batch_idx]
+            labeled_masks = masks[labeled_batch_idx]
 
             intersection = (labeled_preds * labeled_masks).sum(dim=(1,2,3))
             union = labeled_preds.sum(dim=(1,2,3)) + labeled_masks.sum(dim=(1,2,3))
@@ -190,7 +197,6 @@ def main():
 
     mean_dice = np.mean(dice_scores)
     print(f"Mean Dice Score on Validation Set: {mean_dice:.4f}")
-
 
 if __name__ == '__main__':
     main()
