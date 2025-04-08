@@ -50,6 +50,8 @@ class NKCellDataset(Dataset):
         return len(self.image_paths)
 
     def __getitem__(self, idx) -> Tuple[Image.Image, torch.Tensor, int]:
+        #print(f"Loading sample: {idx}")  # temporary debug message
+        
         img_path = self.image_paths[idx]
         mask_path = self.mask_paths[idx]
         
