@@ -59,6 +59,12 @@ def main():
         i for i, mask_path in enumerate(full_dataset_train.mask_paths)
         if mask_path is not None and os.path.exists(mask_path)
     ]
+    print(f"Total labeled samples: {len(labeled_indices)}")
+
+    # Print statements for amount of labeled masks
+    # mask_folder = os.path.join(dataset_dir, 'fluorescent', 'with_masks', 'masks')
+    # print("Mask folder path:", mask_folder)
+    # print("Files in mask folder:", os.listdir(mask_folder))
 
     # Shuffle labeled indices and split into training and validation sets.
     np.random.seed(42)
