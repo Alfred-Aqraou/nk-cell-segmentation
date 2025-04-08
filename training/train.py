@@ -52,8 +52,14 @@ def main():
     full_dataset_val   = NKCellDataset(dataset_dir=dataset_dir, transform=val_transform)
     
     # Filter labeled samples (where mask_path is not None).
-    labeled_indices = [i for i, mask_path in enumerate(full_dataset_train.mask_paths) if mask_path is not None]
+    #labeled_indices = [i for i, mask_path in enumerate(full_dataset_train.mask_paths) if mask_path is not None]
     
+    # Filter labeled samples: only include indices where a mask path is present and exists.
+    labeled_indices = [
+        i for i, mask_path in enumerate(full_dataset_train.mask_paths)
+        if mask_path is not None and os.path.exists(mask_path)
+    ]
+
     # Shuffle labeled indices and split into training and validation sets.
     np.random.seed(42)
     labeled_indices = np.array(labeled_indices)
@@ -70,6 +76,10 @@ def main():
     BATCH_SIZE = 16
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     val_loader   = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
+
+    for batch in train_loader:
+        print("Batch loaded")
+        break
     
     # Create the U-Net model (with encoder freezing if desired) and move it to device.
     model = create_unet(
