@@ -9,7 +9,8 @@ sys.path.append(project_root)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the path to the dataset folder located in the root of the project
-dataset_dir = os.path.join(current_dir, "..", "dataset")
+# dataset_dir = os.path.join(current_dir, "..", "dataset")
+dataset_dir = "/work3/s234843/02466-Project/dataset"  # Set HPC dataset location
 
 import torch
 import torch.optim as optim
