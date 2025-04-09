@@ -180,7 +180,7 @@ if __name__ == '__main__':
     plt.ylabel('Loss')
     plt.legend()
     plt.grid(True)
-    plt.savefig(f'loss_{len(epochs_range)}')
+    plt.savefig(f'illustrations/loss_{len(epochs_range)}')
     plt.show()
 
     # Evaluate Dice score
