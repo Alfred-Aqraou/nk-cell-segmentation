@@ -23,5 +23,5 @@ module load cuda/12.6
 
 # /appl/cuda/12.4.1/samples/bin/x86_64/linux/release/deviceQuery
 source /work3/s234843/bin/miniconda3/bin/activate
-conda activate 02466
+conda activate 02466_cuda
 python /zhome/96/d/205311/02466-Project/training/train_cv.py
