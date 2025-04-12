@@ -126,6 +126,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
             # Validation phase.
             model.eval()
             epoch_val_loss = 0.0
+            iou_scores = []
             with torch.no_grad():
                 for images, masks, label_flags in val_loader:
                     images = images.to(device)
@@ -138,11 +139,18 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
                         labeled_masks = masks[labeled_batch_idx]
                         loss = criterion(labeled_outputs, labeled_masks)
                         epoch_val_loss += loss.item() * len(labeled_batch_idx)
-            
+
+                        # IOU score
+                        preds = (torch.sigmoid(labeled_outputs) > 0.5).float()
+                        intersection = (preds * labeled_masks).sum(dim=(1, 2, 3))
+                        union = preds.sum(dim=(1, 2, 3)) + labeled_masks.sum(dim=(1, 2, 3))
+                        iou = intersection / (union - intersection + 1e-8)
+                        iou_scores.extend(iou.cpu().numpy())
+
             avg_val_loss = epoch_val_loss / len(val_dataset)
             val_losses.append(avg_val_loss)
-            
-            print(f"Fold {fold+1}, Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}")
+            mean_iou = np.mean(iou_scores)
+            print(f"Fold {fold+1}, Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f},IoU: {mean_iou:.4f}")
             
             tolerance = 0.015
             if avg_val_loss < best_val_loss:
@@ -161,8 +169,10 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
         fold_metrics.append({
             'fold': fold+1,
             'best_val_loss': best_val_loss,
+            'best_iou': np.max(iou_scores),
             'train_losses': train_losses,
-            'val_losses': val_losses
+            'val_losses': val_losses,
+            'iou_scores': iou_scores
         })
         
         # Plot and save the loss curves for this fold.
@@ -177,13 +187,25 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
         plt.grid(True)
         plt.savefig(f"loss_curve_fold{fold+1}.png")
         plt.close()
+
+        # Plot IoU vs Epochs
+        epochs_range = range(1, len(val_losses) + 1)
+        plt.figure(figsize=(8, 5))
+        plt.plot(epochs_range, fold_metrics[-1]['iou_scores'], label='Mean IoU', color='green')
+        plt.title(f"Fold {fold+1} IoU Curve")
+        plt.xlabel('Epoch')
+        plt.ylabel('IoU Score')
+        plt.legend()
+        plt.grid(True)
+        plt.savefig(f"iou_curve_fold{fold+1}.png")
+        plt.close()
         
         print(f"Fold {fold+1} completed with best validation loss: {best_val_loss:.4f}\n")
     
     # Summary of cross-validation.
     print("Cross-validation complete. Summary of best validation losses per fold:")
     for metrics in fold_metrics:
-        print(f"  Fold {metrics['fold']}: Best Validation Loss = {metrics['best_val_loss']:.4f}")
+        print(f"  Fold {metrics['fold']}: Best Validation Loss = {metrics['best_val_loss']:.4f}," f"Best IoU = {metrics['best_iou']:.4f}")
 
 if __name__ == '__main__':
-    run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
+    run_cross_validation(num_epochs=60, batch_size=16, patience=5, n_splits=5)
