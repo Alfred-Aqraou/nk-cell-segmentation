@@ -96,6 +96,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
         patience_counter = 0
         train_losses = []
         val_losses = []
+        epoch_iou_scores = []
         
         # Training loop for the fold.
         for epoch in tqdm.tqdm(range(num_epochs), desc=f"Fold {fold+1} Training"):
@@ -150,6 +151,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
             avg_val_loss = epoch_val_loss / len(val_dataset)
             val_losses.append(avg_val_loss)
             mean_iou = np.mean(iou_scores)
+            epoch_iou_scores.append(mean_iou)
             print(f"Fold {fold+1}, Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f},IoU: {mean_iou:.4f}")
             
             tolerance = 0.015
@@ -169,10 +171,10 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
         fold_metrics.append({
             'fold': fold+1,
             'best_val_loss': best_val_loss,
-            'best_iou': np.max(iou_scores),
+            'best_iou': np.max(epoch_iou_scores),
             'train_losses': train_losses,
             'val_losses': val_losses,
-            'iou_scores': iou_scores
+            'iou_scores': epoch_iou_scores
         })
         
         # Plot and save the loss curves for this fold.
@@ -191,7 +193,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
         # Plot IoU vs Epochs
         epochs_range = range(1, len(val_losses) + 1)
         plt.figure(figsize=(8, 5))
-        plt.plot(epochs_range, fold_metrics[-1]['iou_scores'], label='Mean IoU', color='green')
+        plt.plot(epochs_range, epoch_iou_scores, label='Mean IoU', color='green')
         plt.title(f"Fold {fold+1} IoU Curve")
         plt.xlabel('Epoch')
         plt.ylabel('IoU Score')
