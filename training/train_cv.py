@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 
 # Add the project root (one directory up) to Python's module search path.
 project_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
@@ -18,7 +19,7 @@ from dataset import NKCellDataset
 from models.unet import create_unet
 from segmentation_models_pytorch.losses import DiceLoss
 
-def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5):
+def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5, figure_prefix=""):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     # Define transformation pipelines for training and validation.
@@ -187,7 +188,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
         plt.ylabel('Loss')
         plt.legend()
         plt.grid(True)
-        plt.savefig(f"loss_curve_fold{fold+1}.png")
+        plt.savefig(figure_prefix+f"loss_curve_fold{fold+1}.png")
         plt.close()
 
         # Plot IoU vs Epochs
@@ -199,7 +200,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
         plt.ylabel('IoU Score')
         plt.legend()
         plt.grid(True)
-        plt.savefig(f"iou_curve_fold{fold+1}.png")
+        plt.savefig(figure_prefix+f"iou_curve_fold{fold+1}.png")
         plt.close()
         
         print(f"Fold {fold+1} completed with best validation loss: {best_val_loss:.4f}\n")
@@ -210,4 +211,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5)
         print(f"  Fold {metrics['fold']}: Best Validation Loss = {metrics['best_val_loss']:.4f}," f"Best IoU = {metrics['best_iou']:.4f}")
 
 if __name__ == '__main__':
-    run_cross_validation(num_epochs=60, batch_size=16, patience=5, n_splits=5)
+    current_time = datetime.now().strftime("%m-%d/%H-%M") # Month-Day Hour-Minute
+    os.makedirs(current_time) # Create directories to avoid errors
+    run_cross_validation(num_epochs=60, batch_size=16, patience=5, n_splits=5, figure_prefix=current_time+"/")
+
