@@ -6,11 +6,26 @@ from torch.utils.data import Dataset
 import torch
 from typing import Tuple
 
+class JointTransform:
+    def __init__(self, base_transform):
+        self.base_transform = base_transform
+
+    def __call__(self, img, mask):
+        seed = torch.seed()
+        torch.manual_seed(seed)
+        img = self.base_transform(img)
+
+        torch.manual_seed(seed)
+        mask = self.base_transform(mask)
+
+        return img, mask
+
 class NKCellDataset(Dataset):
     def __init__(self, dataset_dir="dataset", transform=None, metadata_filter=None):
         self.dataset_dir = dataset_dir
         self._dataset_tar_path = "dataset.tar"
         self.transform = transform
+        self.is_joint_transform = isinstance(transform, JointTransform)
 
         # Paths
         self.labeled_fluorescent_img = os.path.join(dataset_dir, 'fluorescent', 'with_masks', 'images')
@@ -60,15 +75,18 @@ class NKCellDataset(Dataset):
         mask_path = self.mask_paths[idx]
         
         image = Image.open(img_path).convert('RGB')
-        if self.transform:
-            image = self.transform(image)
-        
         if mask_path:  # Labeled
             mask = Image.open(mask_path).convert('L')
             if self.transform:
-                mask = self.transform(mask)
+                if self.is_joint_transform:
+                    image, mask = self.transform(image, mask)
+                else:
+                    image = self.transform(image)
+                    mask = self.transform(mask)
             return image, mask, 1  # 1 indicates labeled
         else:  # Unlabeled
+            if self.transform:
+                image = self.transform(image)
             return image, torch.zeros_like(image[0:1]), 0  # Dummy mask, 0 indicates unlabeled
 
     def _compute_md5(self, file_path) -> str:
