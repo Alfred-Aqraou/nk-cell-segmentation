@@ -15,7 +15,7 @@ import numpy as np
 import tqdm
 from sklearn.model_selection import KFold
 
-from dataset import NKCellDataset
+from dataset import NKCellDataset, JointTransform
 from models.unet import create_unet
 from segmentation_models_pytorch.losses import DiceLoss
 import torch.nn as nn
@@ -30,15 +30,16 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     # Define transformation pipelines for training and validation.
-    train_transform = T.Compose([
+    train_base_transform = T.Compose([
     T.RandomCrop((256, 256)),
     T.RandomHorizontalFlip(p=0.5),
     T.RandomVerticalFlip(p=0.5),
     T.RandomRotation(degrees=30),
     T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
-    T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
+    #T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
     T.ToTensor(),
 ])
+    train_transform = JointTransform(train_base_transform)
 
     val_transform = T.Compose([
         T.CenterCrop((256, 256)),
@@ -82,20 +83,20 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         
         # Create a new model instance for this fold.
         model = create_unet(
-            encoder_name="resnet34", 
+            encoder_name="resnet50", 
             encoder_weights="imagenet", 
             in_channels=3, 
             classes=1, 
-            freeze_encoder=False
+            freeze_encoder=True
         )
         model.to(device)
 
                 # Freeze selected encoder layers (conv1, bn1, layer1)
-        for name, param in model.encoder.named_parameters():
-            if name.startswith("conv1") or name.startswith("bn1") or name.startswith("layer1") or name.startswith("layer2"):
-                param.requires_grad = False
-            else:
-                param.requires_grad = True
+        #for name, param in model.encoder.named_parameters():
+            #if name.startswith("conv1") or name.startswith("bn1") or name.startswith("layer1") or name.startswith("layer2"):
+                #param.requires_grad = False
+            #else:
+                #param.requires_grad = True
 
         # Check if encoder parameters are frozen or not
         frozen_params = [name for name, param in model.encoder.named_parameters() if not param.requires_grad]
@@ -227,4 +228,4 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
 if __name__ == '__main__':
     current_time = datetime.now().strftime("%m-%d/%H-%M") # Month-Day Hour-Minute
     os.makedirs(current_time) # Create directories to avoid errors
-    run_cross_validation(num_epochs=60, batch_size=8, patience=5, n_splits=5, figure_prefix=current_time+"/")
+    run_cross_validation(num_epochs=60, batch_size=16, patience=5, n_splits=5, figure_prefix=current_time+"/")
