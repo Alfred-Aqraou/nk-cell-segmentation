@@ -65,6 +65,17 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
     # Set up KFold cross-validation.
     kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
     fold_metrics = []  # to save the best validation loss from each fold.
+
+    # Create IoU fold plot
+    iou_fig = plt.figure(figsize=(8, 5))
+    iou_ax = iou_fig.add_subplot(autoscale_on=True)
+    # iou_ax.set_aspect('equal')
+    iou_ax.grid(True)
+
+    iou_ax.set_title(f'IoU Curve over Folds')
+    iou_ax.set_xlabel('Epoch')
+    iou_ax.set_ylabel('IoU Score')
+    iou_colors = ['red', 'gold', 'forestgreen', 'royalblue', 'darkviolet']
     
     # Begin cross-validation.
     for fold, (train_idx, val_idx) in enumerate(kf.split(labeled_indices)):
@@ -84,7 +95,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         
         # Create a new model instance for this fold.
         model = create_unet(
-            encoder_name="resnet34", 
+            encoder_name="efficientnet-b0", 
             encoder_weights="imagenet", 
             in_channels=3, 
             classes=1, 
@@ -204,8 +215,31 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         plt.grid(True)
         plt.savefig(figure_prefix+f"iou_curve_fold{fold+1}.png")
         plt.close()
+
+        # Update IoU fold vs epochs plot
+        # Pad with np.nan if early stopping occurred
+        if len(epoch_iou_scores) < num_epochs:
+            padded_iou_scores = np.pad(
+                epoch_iou_scores,
+                (0, num_epochs - len(epoch_iou_scores)),
+                mode='constant',
+                constant_values=np.nan
+            )
+        else:
+            padded_iou_scores = epoch_iou_scores
+
+        iou_ax.plot(
+            np.arange(1, num_epochs+1), 
+            padded_iou_scores, 
+            label=f'Fold {fold+1}', 
+            # color=iou_colors[fold % len(iou_colors)]
+            )
         
         print(f"Fold {fold+1} completed with best validation loss: {best_val_loss:.4f}\n")
+    
+    iou_ax.legend()
+    iou_fig.savefig(figure_prefix+f"iou_curve_folds.png")
+    plt.close(iou_fig)
     
     # Summary of cross-validation.
     print("Cross-validation complete. Summary of best validation losses per fold:")
