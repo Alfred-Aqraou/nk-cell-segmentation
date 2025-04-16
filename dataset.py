@@ -15,7 +15,11 @@ class NKCellDataset(Dataset):
         # Paths
         self.labeled_fluorescent_img = os.path.join(dataset_dir, 'fluorescent', 'with_masks', 'images')
         self.labeled_fluorescent_mask = os.path.join(dataset_dir, 'fluorescent', 'with_masks', 'masks')
-        self.unlabeled_fluorescent = os.path.join(dataset_dir, 'fluorescent', 'without_masks')
+        # self.unlabeled_fluorescent = os.path.join(dataset_dir, 'fluorescent', 'without_masks')
+
+        self.labeled_broadband_img = os.path.join(dataset_dir, 'broadband', 'with_masks', 'images')
+        self.labeled_broadband_mask = os.path.join(dataset_dir, 'broadband', 'with_masks', 'masks')
+        # self.unlabeled_broadband = os.path.join(dataset_dir, 'broadband', 'without_masks')
 
         # Metadata (optional filtering, e.g., t>28h)
         metadata_path = os.path.join(dataset_dir, 'metadata.csv')
@@ -38,13 +42,13 @@ class NKCellDataset(Dataset):
                     self.is_labeled.append(True)
         
         # Unlabeled (without masks)
-        if os.path.exists(self.unlabeled_fluorescent):
-            for img_name in os.listdir(self.unlabeled_fluorescent):
-                if img_name.endswith('.tif'):
-                    img_path = os.path.join(self.unlabeled_fluorescent, img_name)
-                    self.image_paths.append(img_path)
-                    self.mask_paths.append(None)
-                    self.is_labeled.append(False)
+        # if os.path.exists(self.unlabeled_fluorescent):
+        #     for img_name in os.listdir(self.unlabeled_fluorescent):
+        #         if img_name.endswith('.tif'):
+        #             img_path = os.path.join(self.unlabeled_fluorescent, img_name)
+        #             self.image_paths.append(img_path)
+        #             self.mask_paths.append(None)
+        #             self.is_labeled.append(False)
 
     def __len__(self) -> int:
         return len(self.image_paths)
