@@ -228,4 +228,4 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
 if __name__ == '__main__':
     current_time = datetime.now().strftime("%m-%d/%H-%M") # Month-Day Hour-Minute
     os.makedirs(current_time) # Create directories to avoid errors
-    run_cross_validation(num_epochs=60, batch_size=16, patience=5, n_splits=5, figure_prefix=current_time+"/")
+    run_cross_validation(num_epochs=100, batch_size=16, patience=5, n_splits=5, figure_prefix=current_time+"/")
