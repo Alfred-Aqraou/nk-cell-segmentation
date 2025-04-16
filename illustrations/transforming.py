@@ -9,18 +9,18 @@ from matplotlib.axes import Axes
 
 # Define the transform
 transform = T.Compose([
-    T.CenterCrop((960, 960)),
-    T.RandomHorizontalFlip(p=0.5),
-    T.RandomVerticalFlip(p=0.5),
-    T.RandomRotation(degrees=30),
-    T.ColorJitter(
-        brightness=0.2,
-        contrast=0.2,
-        saturation=0.2,
-        hue=0.1
-    ),
-    T.ToTensor()  # Converts to (C, H, W)
-])
+        T.RandomHorizontalFlip(p=0.5),
+        T.RandomVerticalFlip(p=0.5),
+        T.RandomRotation(degrees=30),
+        T.RandomCrop((256, 256)),
+        T.ColorJitter(
+            brightness=0.2,
+            contrast=0.2,
+            saturation=0.2,
+            hue=0.1
+        ),
+        T.ToTensor(),
+    ])
 
 # Directory containing images
 image_dir = "dataset/fluorescent/with_masks/images"
@@ -44,7 +44,7 @@ for idx, img_name in enumerate(selected_images):
     img_to_plot = transformed_img.permute(1, 2, 0).numpy()
     
     # Plot
-    axes[idx].imshow(img_to_plot)
+    axes[idx].imshow(img_to_plot, cmap='gray')
     axes[idx].axis('off')
     axes[idx].set_title(img_name, fontsize=10)  # Shorten filename for title
 
