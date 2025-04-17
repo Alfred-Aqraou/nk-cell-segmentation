@@ -24,4 +24,4 @@ module load cuda/12.6
 # /appl/cuda/12.4.1/samples/bin/x86_64/linux/release/deviceQuery
 source /work3/s234843/bin/miniconda3/bin/activate
 conda activate 02466_cuda
-python ~/training/two_fold_cv.py
+python ~/02466-Project/training/two_fold_cv.py
