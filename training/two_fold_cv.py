@@ -32,7 +32,7 @@ def get_loss_function(loss_type):
     else:
         return combined_loss
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, num_epochs=50, patience=5, figure_prefix=""):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, num_epochs=50, patience=20, figure_prefix=""):
     train_transforms = T.Compose([
         T.RandomCrop((256, 256)),
         T.RandomHorizontalFlip(),
@@ -105,12 +105,13 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
             patience_counter = 0
-        elif avg_val_loss < best_val_loss + 0.015:
+        elif avg_val_loss <= best_val_loss * 1.01:
             patience_counter = 0
         else:
             patience_counter += 1
 
         if patience_counter >= patience:
+            print("Early stopping triggered.")
             break
 
     return best_val_loss
