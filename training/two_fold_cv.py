@@ -49,7 +49,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         T.ToTensor(),
     ])
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    dataset_dir = "/work3/s234843/02466-Project/dataset"
+    global dataset_dir
     full_train = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(train_transforms))
     full_val = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(val_transforms))
 
@@ -120,6 +120,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     return best_val_loss
 
 def outer_cross_validation():
+    global dataset_dir
     batch_sizes = [8, 16, 32]
     loss_types = ['dice', 'bce', 'combined']
     encoders = ['resnet34', 'resnet50']
@@ -129,7 +130,7 @@ def outer_cross_validation():
     outer_n_splits = 3
 
     results = []
-    dataset = NKCellDataset(dataset_dir="dataset", transform=None)
+    dataset = NKCellDataset(dataset_dir=dataset_dir, transform=None)
     labeled_indices = [
         i for i, mask_path in enumerate(dataset.mask_paths)
         if mask_path is not None and os.path.exists(mask_path)
@@ -187,4 +188,9 @@ def outer_cross_validation():
     plt.close()
 
 if __name__ == "__main__":
+    global dataset_dir
+    dataset_dir = "/work3/s234843/02466-Project/dataset"
+    if not os.path.exists(dataset_dir):
+        dataset_dir = "dataset"
+
     outer_cross_validation()
