@@ -1,4 +1,7 @@
 import os
+import sys
+project_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+sys.path.append(project_root)
 import csv
 import torch
 import tqdm
@@ -45,7 +48,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         T.CenterCrop((256, 256)),
         T.ToTensor(),
     ])
-
+    current_dir = os.path.dirname(os.path.abspath(__file__))
     dataset_dir = "/work3/s234843/02466-Project/dataset"
     full_train = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(train_transforms))
     full_val = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(val_transforms))
