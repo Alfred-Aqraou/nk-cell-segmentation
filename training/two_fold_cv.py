@@ -46,7 +46,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         T.ToTensor(),
     ])
 
-    dataset_dir = "dataset"
+    dataset_dir = "/work3/s234843/02466-Project/dataset"
     full_train = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(train_transforms))
     full_val = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(val_transforms))
 
