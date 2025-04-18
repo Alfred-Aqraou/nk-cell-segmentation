@@ -35,6 +35,12 @@ def get_loss_function(loss_type):
     else:
         return combined_loss
 
+def compute_iou(pred, target):
+    pred = (pred > 0).float()
+    intersection = (pred * target).sum()
+    union = pred.sum() + target.sum() - intersection
+    return (intersection / union).item() if union > 0 else 0.0
+
 def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, num_epochs=50, patience=20, figure_prefix=""):
     train_transforms = T.Compose([
         T.RandomCrop((256, 256)),
@@ -95,6 +101,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
         model.eval()
         val_loss = 0.0
+        val_iou = 0.0
         with torch.no_grad():
             for images, masks, label_flags in val_loader:
                 images, masks = images.to(device), masks.to(device)
@@ -103,8 +110,10 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
                 if len(labeled_idx) > 0:
                     loss = loss_fn(outputs[labeled_idx], masks[labeled_idx])
                     val_loss += loss.item() * len(labeled_idx)
+                    val_iou += compute_iou(outputs[labeled_idx], masks[labeled_idx]) * len(labeled_idx)
 
         avg_val_loss = val_loss / len(val_indices)
+        avg_val_iou = val_iou / len(val_indices)
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
             patience_counter = 0
@@ -117,16 +126,16 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             print("Early stopping triggered.")
             break
 
-    return best_val_loss
+    return avg_val_loss, avg_val_iou
 
 def outer_cross_validation():
     global dataset_dir
-    batch_sizes = [8, 16, 32]
-    loss_types = ['dice', 'bce', 'combined']
-    encoders = ['resnet34', 'resnet50']
+    batch_sizes = [8,16,32]
+    loss_types = ['combined']
+    encoders = ['resnet50']
     freeze_opts = [True, False]
-    optimizers = ['adam', 'sgd']
-    learning_rates = [1e-4, 5e-4, 1e-3]
+    optimizers = ['adam']
+    learning_rates = [5e-4, 1e-3]
     outer_n_splits = 3
 
     results = []
@@ -141,21 +150,24 @@ def outer_cross_validation():
         batch_size, loss_type, encoder, freeze_encoder, opt_type, lr = combo
         print(f"\n Config: BS={batch_size}, Loss={loss_type}, Encoder={encoder}, Freeze={freeze_encoder}, Optimizer={opt_type}, LR={lr}")
         val_losses = []
+        val_ious = []
 
         for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
             train_indices = np.array(labeled_indices)[train_idx].tolist()
             val_indices = np.array(labeled_indices)[val_idx].tolist()
 
-            val_loss = train_and_evaluate(
+            val_loss, val_iou = train_and_evaluate(
                 train_indices, val_indices,
                 batch_size, encoder, freeze_encoder,
                 opt_type, loss_type, fold, lr,
                 figure_prefix=f"results_{fold}_{batch_size}_{loss_type}_{encoder}/"
             )
             val_losses.append(val_loss)
+            val_ious.append(val_iou)
 
         mean_loss = np.mean(val_losses)
-        print(f"Mean Val Loss: {mean_loss:.4f}")
+        mean_iou = np.mean(val_ious)
+        print(f"Mean Val Loss: {mean_loss:.4f}, Mean Val IoU: {mean_iou:.4f}")
 
         results.append({
             "batch_size": batch_size,
@@ -164,7 +176,8 @@ def outer_cross_validation():
             "freeze_encoder": freeze_encoder,
             "optimizer": opt_type,
             "lr": lr,
-            "mean_val_loss": mean_loss
+            "mean_val_loss": mean_loss,
+            "mean_val_iou": mean_iou
         })
 
     # Save results to CSV
