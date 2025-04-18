@@ -1,0 +1,10 @@
+Loaded module: cuda/12.6
+Traceback (most recent call last):
+  File "/zhome/b6/5/204798/02466-Project/training/two_fold_cv.py", line 190, in <module>
+    outer_cross_validation()
+  File "/zhome/b6/5/204798/02466-Project/training/two_fold_cv.py", line 144, in outer_cross_validation
+    for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/sklearn/model_selection/_split.py", line 404, in split
+    raise ValueError(
+ValueError: Cannot have number of splits n_splits=3 greater than the number of samples: n_samples=0.
