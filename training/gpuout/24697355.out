@@ -1,0 +1,144 @@
+Thu Apr 17 12:09:42 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.124.06             Driver Version: 570.124.06     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla V100-PCIE-16GB           On  |   00000000:37:00.0 Off |                    0 |
+| N/A   38C    P0             26W /  250W |       1MiB /  16384MiB |      0%   E. Process |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Optimizer=adam, LR=0.0001
+Mean Val Loss: 0.1496
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Optimizer=adam, LR=0.0005
+Mean Val Loss: 0.1104
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Optimizer=adam, LR=0.001
+Mean Val Loss: 0.0999
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Optimizer=sgd, LR=0.0001
+Early stopping triggered.
+Mean Val Loss: 0.4453
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Optimizer=sgd, LR=0.0005
+Mean Val Loss: 0.3439
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Optimizer=sgd, LR=0.001
+Mean Val Loss: 0.3398
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Optimizer=adam, LR=0.0001
+Mean Val Loss: 0.1405
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Optimizer=adam, LR=0.0005
+Mean Val Loss: 0.1003
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Optimizer=adam, LR=0.001
+Early stopping triggered.
+Mean Val Loss: 0.0992
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Optimizer=sgd, LR=0.0001
+Mean Val Loss: 0.4220
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Optimizer=sgd, LR=0.0005
+Mean Val Loss: 0.3469
+
+ Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Optimizer=sgd, LR=0.001
+Mean Val Loss: 0.2880
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Optimizer=adam, LR=0.0001
+Mean Val Loss: 0.1495
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Optimizer=adam, LR=0.0005
+Mean Val Loss: 0.1021
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Optimizer=adam, LR=0.001
+Mean Val Loss: 0.0984
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Optimizer=sgd, LR=0.0001
+Early stopping triggered.
+Mean Val Loss: 0.4663
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Optimizer=sgd, LR=0.0005
+Mean Val Loss: 0.3554
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Optimizer=sgd, LR=0.001
+Mean Val Loss: 0.3184
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Optimizer=adam, LR=0.0001
+Mean Val Loss: 0.1413
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Optimizer=adam, LR=0.0005
+Mean Val Loss: 0.1005
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Optimizer=adam, LR=0.001
+Early stopping triggered.
+Mean Val Loss: 0.0942
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Optimizer=sgd, LR=0.0001
+Early stopping triggered.
+Mean Val Loss: 0.4358
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Optimizer=sgd, LR=0.0005
+Mean Val Loss: 0.3476
+
+ Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Optimizer=sgd, LR=0.001
+Mean Val Loss: 0.3089
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=True, Optimizer=adam, LR=0.0001
+Mean Val Loss: 0.2583
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=True, Optimizer=adam, LR=0.0005
+Mean Val Loss: 0.2090
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=True, Optimizer=adam, LR=0.001
+Mean Val Loss: 0.2069
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=True, Optimizer=sgd, LR=0.0001
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Mean Val Loss: 0.6948
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=True, Optimizer=sgd, LR=0.0005
+Mean Val Loss: 0.5449
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=True, Optimizer=sgd, LR=0.001
+Mean Val Loss: 0.4372
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=False, Optimizer=adam, LR=0.0001
+Mean Val Loss: 0.2239
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=False, Optimizer=adam, LR=0.0005
+Mean Val Loss: 0.2048
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=False, Optimizer=adam, LR=0.001
+Mean Val Loss: 0.2039
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=False, Optimizer=sgd, LR=0.0001
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Mean Val Loss: 0.6974
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=False, Optimizer=sgd, LR=0.0005
+Mean Val Loss: 0.5361
+
+ Config: BS=8, Loss=bce, Encoder=resnet34, Freeze=False, Optimizer=sgd, LR=0.001
+Mean Val Loss: 0.4283
+
+ Config: BS=8, Loss=bce, Encoder=resnet50, Freeze=True, Optimizer=adam, LR=0.0001
+Mean Val Loss: 0.2413
+
+ Config: BS=8, Loss=bce, Encoder=resnet50, Freeze=True, Optimizer=adam, LR=0.0005
