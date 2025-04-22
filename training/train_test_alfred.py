@@ -87,22 +87,22 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
             encoder_weights="imagenet", 
             in_channels=3, 
             classes=1, 
-            freeze_encoder=True
+            freeze_encoder=False
         )
         model.to(device)
 
                 # Freeze selected encoder layers (conv1, bn1, layer1)
-        #for name, param in model.encoder.named_parameters():
-            #if name.startswith("conv1") or name.startswith("bn1") or name.startswith("layer1") or name.startswith("layer2"):
-                #param.requires_grad = False
-            #else:
-                #param.requires_grad = True
+        for name, param in model.encoder.named_parameters():
+            if name.startswith("conv1") or name.startswith("bn1") or name.startswith("layer1") or name.startswith("layer2"):
+                param.requires_grad = False
+            else:
+                param.requires_grad = True
 
         # Check if encoder parameters are frozen or not
         frozen_params = [name for name, param in model.encoder.named_parameters() if not param.requires_grad]
         print(f"Fold {fold+1}: Frozen encoder parameters count: {len(frozen_params)} / {len(list(model.encoder.parameters()))}")
         print(f"Using pretrained weights: {any('encoder' in key and '0.weight' in key for key in model.state_dict().keys())}")
-        optimizer = optim.Adam(model.parameters(), lr=1e-4)
+        optimizer = optim.Adam(model.parameters(), lr=0.001)
         
         best_val_loss = float('inf')
         patience_counter = 0
@@ -125,7 +125,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
                 if len(labeled_batch_idx) > 0:
                     labeled_outputs = outputs[labeled_batch_idx]
                     labeled_masks = masks[labeled_batch_idx]
-                    loss = combined_loss(labeled_outputs, labeled_masks)
+                    loss = dice_loss(labeled_outputs, labeled_masks)#combined_loss(labeled_outputs, labeled_masks)
                     
                     optimizer.zero_grad()
                     loss.backward()
@@ -228,4 +228,4 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
 if __name__ == '__main__':
     current_time = datetime.now().strftime("%m-%d/%H-%M") # Month-Day Hour-Minute
     os.makedirs(current_time) # Create directories to avoid errors
-    run_cross_validation(num_epochs=100, batch_size=16, patience=5, n_splits=5, figure_prefix=current_time+"/")
+    run_cross_validation(num_epochs=100, batch_size=8, patience=10, n_splits=5, figure_prefix=current_time+"/")

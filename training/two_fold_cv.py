@@ -130,12 +130,12 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
 def outer_cross_validation():
     global dataset_dir
-    batch_sizes = [8,16,32]
-    loss_types = ['combined']
+    batch_sizes = [8,16]
+    loss_types = ['dice','bce','combined']
     encoders = ['resnet50']
     freeze_opts = [True, False]
     optimizers = ['adam']
-    learning_rates = [5e-4, 1e-3]
+    learning_rates = [5e-4,1e-3, 5e-3]
     outer_n_splits = 3
 
     results = []
@@ -188,7 +188,7 @@ def outer_cross_validation():
 
     # Plot top 10 configurations
     top_results = sorted(results, key=lambda r: r["mean_val_loss"])[:10]
-    labels = [f'{r["batch_size"]}-{r["loss_type"]}-{r["encoder"]}-{"F" if r["freeze_encoder"] else "UF"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
+    labels = [f'{r["batch_size"]}-{r["loss_type"]}-{r["encoder"]}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
     losses = [r["mean_val_loss"] for r in top_results]
 
     plt.figure(figsize=(12, 6))
