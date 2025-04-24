@@ -13,19 +13,15 @@ from torch.utils.data import DataLoader, Subset
 from torchvision import transforms as T
 from itertools import product
 from sklearn.model_selection import KFold
+from collections import defaultdict
+from datetime import datetime
 
 from dataset import NKCellDataset, JointTransform
 from models.unet import create_unet
 from segmentation_models_pytorch.losses import DiceLoss
 
-from datetime import datetime
-
-# Setup device (for M1/M2 chips with MPS support)
+# Setup device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
-print("Running with:", device)
-
-if str(device) == 'cuda':
-    set_start_method('spawn') # CUDA parallel
 
 # Loss functions
 dice_loss = DiceLoss(mode='binary', from_logits=True)
@@ -91,6 +87,8 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     best_val_loss = float('inf')
     patience_counter = 0
 
+
+
     for epoch in tqdm.tqdm(range(num_epochs), desc=f"Fold {fold+1} Training"):
         model.train()
         train_loss = 0.0
@@ -141,7 +139,17 @@ def run_single_fold(args):
         batch_size, encoder, freeze_encoder,
         opt_type, loss_type, fold, lr, dataset_dir
     )
-    return val_loss, val_iou
+    return {
+        "batch_size": batch_size,
+        "loss_type": loss_type,
+        "encoder": encoder,
+        "freeze_encoder": freeze_encoder,
+        "optimizer": opt_type,
+        "lr": lr,
+        "fold": fold,
+        "val_loss": val_loss,
+        "val_iou": val_iou
+    }
 
 def outer_cross_validation(figure_prefix=""):
     global dataset_dir
@@ -152,8 +160,8 @@ def outer_cross_validation(figure_prefix=""):
     optimizers = ['adam']
     learning_rates = [1e-4, 5e-4, 1e-3]
     outer_n_splits = 3
+    num_workers = 16  # Adjust based on system resources
 
-    results = []
     dataset = NKCellDataset(dataset_dir=dataset_dir, transform=None)
     labeled_indices = [
         i for i, mask_path in enumerate(dataset.mask_paths)
@@ -161,51 +169,59 @@ def outer_cross_validation(figure_prefix=""):
     ]
     outer_kf = KFold(n_splits=outer_n_splits, shuffle=True, random_state=42)
 
+    all_tasks = []
     for combo in product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates):
         batch_size, loss_type, encoder, freeze_encoder, opt_type, lr = combo
-        print(f"\n Config: BS={batch_size}, Loss={loss_type}, Encoder={encoder}, Freeze={freeze_encoder}, Optimizer={opt_type}, LR={lr}")
-
-        fold_args = []
         for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
             train_indices = np.array(labeled_indices)[train_idx].tolist()
             val_indices = np.array(labeled_indices)[val_idx].tolist()
-            fold_args.append((batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, fold, train_indices, val_indices, dataset_dir))
+            task = (batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, fold, train_indices, val_indices, dataset_dir)
+            all_tasks.append(task)
 
-        with Pool(processes=min(outer_n_splits, os.cpu_count())) as pool:
-            fold_results = pool.map(run_single_fold, fold_args)
+    with Pool(processes=num_workers) as pool:
+        all_results = pool.map(run_single_fold, all_tasks)
 
+    # Process results
+    combo_results = defaultdict(list)
+    for result in all_results:
+        combo_key = (result["batch_size"], result["loss_type"], result["encoder"], result["freeze_encoder"], result["optimizer"], result["lr"])
+        combo_results[combo_key].append((result["val_loss"], result["val_iou"]))
+
+    final_results = []
+    for combo_key, fold_results in combo_results.items():
         val_losses, val_ious = zip(*fold_results)
-        mean_loss = np.mean(val_losses)
-        mean_iou = np.mean(val_ious)
-        print(f"Mean Val Loss: {mean_loss:.4f}, Mean Val IoU: {mean_iou:.4f}")
-
-        results.append({
-            "batch_size": batch_size,
-            "loss_type": loss_type,
-            "encoder": encoder,
-            "freeze_encoder": freeze_encoder,
-            "optimizer": opt_type,
-            "lr": lr,
-            "mean_val_loss": mean_loss,
-            "mean_val_iou": mean_iou
+        mean_val_loss = np.mean(val_losses)
+        mean_val_iou = np.mean(val_ious)
+        final_results.append({
+            "batch_size": combo_key[0],
+            "loss_type": combo_key[1],
+            "encoder": combo_key[2],
+            "freeze_encoder": combo_key[3],
+            "optimizer": combo_key[4],
+            "lr": combo_key[5],
+            "mean_val_loss": mean_val_loss,
+            "mean_val_iou": mean_val_iou
         })
+        print(f"Config: BS={combo_key[0]}, Loss={combo_key[1]}, Encoder={combo_key[2]}, Freeze={combo_key[3]}, Opt={combo_key[4]}, LR={combo_key[5]}")
+        print(f"Mean Val Loss: {mean_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f}")
 
-    with open(figure_prefix+"results.csv", "w", newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=results[0].keys())
+    # Save results to CSV
+    with open(figure_prefix + "results.csv", "w", newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=final_results[0].keys())
         writer.writeheader()
-        writer.writerows(results)
+        writer.writerows(final_results)
 
-    top_results = sorted(results, key=lambda r: r["mean_val_loss"])[:10]
+    # Plot top 10 configurations
+    top_results = sorted(final_results, key=lambda r: r["mean_val_loss"])[:10]
     labels = [f'{r["batch_size"]}-{r["loss_type"]}-{r["encoder"]}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
     losses = [r["mean_val_loss"] for r in top_results]
-
     plt.figure(figsize=(12, 6))
     plt.barh(labels, losses, color="skyblue")
     plt.xlabel("Mean Validation Loss")
     plt.title("Top 10 Hyperparameter Configurations")
     plt.gca().invert_yaxis()
     plt.tight_layout()
-    plt.savefig(figure_prefix+"top_10_configs.png")
+    plt.savefig(figure_prefix + "top_10_configs.png")
     plt.close()
 
 if __name__ == "__main__":
