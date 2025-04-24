@@ -1,6 +1,6 @@
 import os
 import sys
-from multiprocessing import Pool
+from multiprocessing import Pool, set_start_method
 project_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 sys.path.append(project_root)
 import csv
@@ -23,6 +23,9 @@ from datetime import datetime
 # Setup device (for M1/M2 chips with MPS support)
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
 print("Running with:", device)
+
+if str(device) == 'cuda':
+    set_start_method('spawn') # CUDA parallel
 
 # Loss functions
 dice_loss = DiceLoss(mode='binary', from_logits=True)
