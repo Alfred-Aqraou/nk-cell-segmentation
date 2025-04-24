@@ -101,10 +101,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
     
     # Construct dataset_dir relative to this file.
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    # dataset_dir = os.path.join(current_dir, "..", "dataset")
-    dataset_dir = "/work3/s234843/02466-Project/dataset"  # Set HPC dataset location
-    if not os.path.exists(dataset_dir):
-        dataset_dir = "dataset"
+    dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
     
     # Create two dataset instances:
     #  - full_dataset_train uses train_transform for augmentation.

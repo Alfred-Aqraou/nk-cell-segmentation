@@ -18,6 +18,8 @@ from dataset import NKCellDataset, JointTransform
 from models.unet import create_unet
 from segmentation_models_pytorch.losses import DiceLoss
 
+from datetime import datetime
+
 # Setup device (for M1/M2 chips with MPS support)
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
 print("Running with:", device)
@@ -43,7 +45,7 @@ def compute_iou(pred, target):
     union = pred.sum() + target.sum() - intersection
     return (intersection / union).item() if union > 0 else 0.0
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, dataset_dir, num_epochs=50, patience=20, figure_prefix=""):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, dataset_dir, num_epochs=50, patience=20):
     train_transforms = T.Compose([
         T.RandomCrop((256, 256)),
         T.RandomHorizontalFlip(),
@@ -134,12 +136,11 @@ def run_single_fold(args):
     val_loss, val_iou = train_and_evaluate(
         train_idx, val_idx,
         batch_size, encoder, freeze_encoder,
-        opt_type, loss_type, fold, lr, dataset_dir,
-        figure_prefix=f"results_{fold}_{batch_size}_{loss_type}_{encoder}/"
+        opt_type, loss_type, fold, lr, dataset_dir
     )
     return val_loss, val_iou
 
-def outer_cross_validation():
+def outer_cross_validation(figure_prefix=""):
     global dataset_dir
     batch_sizes = [8, 16, 32]
     loss_types = ['dice', 'combined']
@@ -186,7 +187,7 @@ def outer_cross_validation():
             "mean_val_iou": mean_iou
         })
 
-    with open("results.csv", "w", newline='') as f:
+    with open(figure_prefix+"results.csv", "w", newline='') as f:
         writer = csv.DictWriter(f, fieldnames=results[0].keys())
         writer.writeheader()
         writer.writerows(results)
@@ -201,13 +202,17 @@ def outer_cross_validation():
     plt.title("Top 10 Hyperparameter Configurations")
     plt.gca().invert_yaxis()
     plt.tight_layout()
-    plt.savefig("top_10_configs.png")
+    plt.savefig(figure_prefix+"top_10_configs.png")
     plt.close()
 
 if __name__ == "__main__":
     global dataset_dir
-    dataset_dir = "dataset"
-    if not os.path.exists(dataset_dir):
-        dataset_dir = "dataset"
+    dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
-    outer_cross_validation()
+    current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
+    try:
+        os.makedirs(current_time)  # Create directory to store files
+    except FileExistsError:
+        pass
+
+    outer_cross_validation(figure_prefix=current_time+"/")
