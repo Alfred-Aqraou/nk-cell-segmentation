@@ -20,6 +20,7 @@ from segmentation_models_pytorch.losses import DiceLoss
 
 # Setup device (for M1/M2 chips with MPS support)
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+print("Running with:", device)
 
 # Loss functions
 dice_loss = DiceLoss(mode='binary', from_logits=True)
