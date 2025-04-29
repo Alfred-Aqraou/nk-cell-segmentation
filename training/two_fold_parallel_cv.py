@@ -44,7 +44,7 @@ def compute_iou(pred, target):
     union = pred.sum() + target.sum() - intersection
     return (intersection / union).item() if union > 0 else 0.0
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, dataset_dir, num_epochs=50, patience=20):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, dataset_dir, num_epochs=100, patience=10):
     train_transforms = T.Compose([
         T.RandomCrop((256, 256)),
         T.RandomHorizontalFlip(),
@@ -161,6 +161,7 @@ def outer_cross_validation(figure_prefix=""):
     learning_rates = [1e-4, 5e-4, 1e-3]
     outer_n_splits = 3
     num_workers = 16  # Adjust based on system resources
+    
 
     dataset = NKCellDataset(dataset_dir=dataset_dir, transform=None)
     labeled_indices = [
