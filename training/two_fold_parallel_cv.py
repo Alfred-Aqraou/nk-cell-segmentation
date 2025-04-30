@@ -234,6 +234,8 @@ def outer_cross_validation(figure_prefix=""):
     print("Finished plotting")
 
 if __name__ == "__main__":
+    set_start_method('spawn', force=True)
+
     global dataset_dir
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
