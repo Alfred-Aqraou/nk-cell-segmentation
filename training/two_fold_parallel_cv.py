@@ -44,11 +44,11 @@ def compute_iou(pred, target):
     union = pred.sum() + target.sum() - intersection
     return (intersection / union).item() if union > 0 else 0.0
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, dataset_dir, num_epochs=50, patience=20):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, dataset_dir, num_epochs=100, patience=10):
     train_transforms = T.Compose([
         T.RandomCrop((256, 256)),
         T.RandomHorizontalFlip(),
-        T.RandomVerticalFlip(),
+        T.RandomVerticalopt_typeFlip(),
         T.RandomRotation(degrees=30),
         T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
         T.ToTensor(),
@@ -160,6 +160,7 @@ def outer_cross_validation(figure_prefix=""):
     optimizers = ['adam']
     learning_rates = [1e-4, 5e-4, 1e-3]
     outer_n_splits = 3
+
     num_workers = 16  # Adjust based on system resources
 
     dataset = NKCellDataset(dataset_dir=dataset_dir, transform=None)
@@ -206,12 +207,19 @@ def outer_cross_validation(figure_prefix=""):
         print(f"Mean Val Loss: {mean_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f}")
 
     # Save results to CSV
-    with open(figure_prefix + "results.csv", "w", newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=final_results[0].keys())
-        writer.writeheader()
-        writer.writerows(final_results)
+    print("Writing results.csv")
+    try:
+        with open(figure_prefix + "results.csv", "w", newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=final_results[0].keys())
+            writer.writeheader()
+            writer.writerows(final_results)
+    except:
+        print("Couldn't write results.csv")
+    else:
+        print("Finished writing results.csv")
 
     # Plot top 10 configurations
+    print("Plotting top 10 configs")
     top_results = sorted(final_results, key=lambda r: r["mean_val_loss"])[:10]
     labels = [f'{r["batch_size"]}-{r["loss_type"]}-{r["encoder"]}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
     losses = [r["mean_val_loss"] for r in top_results]
@@ -223,6 +231,7 @@ def outer_cross_validation(figure_prefix=""):
     plt.tight_layout()
     plt.savefig(figure_prefix + "top_10_configs.png")
     plt.close()
+    print("Finished plotting")
 
 if __name__ == "__main__":
     global dataset_dir
