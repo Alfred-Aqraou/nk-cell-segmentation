@@ -48,7 +48,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     train_transforms = T.Compose([
         T.RandomCrop((256, 256)),
         T.RandomHorizontalFlip(),
-        T.RandomVerticalopt_typeFlip(),
+        T.RandomVerticalFlip(),
         T.RandomRotation(degrees=30),
         T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
         T.ToTensor(),
