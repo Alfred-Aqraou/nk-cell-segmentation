@@ -63,13 +63,18 @@ Paste your public key from step 1) by pressing: `Ctrl+Shift+V`. Now save and exi
 Check out some of the `.sh` files for working examples.
 #### BSUB options:
 [For reference](https://www.hpc.dtu.dk/?page_id=1416)
-- Specify queue: `#BSUB -q <gpu>` (see list of available gpu's [here](https://www.hpc.dtu.dk/?page_id=2759))
-- ...
 
-### bstat commands
-- Starting a job: `bsub < <file>`
+These can also be run as an argument when submitting a job, ie. <code>bsub -J <span style="color: orange;">job_name</span> < <span style="color: orange;">file</span></code>
+- Specify queue: <code>#BSUB -q <span style="color: orange;">gpu</span></code> (see list of available gpu's [here](https://www.hpc.dtu.dk/?page_id=2759))
+- Set job name: <span style="color: orange;"></span>
+
+### bsub commands
+- Submit a job: `bsub < "file"`
+- Submit inline command: `bsub "command"` 
 - Viewing job queue: `bstat`
 - Killing job: `bkill <JOBID>`
+
+
 
 
 ### Transfering large files to HPC
