@@ -1,6 +1,8 @@
-import os, requests, tarfile, hashlib
+import os, requests, tarfile, hashlib, re, sys
 from tqdm import tqdm
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
+from glob import glob
+from natsort import natsorted
 import pandas as pd
 from torch.utils.data import Dataset
 import torch
@@ -170,3 +172,102 @@ class NKCellDataset(Dataset):
         if not verify:
             os.remove(self._dataset_tar_path)
         return True
+
+    def _parse_timestamp(self, timestamp):
+        # Extract hours, minutes, seconds from timestamp (e.g., '10h42m06s')
+        pattern = re.compile(r'(\d+)h(\d+)m(\d+)s')
+        match = pattern.match(timestamp)
+        if match:
+            hours, minutes, seconds = map(int, match.groups())
+            return hours * 3600 + minutes * 60 + seconds
+        return 0  # Fallback for invalid timestamps
+
+    def _parse_filename(self, pattern, filename):
+        match = pattern.search(filename)
+        if match:
+            timestamp, well_id = match.groups()
+            return timestamp, well_id
+        return None, None
+
+    def _get_images_by_time(self, downscale, mode='fluorescent', verbose=False):
+        folder = os.path.join(self.dataset_dir, mode, 'without_masks')
+        files = natsorted(glob(os.path.join(folder, '*.tif')))
+        time_map = {}  # {timestamp: {well_id: Image}}
+        pattern = re.compile(r'_(\d+h\d+m\d+s)_([A-H]\d{1,2})_')
+        
+        for file in tqdm(files, desc="Mapping images by time", disable=not verbose):
+            timestamp, well_id = self._parse_filename(pattern, file)
+            if not timestamp or not well_id:
+                continue
+            if timestamp not in time_map:
+                time_map[timestamp] = {}
+            img = Image.open(file).convert('RGB')
+            if downscale != 1:
+                img = img.resize((img.width // downscale, img.height // downscale), Image.LANCZOS)  # Downscale
+            time_map[timestamp][well_id] = img
+
+        return time_map
+
+    def create_well_grid_gif(self, mode: str = 'fluorescent', downscale: int = 1, frame_duration: int = 150, gif_dir: str = 'illustrations/gifs', verbose: bool = False):
+        assert mode in ['fluorescent', 'broadband'], "Mode must be 'fluorescent' or 'broadband'"
+
+        os.makedirs(gif_dir, exist_ok=True)
+        rows = list("ABCDEFGH") # A to H
+        cols = list(map(str, range(1, 13))) # 1 to 12
+
+        time_map = self._get_images_by_time(mode=mode, downscale=downscale, verbose=verbose)
+        sorted_times = sorted(time_map.keys(), key=self._parse_timestamp)  # Ensure chronological order
+
+        # Print timestamps and their total seconds to prove chronological sorting
+        print("Timestamps in chronological order:")
+        for ts in sorted_times:
+            total_seconds = self._parse_timestamp(ts)
+            print(f"  {ts}: {total_seconds} seconds")
+
+
+        # Determine image size from the first image
+        sample_img = next(iter(next(iter(time_map.values())).values()))
+        img_width, img_height = sample_img.size
+        grid_width = img_width * 12
+
+        # Adjust font size based on downscale
+        font_size = max(16, (img_height // 1.5) // (downscale // 4 + 1))
+        padding_height = int(font_size + 20)  # Adjust padding based on downscale
+        grid_height = img_height * 8 + padding_height
+
+        frames = []
+        for frame_idx, timestamp in tqdm(enumerate(sorted_times), total=84, position=0, desc="Creating GIF frames", disable=not verbose):
+            canvas = Image.new('RGB', (grid_width, grid_height), (0, 0, 0))
+            draw = ImageDraw.Draw(canvas)
+
+            try:
+                font = ImageFont.truetype("arial.ttf", size=font_size)
+            except IOError:
+                font = ImageFont.load_default()
+
+            # Draw timestamp at top-left
+            draw.text((10, 10), timestamp, fill=(255, 255, 255), font=font)
+
+            for r_idx, row in enumerate(rows):
+                for c_idx, col in enumerate(cols):
+                    well_id = f"{row}{col}"
+                    img = time_map[timestamp].get(well_id)
+                    if img:
+                        x = c_idx * img_width
+                        y = r_idx * img_height + padding_height # Shift down by padding
+                        canvas.paste(img, (x, y))
+            frames.append(canvas)
+
+        if frames:
+            gif_path = os.path.join(gif_dir, f'{mode}_grid_{grid_width}x{grid_height}.gif')
+            frames[0].save(gif_path, save_all=True, append_images=frames[1:], duration=frame_duration, loop=0)
+            print(f"Saved animated {mode} grid GIF to {gif_path}")
+        else:
+            print("No frames generated.")
+
+
+if __name__ == "__main__":
+    dataset = NKCellDataset()
+    # dataset.download(verify=True)  # Set verify=True for the first download to check integrity
+    dataset.create_well_grid_gif(mode='fluorescent', downscale=4, verbose=True)
+    dataset.create_well_grid_gif(mode='broadband', downscale=4, verbose=True)
