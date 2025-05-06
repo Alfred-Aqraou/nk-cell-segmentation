@@ -240,9 +240,6 @@ if __name__ == "__main__":
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
     current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
-    try:
-        os.makedirs(current_time)  # Create directory to store files
-    except FileExistsError:
-        pass
+    os.makedirs(current_time, exist_ok=True)
 
     outer_cross_validation(figure_prefix=current_time+"/")
