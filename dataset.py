@@ -7,6 +7,8 @@ import pandas as pd
 from torch.utils.data import Dataset
 import torch
 from typing import Tuple
+from concurrent.futures import ThreadPoolExecutor
+from typing import List
 
 class JointTransform:
     def __init__(self, base_transform):
@@ -174,90 +176,119 @@ class NKCellDataset(Dataset):
         return True
 
     def _parse_timestamp(self, timestamp):
-        # Extract hours, minutes, seconds from timestamp (e.g., '10h42m06s')
-        pattern = re.compile(r'(\d+)h(\d+)m(\d+)s')
-        match = pattern.match(timestamp)
-        if match:
-            hours, minutes, seconds = map(int, match.groups())
-            return hours * 3600 + minutes * 60 + seconds
-        return 0  # Fallback for invalid timestamps
+        # Assuming this method exists to convert timestamp to seconds for sorting
+        # Placeholder implementation
+        h, m, s = re.match(r'(\d+)h(\d+)m(\d+)s', timestamp).groups()
+        return int(h) * 3600 + int(m) * 60 + int(s)
 
-    def _parse_filename(self, pattern, filename):
-        match = pattern.search(filename)
+    def _parse_filename(self, pattern, file):
+        # Assuming this method exists to extract timestamp and well_id
+        match = pattern.search(os.path.basename(file))
         if match:
-            timestamp, well_id = match.groups()
-            return timestamp, well_id
+            return match.group(1), match.group(2)
         return None, None
 
-    def _get_images_by_time(self, downscale, mode='fluorescent', verbose=False):
+    def _get_images_by_time(self, mode='fluorescent', verbose=False):
+        """Map timestamps to well IDs and their file paths instead of loading images."""
         folder = os.path.join(self.dataset_dir, mode, 'without_masks')
         files = natsorted(glob(os.path.join(folder, '*.tif')))
-        time_map = {}  # {timestamp: {well_id: Image}}
+        time_map = {}  # {timestamp: {well_id: file_path}}
         pattern = re.compile(r'_(\d+h\d+m\d+s)_([A-H]\d{1,2})_')
-        
-        for file in tqdm(files, desc="Mapping images by time", disable=not verbose):
+
+        for file in tqdm(files, desc="Mapping image paths by time", disable=not verbose):
             timestamp, well_id = self._parse_filename(pattern, file)
             if not timestamp or not well_id:
                 continue
             if timestamp not in time_map:
                 time_map[timestamp] = {}
-            img = Image.open(file).convert('RGB')
-            if downscale != 1:
-                img = img.resize((img.width // downscale, img.height // downscale), Image.LANCZOS)  # Downscale
-            time_map[timestamp][well_id] = img
+            time_map[timestamp][well_id] = file  # Store file path
 
         return time_map
 
-    def create_well_grid_gif(self, mode: str = 'fluorescent', downscale: int = 1, frame_duration: int = 150, gif_dir: str = 'illustrations/gifs', verbose: bool = False):
+    def _load_and_process_image(self, file_path, downscale):
+        """Load and process an image from its file path."""
+        img = Image.open(file_path).convert('RGB')
+        if downscale != 1:
+            img = img.resize((img.width // downscale, img.height // downscale), Image.LANCZOS)
+        return img
+
+    def create_well_grid_gif(self, cpu_cores: int = 8, mode: str = 'fluorescent', downscale: int = 1, frame_duration: int = 200, gif_dir: str = 'illustrations/gifs', verbose: bool = False):
+        """Create a GIF with lazy loading of images per frame."""
         assert mode in ['fluorescent', 'broadband'], "Mode must be 'fluorescent' or 'broadband'"
 
         os.makedirs(gif_dir, exist_ok=True)
-        rows = list("ABCDEFGH") # A to H
-        cols = list(map(str, range(1, 13))) # 1 to 12
+        rows = list("ABCDEFGH")  # 8 rows: A to H
+        cols = list(map(str, range(1, 13)))  # 12 columns: 1 to 12
 
-        time_map = self._get_images_by_time(mode=mode, downscale=downscale, verbose=verbose)
-        sorted_times = sorted(time_map.keys(), key=self._parse_timestamp)  # Ensure chronological order
+        # Get file paths mapped by timestamp
+        time_map = self._get_images_by_time(mode=mode, verbose=verbose)
+        sorted_times = sorted(time_map.keys(), key=self._parse_timestamp)
 
-        # Print timestamps and their total seconds to prove chronological sorting
-        print("Timestamps in chronological order:")
-        for ts in sorted_times:
-            total_seconds = self._parse_timestamp(ts)
-            print(f"  {ts}: {total_seconds} seconds")
-
+        # Print timestamps to verify chronological order
+        # if verbose:
+        #     print("Timestamps in chronological order:")
+        #     for ts in sorted_times:
+        #         total_seconds = self._parse_timestamp(ts)
+        #         print(f"  {ts}: {total_seconds} seconds")
 
         # Determine image size from the first image
-        sample_img = next(iter(next(iter(time_map.values())).values()))
+        first_timestamp = sorted_times[0]
+        first_file = time_map[first_timestamp][next(iter(time_map[first_timestamp]))]
+        sample_img = Image.open(first_file).convert('RGB')
+        if downscale != 1:
+            sample_img = sample_img.resize((sample_img.width // downscale, sample_img.height // downscale), Image.LANCZOS)
         img_width, img_height = sample_img.size
-        grid_width = img_width * 12
 
-        # Adjust font size based on downscale
         font_size = max(16, (img_height // 1.5) // (downscale // 4 + 1))
         padding_height = int(font_size + 20)  # Adjust padding based on downscale
-        grid_height = img_height * 8 + padding_height
 
-        frames = []
-        for frame_idx, timestamp in tqdm(enumerate(sorted_times), total=84, position=0, desc="Creating GIF frames", disable=not verbose):
+        # Calculate grid dimensions
+        grid_width = img_width * 12
+        grid_height = img_height * 8 + padding_height
+        if grid_width * grid_height > 89478485:
+            print("GIF size exceeds pixel limit, skipping GIF creation.")
+            return
+
+        frames: List[Image.Image] = []
+        for frame_idx, timestamp in tqdm(enumerate(sorted_times), total=len(sorted_times), desc="Creating GIF frames", disable=not verbose):
+            # Load images for this timestamp in parallel
+            with ThreadPoolExecutor(max_workers=cpu_cores) as executor:
+                futures = {executor.submit(self._load_and_process_image, file_path, downscale): well_id 
+                           for well_id, file_path in time_map[timestamp].items()}
+                images = {}
+                for future in futures:
+                    well_id = futures[future]
+                    try:
+                        images[well_id] = future.result()
+                    except Exception as e:
+                        print(f"Error loading image for {well_id}: {e}")
+
+            # Create canvas for the frame
             canvas = Image.new('RGB', (grid_width, grid_height), (0, 0, 0))
             draw = ImageDraw.Draw(canvas)
 
+            # Adjust font size based on downscale
             try:
                 font = ImageFont.truetype("arial.ttf", size=font_size)
             except IOError:
                 font = ImageFont.load_default()
 
-            # Draw timestamp at top-left
+            # Draw timestamp
             draw.text((10, 10), timestamp, fill=(255, 255, 255), font=font)
 
+            # Paste images onto the canvas
             for r_idx, row in enumerate(rows):
                 for c_idx, col in enumerate(cols):
                     well_id = f"{row}{col}"
-                    img = time_map[timestamp].get(well_id)
+                    img = images.get(well_id)
                     if img:
                         x = c_idx * img_width
-                        y = r_idx * img_height + padding_height # Shift down by padding
+                        y = r_idx * img_height + padding_height
                         canvas.paste(img, (x, y))
+
             frames.append(canvas)
 
+        # Save the GIF
         if frames:
             gif_path = os.path.join(gif_dir, f'{mode}_grid_{grid_width}x{grid_height}.gif')
             frames[0].save(gif_path, save_all=True, append_images=frames[1:], duration=frame_duration, loop=0)
@@ -269,5 +300,5 @@ class NKCellDataset(Dataset):
 if __name__ == "__main__":
     dataset = NKCellDataset()
     # dataset.download(verify=True)  # Set verify=True for the first download to check integrity
-    dataset.create_well_grid_gif(mode='fluorescent', downscale=4, verbose=True)
-    dataset.create_well_grid_gif(mode='broadband', downscale=4, verbose=True)
+    dataset.create_well_grid_gif(mode='fluorescent', downscale=2, verbose=True)
+    dataset.create_well_grid_gif(mode='broadband', downscale=2, verbose=True)

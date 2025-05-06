@@ -1,3 +1,5 @@
+<img src="illustrations\gifs\broadband_grid_732x548.gif" width="292" height="219" /><img src="illustrations\gifs\fluorescent_grid_732x548.gif" width="292" height="219" />
+
 # HPC
 ## Accessing the HPC
 The first time accessing the HPC cluster can be tricky for inexperienced users, this guide will aim to simplify this.
