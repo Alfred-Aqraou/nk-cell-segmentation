@@ -64,15 +64,29 @@ Check out some of the `.sh` files for working examples.
 #### BSUB options:
 [For reference](https://www.hpc.dtu.dk/?page_id=1416)
 
-These can also be run as an argument when submitting a job, ie. <code>bsub -J <span style="color: orange;">job_name</span> < <span style="color: orange;">file</span></code>
-- Specify queue: <code>#BSUB -q <span style="color: orange;">gpu</span></code> (see list of available gpu's [here](https://www.hpc.dtu.dk/?page_id=2759))
-- Set job name: <span style="color: orange;"></span>
+These can also be run as an argument when submitting a job, ie. `bsub -J <job_name> < <file>`
+- Specify queue: `#BSUB -q <gpu>` (see list of available gpu's [here](https://www.hpc.dtu.dk/?page_id=2759))
+- Set job name: `#BSUB -J <job_name>`
+- Set output log: `#BSUB -o <file>` (add extra o for overwriting previous file contents)
+- Set error log: `#BSUB -e <file>`
+- Request memory: `#BSUB -R "rusage[mem=4096]"`
+- Specify walltime: `#BSUB -W <hh:mm>`
+- Number of cores: `#BSUB -n <num_cores>`
+- Set job dependency: `#BSUB -w "done(<job_id>)"` (run after another job finishes)
+- Send email on job events: `#BSUB -u <email>` and `#BSUB -B -N` (`-B` email at start, `-N` email at end)
+- Set project/account: `#BSUB -P <project_name>`
+- Set job to restartable: `#BSUB -r`
+- Request GPU resources: `#BSUB -gpu "num=1"` (or other appropriate GPU spec)
 
 ### bsub commands
-- Submit a job: `bsub < "file"`
-- Submit inline command: `bsub "command"` 
-- Viewing job queue: `bstat`
+- Submit a job: `bsub < <file>`
+- Submit inline command: `bsub <command>` 
+- Track job: `bstat`
 - Killing job: `bkill <JOBID>`
+- Show job output: `bpeek <JOBID>`
+- View job history: `bhist -u <username>`
+- Viewing job queue: `bjobs`
+- Viewing detailed job info: `bjobs -l <JOBID>`
 
 
 
