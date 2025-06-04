@@ -16,12 +16,21 @@ from sklearn.model_selection import KFold
 from collections import defaultdict
 from datetime import datetime
 
+import argparse
+
 from dataset import NKCellDataset, JointTransform
 from models.unet import create_unet
 from segmentation_models_pytorch.losses import DiceLoss
 
+parser = argparse.ArgumentParser()
+parser.add_argument("-w", "--workers", help = "Amount of CPU workers to run in parallel", type=int)
+args = parser.parse_args()
+print("Given arguments:")
+print(args)
+
 global PARAMETERS
 PARAMETERS = {
+    "cpu_workers": 8 if not args.workers else args.workers,
     "EPOCHS": 100,
     "batch_sizes": [8, 16, 32],
     "loss_types": ['dice', 'combined'],
@@ -174,7 +183,7 @@ def outer_cross_validation(figure_prefix=""):
     learning_rates = PARAMETERS["learning_rates"]
     outer_n_splits = PARAMETERS["outer_n_splits"]
 
-    num_workers = 6  # Adjust based on system resources
+    num_workers = PARAMETERS["cpu_workers"]  # Adjust based on system resources
 
     dataset = NKCellDataset(dataset_dir=dataset_dir, transform=None)
     labeled_indices = [
