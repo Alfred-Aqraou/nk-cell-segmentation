@@ -20,6 +20,18 @@ from dataset import NKCellDataset, JointTransform
 from models.unet import create_unet
 from segmentation_models_pytorch.losses import DiceLoss
 
+global PARAMETERS
+PARAMETERS = {
+    "EPOCHS": 100,
+    "batch_sizes": [8, 16, 32],
+    "loss_types": ['dice', 'combined'],
+    "encoders": ['resnet18','resnet34','resnet50'],
+    "freeze_opts": [True, False],
+    "optimizers": ['adam', 'sgd'],
+    "learning_rates": [1e-4,5e-4,1e-3],
+    "outer_n_splits": 3
+    }
+
 # Setup device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
 
@@ -153,15 +165,16 @@ def run_single_fold(args):
 
 def outer_cross_validation(figure_prefix=""):
     global dataset_dir
-    batch_sizes = [8, 16, 32]
-    loss_types = ['dice', 'combined']
-    encoders = ['resnet18', 'resnet34', 'resnet50']
-    freeze_opts = [True, False]
-    optimizers = ['adam']
-    learning_rates = [1e-4, 5e-4, 1e-3]
-    outer_n_splits = 3
+    global PARAMETERS
+    batch_sizes = PARAMETERS["batch_sizes"]
+    loss_types = PARAMETERS["loss_types"]
+    encoders = PARAMETERS["encoders"]
+    freeze_opts = PARAMETERS["freeze_opts"]
+    optimizers = PARAMETERS["optimizers"]
+    learning_rates = PARAMETERS["learning_rates"]
+    outer_n_splits = PARAMETERS["outer_n_splits"]
 
-    num_workers = 16  # Adjust based on system resources
+    num_workers = 6  # Adjust based on system resources
 
     dataset = NKCellDataset(dataset_dir=dataset_dir, transform=None)
     labeled_indices = [

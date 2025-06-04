@@ -19,6 +19,18 @@ from segmentation_models_pytorch.losses import DiceLoss
 
 from datetime import datetime
 
+global PARAMETERS
+PARAMETERS = {
+    "EPOCHS": 100,
+    "batch_sizes": [8, 16, 32],
+    "loss_types": ['dice', 'combined'],
+    "encoders": ['resnet18','resnet34','resnet50'],
+    "freeze_opts": [True, False],
+    "optimizers": ['adam', 'sgd'],
+    "learning_rates": [1e-4,5e-4,1e-3],
+    "outer_n_splits": 3
+    }
+
 # Setup device (for M1/M2 chips with MPS support)
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
 print("Running with:", device)
@@ -44,7 +56,7 @@ def compute_iou(pred, target):
     union = pred.sum() + target.sum() - intersection
     return (intersection / union).item() if union > 0 else 0.0
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, num_epochs=50, patience=20):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, num_epochs=PARAMETERS["EPOCHS"], patience=20):
     train_transforms = T.Compose([
         T.RandomCrop((256, 256)),
         T.RandomHorizontalFlip(),
@@ -133,13 +145,14 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
 def outer_cross_validation(figure_prefix=""):
     global dataset_dir
-    batch_sizes = [8,16,32]
-    loss_types = ['dice','combined']
-    encoders = ['resnet18','resnet34','resnet50']
-    freeze_opts = [True, False]
-    optimizers = ['adam']
-    learning_rates = [1e-4,5e-4,1e-3]
-    outer_n_splits = 3
+    global PARAMETERS
+    batch_sizes = PARAMETERS["batch_sizes"]
+    loss_types = PARAMETERS["loss_types"]
+    encoders = PARAMETERS["encoders"]
+    freeze_opts = PARAMETERS["freeze_opts"]
+    optimizers = PARAMETERS["optimizers"]
+    learning_rates = PARAMETERS["learning_rates"]
+    outer_n_splits = PARAMETERS["outer_n_splits"]
 
     results = []
     dataset = NKCellDataset(dataset_dir=dataset_dir, transform=None)
