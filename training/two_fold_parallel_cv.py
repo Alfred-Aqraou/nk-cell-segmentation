@@ -211,6 +211,8 @@ def outer_cross_validation(figure_prefix=""):
     final_results = []
     for combo_key, fold_results in combo_results.items():
         val_losses, val_ious = zip(*fold_results)
+        std_val_loss = np.std(val_losses)
+        std_val_iou = np.std(val_ious)
         mean_val_loss = np.mean(val_losses)
         mean_val_iou = np.mean(val_ious)
         final_results.append({
@@ -221,10 +223,12 @@ def outer_cross_validation(figure_prefix=""):
             "optimizer": combo_key[4],
             "lr": combo_key[5],
             "mean_val_loss": mean_val_loss,
-            "mean_val_iou": mean_val_iou
+            "std_val_loss": std_val_loss,
+            "mean_val_iou": mean_val_iou,
+            "std_val_iou": std_val_iou
         })
         print(f"Config: BS={combo_key[0]}, Loss={combo_key[1]}, Encoder={combo_key[2]}, Freeze={combo_key[3]}, Opt={combo_key[4]}, LR={combo_key[5]}")
-        print(f"Mean Val Loss: {mean_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f}")
+        print(f"Mean Val Loss: {mean_val_loss:.4f} ± {std_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f} ± {std_val_iou:.4f}")
 
     # Save results to CSV
     print("Writing results.csv")
