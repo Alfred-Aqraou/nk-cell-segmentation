@@ -16,9 +16,30 @@ from sklearn.model_selection import KFold
 from collections import defaultdict
 from datetime import datetime
 
+import argparse
+
 from dataset import NKCellDataset, JointTransform
 from models.unet import create_unet
 from segmentation_models_pytorch.losses import DiceLoss
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-w", "--workers", help = "Amount of CPU workers to run in parallel", type=int)
+args = parser.parse_args()
+print("Given arguments:")
+print(args)
+
+global PARAMETERS
+PARAMETERS = {
+    "cpu_workers": 8 if not args.workers else args.workers,
+    "EPOCHS": 100,
+    "batch_sizes": [8, 16, 32],
+    "loss_types": ['dice', 'combined'],
+    "encoders": ['resnet18','resnet34','resnet50'],
+    "freeze_opts": [True, False],
+    "optimizers": ['adam', 'sgd'],
+    "learning_rates": [1e-4,5e-4,1e-3],
+    "outer_n_splits": 3
+    }
 
 # Setup device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
@@ -161,7 +182,6 @@ def outer_cross_validation(figure_prefix=""):
     learning_rates = [1e-4, 5e-4, 1e-3]
     outer_n_splits = 3
     num_workers = 16  # Adjust based on system resources
-    
 
     dataset = NKCellDataset(dataset_dir=dataset_dir, transform=None)
     labeled_indices = [
@@ -207,12 +227,19 @@ def outer_cross_validation(figure_prefix=""):
         print(f"Mean Val Loss: {mean_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f}")
 
     # Save results to CSV
-    with open(figure_prefix + "results.csv", "w", newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=final_results[0].keys())
-        writer.writeheader()
-        writer.writerows(final_results)
+    print("Writing results.csv")
+    try:
+        with open(figure_prefix + "results.csv", "w", newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=final_results[0].keys())
+            writer.writeheader()
+            writer.writerows(final_results)
+    except:
+        print("Couldn't write results.csv")
+    else:
+        print("Finished writing results.csv")
 
     # Plot top 10 configurations
+    print("Plotting top 10 configs")
     top_results = sorted(final_results, key=lambda r: r["mean_val_loss"])[:10]
     labels = [f'{r["batch_size"]}-{r["loss_type"]}-{r["encoder"]}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
     losses = [r["mean_val_loss"] for r in top_results]
@@ -224,15 +251,15 @@ def outer_cross_validation(figure_prefix=""):
     plt.tight_layout()
     plt.savefig(figure_prefix + "top_10_configs.png")
     plt.close()
+    print("Finished plotting")
 
 if __name__ == "__main__":
+    set_start_method('spawn', force=True)
+
     global dataset_dir
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
     current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
-    try:
-        os.makedirs(current_time)  # Create directory to store files
-    except FileExistsError:
-        pass
+    os.makedirs(current_time, exist_ok=True)
 
     outer_cross_validation(figure_prefix=current_time+"/")

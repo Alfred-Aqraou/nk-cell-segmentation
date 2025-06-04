@@ -1,3 +1,5 @@
+<img src="illustrations\gifs\broadband_grid_732x548.gif" width="292" height="219" /><img src="illustrations\gifs\fluorescent_grid_732x548.gif" width="292" height="219" />
+
 # HPC
 ## Accessing the HPC
 The first time accessing the HPC cluster can be tricky for inexperienced users, this guide will aim to simplify this.
@@ -63,13 +65,32 @@ Paste your public key from step 1) by pressing: `Ctrl+Shift+V`. Now save and exi
 Check out some of the `.sh` files for working examples.
 #### BSUB options:
 [For reference](https://www.hpc.dtu.dk/?page_id=1416)
-- Specify queue: `#BSUB -q <gpu>` (see list of available gpu's [here](https://www.hpc.dtu.dk/?page_id=2759))
-- ...
 
-### bstat commands
-- Starting a job: `bsub < <file>`
-- Viewing job queue: `bstat`
+These can also be run as an argument when submitting a job, ie. `bsub -J <job_name> < <file>`
+- Specify queue: `#BSUB -q <gpu>` (see list of available gpu's [here](https://www.hpc.dtu.dk/?page_id=2759))
+- Set job name: `#BSUB -J <job_name>`
+- Set output log: `#BSUB -o <file>` (add extra o for overwriting previous file contents)
+- Set error log: `#BSUB -e <file>`
+- Request memory: `#BSUB -R "rusage[mem=4096]"`
+- Specify walltime: `#BSUB -W <hh:mm>`
+- Number of cores: `#BSUB -n <num_cores>`
+- Set job dependency: `#BSUB -w "done(<job_id>)"` (run after another job finishes)
+- Send email on job events: `#BSUB -u <email>` and `#BSUB -B -N` (`-B` email at start, `-N` email at end)
+- Set project/account: `#BSUB -P <project_name>`
+- Set job to restartable: `#BSUB -r`
+- Request GPU resources: `#BSUB -gpu "num=1"` (or other appropriate GPU spec)
+
+### bsub commands
+- Submit a job: `bsub < <file>`
+- Submit inline command: `bsub <command>` 
+- Track job: `bstat`
 - Killing job: `bkill <JOBID>`
+- Show job output: `bpeek <JOBID>`
+- View job history: `bhist -u <username>`
+- Viewing job queue: `bjobs`
+- Viewing detailed job info: `bjobs -l <JOBID>`
+
+
 
 
 ### Transfering large files to HPC
