@@ -15,8 +15,6 @@ dependencies:
   - conda-forge::scikit-learn
   - conda-forge::accelerate
   - conda-forge::natsort
+  - conda-forge::pytorch-gpu
+  - conda-forge::torchvision
   - pip
-  - pip:
-    - --extra-index-url https://download.pytorch.org/whl/cu126
-    - torch==2.7.0+cu126
-    - torchvision==0.22.0+cu126
