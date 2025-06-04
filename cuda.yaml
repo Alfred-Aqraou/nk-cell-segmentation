@@ -17,6 +17,6 @@ dependencies:
   - conda-forge::natsort
   - pip
   - pip:
-    - --extra-index-url https://download.pytorch.org/whl/cu126
+    - --extra-index-url https://download.pytorch.org/whl/cu128
     - torch==2.7.0+cu128
     - torchvision==0.22.0+cu128
