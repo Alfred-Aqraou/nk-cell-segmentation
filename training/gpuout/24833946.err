@@ -1,0 +1,48 @@
+Loaded module: cuda/12.6
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+           ^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/training/two_fold_parallel_cv.py", line 137, in run_single_fold
+    val_loss, val_iou = train_and_evaluate(
+                        ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/training/two_fold_parallel_cv.py", line 76, in train_and_evaluate
+    ).to(device)
+      ^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1355, in to
+    return self._apply(convert)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 915, in _apply
+    module._apply(fn)
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 915, in _apply
+    module._apply(fn)
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 942, in _apply
+    param_applied = fn(param)
+                    ^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1341, in convert
+    return t.to(
+           ^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/cuda/__init__.py", line 358, in _lazy_init
+    raise RuntimeError(
+RuntimeError: Cannot re-initialize CUDA in forked subprocess. To use CUDA with multiprocessing, you must use the 'spawn' start method
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/zhome/96/d/205311/02466-Project/training/two_fold_parallel_cv.py", line 246, in <module>
+    outer_cross_validation(figure_prefix=current_time+"/")
+  File "/zhome/96/d/205311/02466-Project/training/two_fold_parallel_cv.py", line 183, in outer_cross_validation
+    all_results = pool.map(run_single_fold, all_tasks)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 367, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 774, in get
+    raise self._value
+RuntimeError: Cannot re-initialize CUDA in forked subprocess. To use CUDA with multiprocessing, you must use the 'spawn' start method

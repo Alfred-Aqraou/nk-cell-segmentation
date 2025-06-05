@@ -14,6 +14,7 @@ dependencies:
   - conda-forge::transformers
   - conda-forge::scikit-learn
   - conda-forge::accelerate
+  - conda-forge::natsort
   - pip
   - pip:
     - torch --index-url https://download.pytorch.org/whl/cpu

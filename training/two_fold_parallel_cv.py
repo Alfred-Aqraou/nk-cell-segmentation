@@ -16,9 +16,30 @@ from sklearn.model_selection import KFold
 from collections import defaultdict
 from datetime import datetime
 
+import argparse
+
 from dataset import NKCellDataset, JointTransform
 from models.unet import create_unet
 from segmentation_models_pytorch.losses import DiceLoss
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-w", "--workers", help = "Amount of CPU workers to run in parallel", type=int)
+args = parser.parse_args()
+print("Given arguments:")
+print(args)
+
+global PARAMETERS
+PARAMETERS = {
+    "cpu_workers": 8 if not args.workers else args.workers,
+    "EPOCHS": 100,
+    "batch_sizes": [8, 16, 32],
+    "loss_types": ['dice', 'combined'],
+    "encoders": ['resnet18','resnet34','resnet50'],
+    "freeze_opts": [True, False],
+    "optimizers": ['adam', 'sgd'],
+    "learning_rates": [1e-4,5e-4,1e-3],
+    "outer_n_splits": 3
+    }
 
 # Setup device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
@@ -153,15 +174,15 @@ def run_single_fold(args):
 
 def outer_cross_validation(figure_prefix=""):
     global dataset_dir
-    batch_sizes = [8, 16, 32]
-    loss_types = ['dice', 'combined']
-    encoders = ['resnet18', 'resnet34', 'resnet50']
-    freeze_opts = [True, False]
-    optimizers = ['adam']
-    learning_rates = [1e-4, 5e-4, 1e-3]
-    outer_n_splits = 3
-
-    num_workers = 16  # Adjust based on system resources
+    global PARAMETERS
+    batch_sizes = PARAMETERS["batch_sizes"]
+    loss_types = PARAMETERS["loss_types"]
+    encoders = PARAMETERS["encoders"]
+    freeze_opts = PARAMETERS["freeze_opts"]
+    optimizers = PARAMETERS["optimizers"]
+    learning_rates = PARAMETERS["learning_rates"]
+    outer_n_splits = PARAMETERS["outer_n_splits"]
+    num_workers = PARAMETERS["cpu_workers"]
 
     dataset = NKCellDataset(dataset_dir=dataset_dir, transform=None)
     labeled_indices = [
@@ -191,6 +212,8 @@ def outer_cross_validation(figure_prefix=""):
     final_results = []
     for combo_key, fold_results in combo_results.items():
         val_losses, val_ious = zip(*fold_results)
+        std_val_loss = np.std(val_losses)
+        std_val_iou = np.std(val_ious)
         mean_val_loss = np.mean(val_losses)
         mean_val_iou = np.mean(val_ious)
         final_results.append({
@@ -201,10 +224,12 @@ def outer_cross_validation(figure_prefix=""):
             "optimizer": combo_key[4],
             "lr": combo_key[5],
             "mean_val_loss": mean_val_loss,
-            "mean_val_iou": mean_val_iou
+            "std_val_loss": std_val_loss,
+            "mean_val_iou": mean_val_iou,
+            "std_val_iou": std_val_iou
         })
         print(f"Config: BS={combo_key[0]}, Loss={combo_key[1]}, Encoder={combo_key[2]}, Freeze={combo_key[3]}, Opt={combo_key[4]}, LR={combo_key[5]}")
-        print(f"Mean Val Loss: {mean_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f}")
+        print(f"Mean Val Loss: {mean_val_loss:.4f} ± {std_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f} ± {std_val_iou:.4f}")
 
     # Save results to CSV
     print("Writing results.csv")
@@ -240,9 +265,6 @@ if __name__ == "__main__":
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
     current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
-    try:
-        os.makedirs(current_time)  # Create directory to store files
-    except FileExistsError:
-        pass
+    os.makedirs(current_time, exist_ok=True)
 
     outer_cross_validation(figure_prefix=current_time+"/")
