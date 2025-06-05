@@ -1,5 +1,5 @@
 #!/bin/sh
-#BSUB -q gpuv100
+#BSUB -q gpua40
 #BSUB -J 02466_two_fold_parallel_cv
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
