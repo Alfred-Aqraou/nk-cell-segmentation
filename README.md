@@ -53,13 +53,34 @@ nano authorized_keys
 ```
 Paste your public key from step 1) by pressing: `Ctrl+Shift+V`. Now save and exit by pressing `Ctrl+X`, followed by `Y` and `Enter`. Now you should be able to connect to the HPC without VPN. If you plan on adding more devices to connect from, simply add a new line and paste that public key, then save and exit.
 
+Please view next section [Working with HPC](#working-with-hpc).
+
 ## Working with HPC
 1. Login to HPC and use: `linuxsh`.
 2. Go to shared folder: `cd /work3/s234843/02466-Project`
 
 (If you cannot access this directory, contact Mathias)
 
-3. Activate environment with: `source hpc_init.sh`
+3. Activate environment with: 
+```bash
+source /work3/s234843/init_project.sh
+```
+For your convenience copy this file to your user profile so you can run it directly when logging in on the HPC:
+```bash
+cp /work3/s234843/init_project.sh ~/init_project.sh
+```
+From now on you can run with:
+```bash
+source ~/init_project.sh
+```
+
+### ⚠️ **IMPORTANT** ⚠️
+Apparently our PyTorch version only supports `GPU compute capability >= 7.5`, but GPU's such as the Tesla V100 has version 7.0, which means that the only available GPU's for our project are:
+```
+gpua100
+gpua10
+gpua40
+```
 
 ### Creating batch jobs for GPU usage
 Check out some of the `.sh` files for working examples.
