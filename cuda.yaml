@@ -4,15 +4,23 @@ channels:
   - nodefaults
 dependencies:
   - python=3.12
-  - conda-forge::numpy
-  - conda-forge::matplotlib
-  - conda-forge::pandas
-  - conda-forge::pillow
-  - conda-forge::requests
-  - conda-forge::tqdm
-  - conda-forge::segmentation-models-pytorch
-  - conda-forge::transformers
-  - conda-forge::scikit-learn
-  - conda-forge::accelerate
-  - conda-forge::natsort
+  - numpy
+  - matplotlib
+  - pandas
+  - pillow
+  - requests
+  - tqdm
+  - segmentation-models-pytorch
+  - transformers
+  - scikit-learn
+  - accelerate
+  - natsort
   - pip
+
+
+# Manually install the following
+# pip install \
+#   torch==2.7.1 \
+#   torchvision==0.22.1 \
+#   torchaudio==2.7.1 \
+#   --extra-index-url https://download.pytorch.org/whl/cu128
