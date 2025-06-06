@@ -1,8 +1,8 @@
-import os
-import sys
+import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+
 from multiprocessing import Pool, set_start_method
-project_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-sys.path.append(project_root)
 import csv
 import torch
 import tqdm
@@ -17,6 +17,7 @@ from collections import defaultdict
 from datetime import datetime
 
 import argparse
+
 
 from dataset import NKCellDataset, JointTransform
 from models.unet import create_unet
