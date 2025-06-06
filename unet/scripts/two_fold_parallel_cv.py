@@ -211,7 +211,7 @@ def outer_cross_validation(figure_prefix=""):
     # Process results
     combo_results = defaultdict(list)
     for result in all_results:
-        combo_key = (result["batch_size"], result["loss_type"], result["encoder"], result["freeze_encoder"], result["optimizer"], result["lr"])
+        combo_key = (result["batch_size"], result["loss_type"], result["encoder"], result["freeze_encoder"], result["optimizer"], result["lr"], result["resize"])
         combo_results[combo_key].append((result["val_loss"], result["val_iou"]))
 
     final_results = []
@@ -228,6 +228,7 @@ def outer_cross_validation(figure_prefix=""):
             "freeze_encoder": combo_key[3],
             "optimizer": combo_key[4],
             "lr": combo_key[5],
+            "resize": combo_key[6],
             "mean_val_loss": mean_val_loss,
             "std_val_loss": std_val_loss,
             "mean_val_iou": mean_val_iou,
