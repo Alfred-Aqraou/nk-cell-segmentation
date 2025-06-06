@@ -1,7 +1,7 @@
-import os
-import sys
-project_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-sys.path.append(project_root)
+import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+
 import csv
 import torch
 import tqdm

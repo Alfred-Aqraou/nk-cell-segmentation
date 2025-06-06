@@ -1,3 +1,7 @@
+import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+
 import torch
 import torchvision.transforms as T
 from torch.utils.data import DataLoader, random_split

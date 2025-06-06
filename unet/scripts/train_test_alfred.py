@@ -1,11 +1,8 @@
-import os
-import sys
+import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+
 from datetime import datetime
-
-# Add the project root (one directory up) to Python's module search path.
-project_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-sys.path.append(project_root)
-
 import torch
 import torch.optim as optim
 import torchvision.transforms as T
