@@ -21,7 +21,5 @@ nvidia-smi
 # Load the cuda module
 module load cuda/12.8.1
 
-# /appl/cuda/12.4.1/samples/bin/x86_64/linux/release/deviceQuery
-source /work3/s234843/bin/miniconda3/bin/activate
-conda activate 02466_cuda
-python ~/02466-Project/training/two_fold_cv.py
+source /work3/s234843/init_project.sh
+python training/two_fold_cv.py

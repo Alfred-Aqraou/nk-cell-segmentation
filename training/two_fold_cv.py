@@ -220,6 +220,7 @@ if __name__ == "__main__":
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
     current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
-    os.makedirs(current_time, exist_ok=True)
+    time_folder = "exports/"+current_time
+    os.makedirs(time_folder, exist_ok=True)
 
-    outer_cross_validation(figure_prefix=current_time+"/")
+    outer_cross_validation(figure_prefix=time_folder+"/")
