@@ -259,14 +259,22 @@ def outer_cross_validation(figure_prefix=""):
     plt.close()
     print("Finished plotting")
 
+    global starttime
+    endtime = datetime.now().strftime("%m-%d/%H-%M-%S")
+    print("Started at:", starttime)
+    print("Finished at:", endtime)
+    print("Time elapsed:", endtime-current_time)
+
 if __name__ == "__main__":
     set_start_method('spawn', force=True)
 
     global dataset_dir
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
-    current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
-    time_folder = "exports/unet/"+current_time
-    os.makedirs(time_folder, exist_ok=True)
+    global starttime
+    starttime = datetime.now()
+    current_time = starttime.strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
+    export_folder = "exports/unet/"+current_time
+    os.makedirs(export_folder, exist_ok=True)
 
-    outer_cross_validation(figure_prefix=time_folder+"/")
+    outer_cross_validation(figure_prefix=export_folder+"/")
