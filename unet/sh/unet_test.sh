@@ -21,7 +21,5 @@ nvidia-smi
 # Load the cuda module
 module load cuda/12.8.1
 
-# /appl/cuda/12.4.1/samples/bin/x86_64/linux/release/deviceQuery
-source /work3/s234843/bin/miniconda3/bin/activate
-conda activate 02466
-python /work3/s234843/02466-Project/unet_test.py
+source /work3/s234843/init_project.sh
+python unet_test.py
