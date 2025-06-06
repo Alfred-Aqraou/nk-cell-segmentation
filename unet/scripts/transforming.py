@@ -8,17 +8,27 @@ from typing import List
 from matplotlib.axes import Axes
 
 # Define the transform
+# OLD transform
+# transform = T.Compose([
+#         T.RandomHorizontalFlip(p=0.5),
+#         T.RandomVerticalFlip(p=0.5),
+#         T.RandomRotation(degrees=30),
+#         T.RandomCrop((256, 256)),
+#         T.ColorJitter(
+#             brightness=0.2,
+#             contrast=0.2,
+#             saturation=0.2,
+#             hue=0.1
+#         ),
+#         T.ToTensor(),
+#     ])
+
 transform = T.Compose([
-        T.RandomHorizontalFlip(p=0.5),
-        T.RandomVerticalFlip(p=0.5),
-        T.RandomRotation(degrees=30),
         T.RandomCrop((256, 256)),
-        T.ColorJitter(
-            brightness=0.2,
-            contrast=0.2,
-            saturation=0.2,
-            hue=0.1
-        ),
+        T.RandomHorizontalFlip(),
+        T.RandomVerticalFlip(),
+        T.RandomRotation(degrees=30),
+        T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
         T.ToTensor(),
     ])
 
@@ -49,6 +59,9 @@ for idx, img_name in enumerate(selected_images):
     axes[idx].set_title(img_name, fontsize=10)  # Shorten filename for title
 
 plt.tight_layout()
-plt.savefig("grid.pdf")
-plt.savefig("grid.png")
+
+export_folder = "exports/dataset"
+os.makedirs(export_folder, exist_ok=True)
+plt.savefig(export_folder+"/grid.pdf")
+plt.savefig(export_folder+"/grid.png")
 plt.show()

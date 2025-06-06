@@ -272,7 +272,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
 
 if __name__ == '__main__':
     current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
-    time_folder = "exports/"+current_time
+    time_folder = "exports/unet/"+current_time
     os.makedirs(time_folder, exist_ok=True)
 
     run_cross_validation(num_epochs=60, batch_size=16, patience=5, n_splits=5, figure_prefix=time_folder+"/")
