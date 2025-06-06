@@ -296,6 +296,10 @@ class NKCellDataset(Dataset):
         else:
             print("No frames generated.")
 
+    @property
+    def label_flags(self):
+        return [1 if labeled else 0 for labeled in self.is_labeled]
+
 
 if __name__ == "__main__":
     dataset = NKCellDataset()
