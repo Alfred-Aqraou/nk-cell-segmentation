@@ -1,6 +1,6 @@
 #!/bin/sh
 #BSUB -q gpuv100
-#BSUB -J 02466_Project
+#BSUB -J unet_test
 #BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -W 24:00
@@ -14,12 +14,12 @@
 #BSUB -N
 ### -- Specify the output and error file. %J is the job-id --
 ### -- -o and -e mean append, -oo and -eo mean overwrite --
-#BSUB -oo gpuout/%J.out
-#BSUB -eo gpuout/%J.err
+#BSUB -oo gpuout/unet/unet_test-%J.out
+#BSUB -eo gpuout/unet/unet_test-%J.err
 
 nvidia-smi
 # Load the cuda module
 module load cuda/12.8.1
 
 source /work3/s234843/init_project.sh
-python unet_test.py
+python unet/scripts/unet_test.py
