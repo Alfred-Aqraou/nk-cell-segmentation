@@ -1,0 +1,21 @@
+/work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/site-packages/submitit/core/plugins.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+submitit ERROR (2025-06-07 09:26:26,140) - Submitted job triggered an exception
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/site-packages/submitit/core/_submit.py", line 11, in <module>
+    submitit_main()
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/site-packages/submitit/core/submission.py", line 76, in submitit_main
+    process_job(args.folder)
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/site-packages/submitit/core/submission.py", line 69, in process_job
+    raise error
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/site-packages/submitit/core/submission.py", line 55, in process_job
+    result = delayed.result()
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/site-packages/submitit/core/utils.py", line 137, in result
+    self._result = self.function(*self.args, **self.kwargs)
+  File "/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/run/train/train.py", line 23, in __call__
+    from dinov2.train import main as train_main
+ModuleNotFoundError: No module named 'dinov2'
