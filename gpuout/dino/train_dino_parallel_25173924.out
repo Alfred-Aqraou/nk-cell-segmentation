@@ -1,0 +1,87 @@
+W20250607 09:26:23 2098119 py.warnings warnings.py:109] /work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/site-packages/submitit/core/plugins.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+
+W20250607 09:26:23 2098117 py.warnings warnings.py:109] /work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/site-packages/submitit/core/plugins.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+
+W20250607 09:26:23 2098120 py.warnings warnings.py:109] /work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/site-packages/submitit/core/plugins.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+
+I20250607 09:26:23 2098119 dinov2 submit.py:120] Submitted job_id: 2098362
+I20250607 09:26:23 2098119 dinov2 submit.py:122] Logs and checkpoints will be saved at: /zhome/96/d/205311/02466-Project/exports/dino/vits14
+I20250607 09:26:23 2098117 dinov2 submit.py:120] Submitted job_id: 2098364
+I20250607 09:26:23 2098117 dinov2 submit.py:122] Logs and checkpoints will be saved at: /zhome/96/d/205311/02466-Project/exports/dino/vits14
+I20250607 09:26:23 2098120 dinov2 submit.py:120] Submitted job_id: 2098363
+I20250607 09:26:23 2098120 dinov2 submit.py:122] Logs and checkpoints will be saved at: /zhome/96/d/205311/02466-Project/exports/dino/vits14
+W20250607 09:26:28 2098118 py.warnings warnings.py:109] /work3/s234843/bin/miniconda3/envs/dinov2-extras/lib/python3.9/site-packages/submitit/core/plugins.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+
+I20250607 09:26:28 2098118 dinov2 submit.py:120] Submitted job_id: 2098435
+I20250607 09:26:28 2098118 dinov2 submit.py:122] Logs and checkpoints will be saved at: /zhome/96/d/205311/02466-Project/exports/dino/vits14
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 25173924: <train_dino_parallel> in cluster <dcc> Done
+
+Job <train_dino_parallel> was submitted from host <n-62-30-5> by user <s234843> in cluster <dcc> at Fri Jun  6 14:18:06 2025
+Job was executed on host(s) <8*n-62-12-21>, in queue <gpua100>, as user <s234843> in cluster <dcc> at Sat Jun  7 09:26:04 2025
+</zhome/96/d/205311> was used as the home directory.
+</zhome/96/d/205311/02466-Project> was used as the working directory.
+Started at Sat Jun  7 09:26:04 2025
+Terminated at Sat Jun  7 09:26:31 2025
+Results reported at Sat Jun  7 09:26:31 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -J train_dino_parallel
+#BSUB -q gpua100
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=shared"
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=8GB]"
+#BSUB -W 24:00
+#BSUB -oo gpuout/dino/train_dino_parallel_%J.out
+#BSUB -eo gpuout/dino/train_dino_parallel_%J.err
+
+module load cuda/12.6
+
+# Activate conda environment
+source /work3/s234843/init_dinov2.sh
+
+# Run DINO training with distributed setup
+PYTHONPATH=. python -m torch.distributed.run \
+  --nproc_per_node=4 \
+  dinov2-fork/dinov2/run/train/train.py \
+  --nodes 1 \
+  --config-file dinov2-fork/dinov2/configs/train/vits14.yaml \
+  --output-dir exports/dino/vits14 \
+  train.dataset_path="ImageNet:split=TRAIN:root=/work3/s234843/02466-Project/dataset/fluorescent/without_masks_224"
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   29.00 sec.
+    Max Memory :                                 336 MB
+    Average Memory :                             191.00 MB
+    Total Requested Memory :                     65536.00 MB
+    Delta Memory :                               65200.00 MB
+    Max Swap :                                   -
+    Max Processes :                              8
+    Max Threads :                                11
+    Run time :                                   27 sec.
+    Turnaround time :                            68905 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <gpuout/dino/train_dino_parallel_25173924.err> for stderr output of this job.
+
