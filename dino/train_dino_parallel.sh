@@ -16,7 +16,7 @@ source /work3/s234843/init_dinov2.sh
 
 # Run DINO training with distributed setup
 PYTHONPATH=. python -m torch.distributed.run \
-  --nproc_per_node=4 \
+  --nproc_per_node=1 \
   dinov2-fork/dinov2/run/train/train.py \
   --nodes 1 \
   --config-file dinov2-fork/dinov2/configs/train/vits14.yaml \
