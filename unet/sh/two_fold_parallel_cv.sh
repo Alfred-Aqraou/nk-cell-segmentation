@@ -1,7 +1,7 @@
 #!/bin/sh
-#BSUB -q gpuv100
+#BSUB -q gpua100
 #BSUB -J two_fold_parallel_cv
-#BSUB -n 4
+#BSUB -n 16
 #BSUB -gpu "num=1:mode=shared"
 #BSUB -W 24:00
 #BSUB -R "rusage[mem=8GB]"
@@ -22,4 +22,4 @@ nvidia-smi
 module load cuda/12.8.1
 
 source /work3/s234843/init_project.sh
-python unet/scripts/two_fold_parallel_cv.py -w 4
+python unet/scripts/two_fold_parallel_cv.py -w 16

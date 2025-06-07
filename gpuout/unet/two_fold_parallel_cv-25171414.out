@@ -1,0 +1,908 @@
+Fri Jun  6 09:53:19 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.148.08             Driver Version: 570.148.08     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A100 80GB PCIe          On  |   00000000:65:00.0 Off |                    0 |
+| N/A   37C    P0             68W /  300W |    6814MiB /  81920MiB |      8%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A         3171287      C   ...a3/envs/02466_cuda/bin/python       1602MiB |
+|    0   N/A  N/A         3171288      C   ...a3/envs/02466_cuda/bin/python       2552MiB |
+|    0   N/A  N/A         3171289      C   ...a3/envs/02466_cuda/bin/python       1296MiB |
+|    0   N/A  N/A         3171290      C   ...a3/envs/02466_cuda/bin/python       1338MiB |
++-----------------------------------------------------------------------------------------+
+Given arguments:
+Namespace(workers=8)
+Given arguments:
+Namespace(workers=8)
+Given arguments:
+Namespace(workers=8)
+Given arguments:
+Namespace(workers=8)
+Given arguments:
+Namespace(workers=8)
+Given arguments:
+Namespace(workers=8)
+Given arguments:
+Namespace(workers=8)
+Given arguments:
+Namespace(workers=8)
+Given arguments:
+Namespace(workers=8)
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1307 ± 0.0176, Mean Val IoU: 0.8315 ± 0.0206
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1161 ± 0.0091, Mean Val IoU: 0.8435 ± 0.0205
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1102 ± 0.0153, Mean Val IoU: 0.8409 ± 0.0259
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.3847 ± 0.0229, Mean Val IoU: 0.5026 ± 0.0259
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.3292 ± 0.0271, Mean Val IoU: 0.5468 ± 0.0295
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.2652 ± 0.0420, Mean Val IoU: 0.6546 ± 0.0399
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1188 ± 0.0090, Mean Val IoU: 0.8533 ± 0.0163
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1513 ± 0.0379, Mean Val IoU: 0.8337 ± 0.0160
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.1183 ± 0.0147, Mean Val IoU: 0.8109 ± 0.0187
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.3846 ± 0.0292, Mean Val IoU: 0.5020 ± 0.0378
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.3091 ± 0.0226, Mean Val IoU: 0.5840 ± 0.0436
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.2188 ± 0.0311, Mean Val IoU: 0.7170 ± 0.0371
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1344 ± 0.0083, Mean Val IoU: 0.8408 ± 0.0142
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1145 ± 0.0116, Mean Val IoU: 0.8389 ± 0.0192
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1365 ± 0.0185, Mean Val IoU: 0.8072 ± 0.0267
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.4427 ± 0.1112, Mean Val IoU: 0.4116 ± 0.1529
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.3184 ± 0.0290, Mean Val IoU: 0.5678 ± 0.0291
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.2333 ± 0.0348, Mean Val IoU: 0.6929 ± 0.0404
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1384 ± 0.0048, Mean Val IoU: 0.8249 ± 0.0160
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1282 ± 0.0295, Mean Val IoU: 0.8354 ± 0.0329
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.1304 ± 0.0240, Mean Val IoU: 0.8251 ± 0.0209
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.5336 ± 0.1352, Mean Val IoU: 0.2656 ± 0.1982
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.2977 ± 0.0459, Mean Val IoU: 0.6014 ± 0.0596
+Config: BS=8, Loss=dice, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.2090 ± 0.0460, Mean Val IoU: 0.7188 ± 0.0643
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1270 ± 0.0125, Mean Val IoU: 0.8527 ± 0.0184
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1108 ± 0.0129, Mean Val IoU: 0.8447 ± 0.0212
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1175 ± 0.0117, Mean Val IoU: 0.8414 ± 0.0205
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.4404 ± 0.0637, Mean Val IoU: 0.4276 ± 0.1143
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.3907 ± 0.1036, Mean Val IoU: 0.4700 ± 0.1881
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.2257 ± 0.0188, Mean Val IoU: 0.7046 ± 0.0244
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1361 ± 0.0147, Mean Val IoU: 0.8468 ± 0.0172
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1166 ± 0.0065, Mean Val IoU: 0.8463 ± 0.0294
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2092 ± 0.0642, Mean Val IoU: 0.7367 ± 0.1156
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.3752 ± 0.0268, Mean Val IoU: 0.5128 ± 0.0235
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.2903 ± 0.0091, Mean Val IoU: 0.6115 ± 0.0458
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.2131 ± 0.0285, Mean Val IoU: 0.7257 ± 0.0299
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1824 ± 0.0155, Mean Val IoU: 0.8378 ± 0.0144
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1746 ± 0.0145, Mean Val IoU: 0.8417 ± 0.0191
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1726 ± 0.0140, Mean Val IoU: 0.8417 ± 0.0217
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6019 ± 0.0468, Mean Val IoU: 0.4330 ± 0.0317
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.5527 ± 0.1192, Mean Val IoU: 0.4373 ± 0.1663
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.3041 ± 0.0133, Mean Val IoU: 0.7096 ± 0.0183
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2049 ± 0.0109, Mean Val IoU: 0.8081 ± 0.0251
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1977 ± 0.0042, Mean Val IoU: 0.8138 ± 0.0148
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.1800 ± 0.0080, Mean Val IoU: 0.8373 ± 0.0101
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6677 ± 0.0406, Mean Val IoU: 0.3089 ± 0.0718
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.3392 ± 0.0124, Mean Val IoU: 0.6930 ± 0.0051
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.2538 ± 0.0072, Mean Val IoU: 0.7596 ± 0.0176
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1830 ± 0.0152, Mean Val IoU: 0.8363 ± 0.0205
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1965 ± 0.0253, Mean Val IoU: 0.8115 ± 0.0338
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1720 ± 0.0112, Mean Val IoU: 0.8509 ± 0.0214
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6934 ± 0.0660, Mean Val IoU: 0.1965 ± 0.1259
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.6027 ± 0.1314, Mean Val IoU: 0.4417 ± 0.1247
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.3122 ± 0.0180, Mean Val IoU: 0.6982 ± 0.0239
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1810 ± 0.0148, Mean Val IoU: 0.8339 ± 0.0286
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2318 ± 0.0152, Mean Val IoU: 0.7811 ± 0.0137
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2243 ± 0.0316, Mean Val IoU: 0.7943 ± 0.0338
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6211 ± 0.0145, Mean Val IoU: 0.3923 ± 0.0270
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.3415 ± 0.0237, Mean Val IoU: 0.6757 ± 0.0282
+Config: BS=8, Loss=combined, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.2607 ± 0.0043, Mean Val IoU: 0.7533 ± 0.0089
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1774 ± 0.0132, Mean Val IoU: 0.8455 ± 0.0165
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1657 ± 0.0067, Mean Val IoU: 0.8546 ± 0.0143
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1685 ± 0.0166, Mean Val IoU: 0.8483 ± 0.0175
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6238 ± 0.0368, Mean Val IoU: 0.3825 ± 0.0897
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.6089 ± 0.0015, Mean Val IoU: 0.3638 ± 0.0249
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.2710 ± 0.0109, Mean Val IoU: 0.7458 ± 0.0157
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1753 ± 0.0046, Mean Val IoU: 0.8489 ± 0.0142
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.3530 ± 0.2526, Mean Val IoU: 0.8102 ± 0.0476
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2461 ± 0.0272, Mean Val IoU: 0.7917 ± 0.0498
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6508 ± 0.0305, Mean Val IoU: 0.3140 ± 0.0807
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.5132 ± 0.1554, Mean Val IoU: 0.4320 ± 0.2192
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.2303 ± 0.0017, Mean Val IoU: 0.7867 ± 0.0036
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1367 ± 0.0129, Mean Val IoU: 0.8332 ± 0.0183
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1195 ± 0.0081, Mean Val IoU: 0.8413 ± 0.0120
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1054 ± 0.0087, Mean Val IoU: 0.8494 ± 0.0177
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.4722 ± 0.0531, Mean Val IoU: 0.3436 ± 0.1631
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.4039 ± 0.0462, Mean Val IoU: 0.4560 ± 0.0659
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.3278 ± 0.0236, Mean Val IoU: 0.5329 ± 0.0261
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1351 ± 0.0046, Mean Val IoU: 0.8449 ± 0.0282
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1263 ± 0.0148, Mean Val IoU: 0.8513 ± 0.0192
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.1407 ± 0.0273, Mean Val IoU: 0.7995 ± 0.0560
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.4185 ± 0.0534, Mean Val IoU: 0.4632 ± 0.0568
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.4150 ± 0.0939, Mean Val IoU: 0.4058 ± 0.1670
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.4529 ± 0.1298, Mean Val IoU: 0.2936 ± 0.2578
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1402 ± 0.0060, Mean Val IoU: 0.8338 ± 0.0125
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1414 ± 0.0337, Mean Val IoU: 0.8145 ± 0.0398
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1145 ± 0.0052, Mean Val IoU: 0.8504 ± 0.0096
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.5342 ± 0.0343, Mean Val IoU: 0.2317 ± 0.0725
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.4119 ± 0.0545, Mean Val IoU: 0.4441 ± 0.0815
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.3235 ± 0.0284, Mean Val IoU: 0.5618 ± 0.0216
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1370 ± 0.0097, Mean Val IoU: 0.8412 ± 0.0064
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1279 ± 0.0148, Mean Val IoU: 0.8338 ± 0.0330
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2046 ± 0.0116, Mean Val IoU: 0.7298 ± 0.0489
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.4618 ± 0.0610, Mean Val IoU: 0.3774 ± 0.1434
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.4216 ± 0.0818, Mean Val IoU: 0.4474 ± 0.1097
+Config: BS=16, Loss=dice, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.3177 ± 0.0323, Mean Val IoU: 0.5456 ± 0.0485
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1403 ± 0.0192, Mean Val IoU: 0.8421 ± 0.0240
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1119 ± 0.0060, Mean Val IoU: 0.8553 ± 0.0120
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1278 ± 0.0270, Mean Val IoU: 0.8215 ± 0.0473
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.4897 ± 0.0329, Mean Val IoU: 0.3358 ± 0.0916
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.4198 ± 0.0845, Mean Val IoU: 0.4117 ± 0.1554
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.2893 ± 0.0087, Mean Val IoU: 0.6192 ± 0.0037
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1357 ± 0.0094, Mean Val IoU: 0.8575 ± 0.0198
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1503 ± 0.0321, Mean Val IoU: 0.8294 ± 0.0135
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.1504 ± 0.0174, Mean Val IoU: 0.7975 ± 0.0430
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.5000 ± 0.0333, Mean Val IoU: 0.3143 ± 0.1097
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.4654 ± 0.0798, Mean Val IoU: 0.3378 ± 0.1582
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.3175 ± 0.0304, Mean Val IoU: 0.5694 ± 0.0491
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1971 ± 0.0179, Mean Val IoU: 0.8370 ± 0.0202
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1800 ± 0.0071, Mean Val IoU: 0.8336 ± 0.0160
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.2047 ± 0.0456, Mean Val IoU: 0.8150 ± 0.0396
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6105 ± 0.0078, Mean Val IoU: 0.3399 ± 0.0406
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.6138 ± 0.0139, Mean Val IoU: 0.3643 ± 0.0476
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.3786 ± 0.0077, Mean Val IoU: 0.6494 ± 0.0219
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1886 ± 0.0153, Mean Val IoU: 0.8431 ± 0.0362
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1738 ± 0.0156, Mean Val IoU: 0.8536 ± 0.0229
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2511 ± 0.0513, Mean Val IoU: 0.7826 ± 0.0362
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6207 ± 0.0113, Mean Val IoU: 0.3347 ± 0.0658
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.5767 ± 0.0546, Mean Val IoU: 0.3621 ± 0.1303
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.4470 ± 0.0860, Mean Val IoU: 0.5844 ± 0.0553
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2102 ± 0.0037, Mean Val IoU: 0.8259 ± 0.0099
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1766 ± 0.0067, Mean Val IoU: 0.8392 ± 0.0091
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1836 ± 0.0069, Mean Val IoU: 0.8312 ± 0.0133
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6677 ± 0.0298, Mean Val IoU: 0.3077 ± 0.1236
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.6124 ± 0.0002, Mean Val IoU: 0.3362 ± 0.0309
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.5272 ± 0.1057, Mean Val IoU: 0.4979 ± 0.0988
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2169 ± 0.0119, Mean Val IoU: 0.8105 ± 0.0177
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1880 ± 0.0107, Mean Val IoU: 0.8317 ± 0.0230
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.3637 ± 0.1269, Mean Val IoU: 0.7546 ± 0.0732
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6495 ± 0.0339, Mean Val IoU: 0.3857 ± 0.0724
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.6291 ± 0.0149, Mean Val IoU: 0.3017 ± 0.0766
+Config: BS=16, Loss=combined, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.4268 ± 0.1215, Mean Val IoU: 0.6156 ± 0.1052
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1913 ± 0.0149, Mean Val IoU: 0.8402 ± 0.0186
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1947 ± 0.0510, Mean Val IoU: 0.8230 ± 0.0592
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1949 ± 0.0378, Mean Val IoU: 0.8229 ± 0.0377
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6191 ± 0.0166, Mean Val IoU: 0.2454 ± 0.0744
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.6124 ± 0.0092, Mean Val IoU: 0.3565 ± 0.0974
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.4522 ± 0.1272, Mean Val IoU: 0.4912 ± 0.2414
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2002 ± 0.0071, Mean Val IoU: 0.8400 ± 0.0055
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1948 ± 0.0408, Mean Val IoU: 0.8432 ± 0.0288
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2574 ± 0.1216, Mean Val IoU: 0.7822 ± 0.1027
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6097 ± 0.0076, Mean Val IoU: 0.3795 ± 0.0436
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.6041 ± 0.0276, Mean Val IoU: 0.3669 ± 0.1290
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.4105 ± 0.1219, Mean Val IoU: 0.6142 ± 0.1160
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2913 ± 0.1297, Mean Val IoU: 0.6461 ± 0.1950
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1409 ± 0.0357, Mean Val IoU: 0.8163 ± 0.0478
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1512 ± 0.0277, Mean Val IoU: 0.7931 ± 0.0605
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.5388 ± 0.0117, Mean Val IoU: 0.1346 ± 0.0579
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.5476 ± 0.0210, Mean Val IoU: 0.1250 ± 0.1011
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.4786 ± 0.0734, Mean Val IoU: 0.3333 ± 0.2003
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1951 ± 0.0476, Mean Val IoU: 0.8183 ± 0.0213
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1534 ± 0.0119, Mean Val IoU: 0.8129 ± 0.0173
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2800 ± 0.1154, Mean Val IoU: 0.6419 ± 0.1899
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.5005 ± 0.0191, Mean Val IoU: 0.3312 ± 0.0719
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.4438 ± 0.0540, Mean Val IoU: 0.3607 ± 0.1853
+Config: BS=32, Loss=dice, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.4611 ± 0.0768, Mean Val IoU: 0.3164 ± 0.1999
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.3148 ± 0.2027, Mean Val IoU: 0.5470 ± 0.3709
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2974 ± 0.2231, Mean Val IoU: 0.6143 ± 0.3004
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.3877 ± 0.3230, Mean Val IoU: 0.5451 ± 0.3585
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.4692 ± 0.0216, Mean Val IoU: 0.3857 ± 0.0598
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.4849 ± 0.0764, Mean Val IoU: 0.2716 ± 0.1899
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.4539 ± 0.0600, Mean Val IoU: 0.3537 ± 0.1673
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1990 ± 0.0342, Mean Val IoU: 0.8131 ± 0.0425
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1559 ± 0.0183, Mean Val IoU: 0.8079 ± 0.0255
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.3261 ± 0.2373, Mean Val IoU: 0.5901 ± 0.2914
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.5000 ± 0.0201, Mean Val IoU: 0.3024 ± 0.0814
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.4483 ± 0.1030, Mean Val IoU: 0.3614 ± 0.2207
+Config: BS=32, Loss=dice, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.4510 ± 0.0808, Mean Val IoU: 0.3684 ± 0.1676
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2809 ± 0.1725, Mean Val IoU: 0.5915 ± 0.3373
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.4424 ± 0.1716, Mean Val IoU: 0.3700 ± 0.2544
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1379 ± 0.0127, Mean Val IoU: 0.8156 ± 0.0272
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.4932 ± 0.0327, Mean Val IoU: 0.2886 ± 0.1260
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.4792 ± 0.0662, Mean Val IoU: 0.3321 ± 0.1912
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.5219 ± 0.0171, Mean Val IoU: 0.1908 ± 0.0569
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.3321 ± 0.1901, Mean Val IoU: 0.5515 ± 0.3868
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.3438 ± 0.2340, Mean Val IoU: 0.5518 ± 0.3099
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2734 ± 0.1391, Mean Val IoU: 0.6268 ± 0.1891
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.5484 ± 0.0282, Mean Val IoU: 0.0339 ± 0.0129
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.5071 ± 0.0120, Mean Val IoU: 0.2819 ± 0.1544
+Config: BS=32, Loss=dice, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.4524 ± 0.0710, Mean Val IoU: 0.3774 ± 0.1299
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2403 ± 0.0101, Mean Val IoU: 0.8088 ± 0.0238
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2599 ± 0.1054, Mean Val IoU: 0.7704 ± 0.0968
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.2735 ± 0.1370, Mean Val IoU: 0.7611 ± 0.1219
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6173 ± 0.0047, Mean Val IoU: 0.3258 ± 0.1273
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.5935 ± 0.0399, Mean Val IoU: 0.3648 ± 0.1507
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.5633 ± 0.0668, Mean Val IoU: 0.3954 ± 0.1517
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.3702 ± 0.1910, Mean Val IoU: 0.5542 ± 0.3727
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2718 ± 0.0881, Mean Val IoU: 0.7676 ± 0.0684
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2657 ± 0.0834, Mean Val IoU: 0.7611 ± 0.0811
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6191 ± 0.0099, Mean Val IoU: 0.2095 ± 0.0643
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.5705 ± 0.0432, Mean Val IoU: 0.3914 ± 0.0918
+Config: BS=32, Loss=combined, Encoder=resnet18, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.5428 ± 0.0712, Mean Val IoU: 0.4508 ± 0.1203
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2478 ± 0.0375, Mean Val IoU: 0.8059 ± 0.0229
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1915 ± 0.0247, Mean Val IoU: 0.8294 ± 0.0340
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.2025 ± 0.0101, Mean Val IoU: 0.8175 ± 0.0120
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6025 ± 0.0109, Mean Val IoU: 0.3550 ± 0.0275
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.6196 ± 0.0123, Mean Val IoU: 0.3250 ± 0.1291
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.6084 ± 0.0196, Mean Val IoU: 0.2384 ± 0.1129
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2354 ± 0.0107, Mean Val IoU: 0.8205 ± 0.0330
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.6322 ± 0.4114, Mean Val IoU: 0.6258 ± 0.1854
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 1.7343 ± 0.8666, Mean Val IoU: 0.1801 ± 0.2324
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6140 ± 0.0132, Mean Val IoU: 0.3159 ± 0.1136
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.6055 ± 0.0225, Mean Val IoU: 0.3873 ± 0.1031
+Config: BS=32, Loss=combined, Encoder=resnet34, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.5173 ± 0.0577, Mean Val IoU: 0.4579 ± 0.1105
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.3466 ± 0.1780, Mean Val IoU: 0.5981 ± 0.3266
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.3221 ± 0.1556, Mean Val IoU: 0.6617 ± 0.2077
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.2884 ± 0.0474, Mean Val IoU: 0.7436 ± 0.0345
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6219 ± 0.0256, Mean Val IoU: 0.1854 ± 0.1437
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.5969 ± 0.0363, Mean Val IoU: 0.2727 ± 0.1755
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=True, Opt=sgd, LR=0.001
+Mean Val Loss: 0.6076 ± 0.0072, Mean Val IoU: 0.2352 ± 0.0783
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2106 ± 0.0203, Mean Val IoU: 0.8403 ± 0.0092
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.3626 ± 0.1050, Mean Val IoU: 0.7062 ± 0.0936
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.5716 ± 0.2575, Mean Val IoU: 0.5618 ± 0.2425
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0001
+Mean Val Loss: 0.6040 ± 0.0160, Mean Val IoU: 0.4150 ± 0.0470
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.0005
+Mean Val Loss: 0.6255 ± 0.0069, Mean Val IoU: 0.2050 ± 0.0862
+Config: BS=32, Loss=combined, Encoder=resnet50, Freeze=False, Opt=sgd, LR=0.001
+Mean Val Loss: 0.5782 ± 0.0610, Mean Val IoU: 0.2769 ± 0.2112
+Writing results.csv
+Finished writing results.csv
+Plotting top 10 configs
+Finished plotting

@@ -39,7 +39,8 @@ PARAMETERS = {
     "freeze_opts": [True, False],
     "optimizers": ['adam', 'sgd'],
     "learning_rates": [1e-4,5e-4,1e-3],
-    "outer_n_splits": 3
+    "outer_n_splits": 3,
+    "resize": [(128, 128), (512, 512)]
     }
 
 # Setup device
@@ -66,9 +67,9 @@ def compute_iou(pred, target):
     union = pred.sum() + target.sum() - intersection
     return (intersection / union).item() if union > 0 else 0.0
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, dataset_dir, num_epochs=100, patience=10):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir, num_epochs=100, patience=10):
     train_transforms = T.Compose([
-        T.RandomCrop((256, 256)),
+        T.RandomCrop(resize),
         T.RandomHorizontalFlip(),
         T.RandomVerticalFlip(),
         T.RandomRotation(degrees=30),
@@ -76,7 +77,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         T.ToTensor(),
     ])
     val_transforms = T.Compose([
-        T.CenterCrop((256, 256)),
+        T.CenterCrop(resize),
         T.ToTensor(),
     ])
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -155,11 +156,11 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     return avg_val_loss, avg_val_iou
 
 def run_single_fold(args):
-    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, fold, train_idx, val_idx, dataset_dir = args
+    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir = args
     val_loss, val_iou = train_and_evaluate(
         train_idx, val_idx,
         batch_size, encoder, freeze_encoder,
-        opt_type, loss_type, fold, lr, dataset_dir
+        opt_type, loss_type, fold, lr, resize, dataset_dir
     )
     return {
         "batch_size": batch_size,
@@ -168,6 +169,7 @@ def run_single_fold(args):
         "freeze_encoder": freeze_encoder,
         "optimizer": opt_type,
         "lr": lr,
+        "resize": resize,
         "fold": fold,
         "val_loss": val_loss,
         "val_iou": val_iou
@@ -182,6 +184,8 @@ def outer_cross_validation(figure_prefix=""):
     freeze_opts = PARAMETERS["freeze_opts"]
     optimizers = PARAMETERS["optimizers"]
     learning_rates = PARAMETERS["learning_rates"]
+    resize = PARAMETERS["resize"]
+
     outer_n_splits = PARAMETERS["outer_n_splits"]
     num_workers = PARAMETERS["cpu_workers"]
 
@@ -193,12 +197,12 @@ def outer_cross_validation(figure_prefix=""):
     outer_kf = KFold(n_splits=outer_n_splits, shuffle=True, random_state=42)
 
     all_tasks = []
-    for combo in product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates):
-        batch_size, loss_type, encoder, freeze_encoder, opt_type, lr = combo
+    for combo in product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize):
+        batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize = combo
         for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
             train_indices = np.array(labeled_indices)[train_idx].tolist()
             val_indices = np.array(labeled_indices)[val_idx].tolist()
-            task = (batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, fold, train_indices, val_indices, dataset_dir)
+            task = (batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_indices, val_indices, dataset_dir)
             all_tasks.append(task)
 
     with Pool(processes=num_workers) as pool:
@@ -207,7 +211,7 @@ def outer_cross_validation(figure_prefix=""):
     # Process results
     combo_results = defaultdict(list)
     for result in all_results:
-        combo_key = (result["batch_size"], result["loss_type"], result["encoder"], result["freeze_encoder"], result["optimizer"], result["lr"])
+        combo_key = (result["batch_size"], result["loss_type"], result["encoder"], result["freeze_encoder"], result["optimizer"], result["lr"], result["resize"])
         combo_results[combo_key].append((result["val_loss"], result["val_iou"]))
 
     final_results = []
@@ -224,6 +228,7 @@ def outer_cross_validation(figure_prefix=""):
             "freeze_encoder": combo_key[3],
             "optimizer": combo_key[4],
             "lr": combo_key[5],
+            "resize": combo_key[6],
             "mean_val_loss": mean_val_loss,
             "std_val_loss": std_val_loss,
             "mean_val_iou": mean_val_iou,
@@ -259,14 +264,22 @@ def outer_cross_validation(figure_prefix=""):
     plt.close()
     print("Finished plotting")
 
+    global starttime
+    endtime = datetime.now().strftime("%m-%d/%H-%M-%S")
+    print("Started at:", starttime)
+    print("Finished at:", endtime)
+    print("Time elapsed:", endtime-current_time)
+
 if __name__ == "__main__":
     set_start_method('spawn', force=True)
 
     global dataset_dir
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
-    current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
-    time_folder = "exports/unet/"+current_time
-    os.makedirs(time_folder, exist_ok=True)
+    global starttime
+    starttime = datetime.now()
+    current_time = starttime.strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
+    export_folder = "exports/unet/"+current_time
+    os.makedirs(export_folder, exist_ok=True)
 
-    outer_cross_validation(figure_prefix=time_folder+"/")
+    outer_cross_validation(figure_prefix=export_folder+"/")
