@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -J train_dino_parallel
-#BSUB -q gpua40
+#BSUB -q gpua100
 #BSUB -n 4
 #BSUB -gpu "num=1:mode=shared"
 #BSUB -R "span[hosts=1]"
