@@ -1,7 +1,7 @@
 #!/bin/bash
 #BSUB -J train_dino_parallel
 #BSUB -q gpua10
-#BSUB -n 4
+#BSUB -n 8
 #BSUB -gpu "num=2:mode=shared"
 #BSUB -R "span[hosts=1]"
 #BSUB -R "rusage[mem=8GB]"
