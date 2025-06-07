@@ -9,7 +9,7 @@
 #BSUB -oo gpuout/dino/train_dino_parallel_%J.out
 #BSUB -eo gpuout/dino/train_dino_parallel_%J.err
 
-module load cuda/12.6
+module load cuda/12.8.1
 
 # Activate conda environment
 source /work3/s234843/init_dinov2.sh
