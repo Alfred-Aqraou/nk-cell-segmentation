@@ -1,3 +1,0 @@
-submitit INFO (2025-06-07 09:26:25,852) - Starting with JobEnvironment(job_id=2098362, hostname=n-62-12-21, local_rank=2(8), node=0(1), global_rank=2(8))
-submitit INFO (2025-06-07 09:26:25,853) - Loading pickle: /zhome/96/d/205311/02466-Project/exports/dino/vits14/2098362_submitted.pkl
-submitit ERROR (2025-06-07 09:26:25,862) - Submitted job triggered an exception
