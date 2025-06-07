@@ -25,11 +25,12 @@ class JointTransform:
         return img, mask
 
 class NKCellDataset(Dataset):
-    def __init__(self, dataset_dir="dataset", transform=None, metadata_filter=None):
+    def __init__(self, dataset_dir="dataset", transform=None, metadata_filter=None, mode='flourescent'):
         self.dataset_dir = dataset_dir
         self._dataset_tar_path = "dataset.tar"
         self.transform = transform
         self.is_joint_transform = isinstance(transform, JointTransform)
+        self.mode = mode
 
         # Paths
         self.labeled_fluorescent_img = os.path.join(dataset_dir, 'fluorescent', 'with_masks', 'images')
@@ -49,13 +50,22 @@ class NKCellDataset(Dataset):
         self.mask_paths = []  # None for unlabeled
         self.is_labeled = []
         
-        # Labeled (with masks)
-        if os.path.exists(self.labeled_fluorescent_img):
-            for img_name in os.listdir(self.labeled_fluorescent_img):
+         # === Load based on mode ===
+        if self.mode == 'fluorescent':
+            image_folder = self.labeled_fluorescent_img
+            mask_folder = self.labeled_fluorescent_mask
+        elif self.mode == 'broadband':
+            image_folder = self.labeled_broadband_img
+            mask_folder = self.labeled_broadband_mask
+        else:
+            raise ValueError(f"Unknown mode: {self.mode}")
+
+        if os.path.exists(image_folder):
+            for img_name in os.listdir(image_folder):
                 if img_name.endswith('.tif'):
-                    img_path = os.path.join(self.labeled_fluorescent_img, img_name)
+                    img_path = os.path.join(image_folder, img_name)
                     mask_name = img_name.replace('.tif', '_GT.tif')
-                    mask_path = os.path.join(self.labeled_fluorescent_mask, mask_name)
+                    mask_path = os.path.join(mask_folder, mask_name)
                     self.image_paths.append(img_path)
                     self.mask_paths.append(mask_path)
                     self.is_labeled.append(True)
