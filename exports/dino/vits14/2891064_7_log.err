@@ -1,0 +1,49 @@
+/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/site-packages/submitit/core/plugins.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: 'libc10_cuda.so: cannot open shared object file: No such file or directory'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+WARNING[XFORMERS]: xFormers can't load C++/CUDA extensions. xFormers was built for:
+    PyTorch 2.0.0+cu118 with CUDA 1108 (you have 2.6.0)
+    Python  3.9.16 (you have 3.9.23)
+  Please reinstall xformers (see https://github.com/facebookresearch/xformers#installing-xformers)
+  Memory-efficient attention, SwiGLU, sparse and more won't be available.
+  Set XFORMERS_MORE_DETAILS=1 for more details
+/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/site-packages/xformers/ops/swiglu_op.py:107: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(cls, ctx, x, w1, b1, w2, b2, w3, b3):
+/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/site-packages/xformers/ops/swiglu_op.py:128: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(cls, ctx, dx5):
+/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/layers/swiglu_ffn.py:43: UserWarning: xFormers is available (SwiGLU)
+  warnings.warn("xFormers is available (SwiGLU)")
+/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/layers/attention.py:27: UserWarning: xFormers is available (Attention)
+  warnings.warn("xFormers is available (Attention)")
+/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/layers/block.py:33: UserWarning: xFormers is available (Block)
+  warnings.warn("xFormers is available (Block)")
+submitit ERROR (2025-06-08 02:53:30,633) - Submitted job triggered an exception
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/site-packages/submitit/core/_submit.py", line 11, in <module>
+    submitit_main()
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/site-packages/submitit/core/submission.py", line 76, in submitit_main
+    process_job(args.folder)
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/site-packages/submitit/core/submission.py", line 69, in process_job
+    raise error
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/site-packages/submitit/core/submission.py", line 55, in process_job
+    result = delayed.result()
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/site-packages/submitit/core/utils.py", line 137, in result
+    self._result = self.function(*self.args, **self.kwargs)
+  File "/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/run/train/train.py", line 25, in __call__
+    train_main(self.args)
+  File "/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/train/train.py", line 299, in main
+    cfg = setup(args)
+  File "/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/utils/config.py", line 70, in setup
+    default_setup(args)
+  File "/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/utils/config.py", line 51, in default_setup
+    distributed.enable(overwrite=True)
+  File "/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/distributed/__init__.py", line 255, in enable
+    torch.cuda.set_device(torch_env.local_rank)
+  File "/work3/s234843/bin/miniconda3/envs/dinov2-xf/lib/python3.9/site-packages/torch/cuda/__init__.py", line 476, in set_device
+    torch._C._cuda_setDevice(device)
+AttributeError: module 'torch._C' has no attribute '_cuda_setDevice'
