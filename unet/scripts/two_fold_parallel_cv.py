@@ -33,14 +33,14 @@ global PARAMETERS
 PARAMETERS = {
     "cpu_workers": 8 if not args.workers else args.workers,
     "EPOCHS": 100,
-    "batch_sizes": [8, 16, 32],
+    "batch_sizes": [8, 16], # None of the best use 32
     "loss_types": ['dice', 'combined'],
     "encoders": ['resnet18','resnet34','resnet50'],
     "freeze_opts": [True, False],
-    "optimizers": ['adam', 'sgd'],
+    "optimizers": ['adam'], # None of the best use sgd
     "learning_rates": [1e-4,5e-4,1e-3],
-    "outer_n_splits": 3,
-    "resize": [(128, 128), (512, 512)]
+    "resize": [(512, 512)],
+    "outer_n_splits": 3
     }
 
 # Setup device
@@ -176,6 +176,9 @@ def run_single_fold(args):
     }
 
 def outer_cross_validation(figure_prefix=""):
+    global starttime
+    print("Started at:", starttime)
+
     global dataset_dir
     global PARAMETERS
     batch_sizes = PARAMETERS["batch_sizes"]
@@ -264,7 +267,6 @@ def outer_cross_validation(figure_prefix=""):
     plt.close()
     print("Finished plotting")
 
-    global starttime
     endtime = datetime.now().strftime("%m-%d/%H-%M-%S")
     print("Started at:", starttime)
     print("Finished at:", endtime)
