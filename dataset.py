@@ -6,9 +6,23 @@ from natsort import natsorted
 import pandas as pd
 from torch.utils.data import Dataset
 import torch
-from typing import Tuple
+from typing import Tuple 
 from concurrent.futures import ThreadPoolExecutor
 from typing import List
+
+# === Utility for extracting hour from filename ===
+import re
+
+def extract_hour_from_filename(filename):
+    match = re.search(r'_(\d+)h(\d+)m(\d+)s_', filename)
+    if match:
+        hours = int(match.group(1))
+        minutes = int(match.group(2))
+        seconds = int(match.group(3))
+        total_hours = hours + minutes / 60 + seconds / 3600
+        return total_hours
+    else:
+        return None
 
 class JointTransform:
     def __init__(self, base_transform):
@@ -25,11 +39,12 @@ class JointTransform:
         return img, mask
 
 class NKCellDataset(Dataset):
-    def __init__(self, dataset_dir="dataset", transform=None, metadata_filter=None):
+    def __init__(self, dataset_dir="dataset", transform=None, metadata_filter=None, mode='fluorescent'):
         self.dataset_dir = dataset_dir
         self._dataset_tar_path = "dataset.tar"
         self.transform = transform
         self.is_joint_transform = isinstance(transform, JointTransform)
+        self.mode = mode
 
         # Paths
         self.labeled_fluorescent_img = os.path.join(dataset_dir, 'fluorescent', 'with_masks', 'images')
@@ -49,13 +64,20 @@ class NKCellDataset(Dataset):
         self.mask_paths = []  # None for unlabeled
         self.is_labeled = []
         
-        # Labeled (with masks)
-        if os.path.exists(self.labeled_fluorescent_img):
-            for img_name in os.listdir(self.labeled_fluorescent_img):
+         # === Load based on mode ===
+        if self.mode == 'fluorescent':
+            image_folder = self.labeled_fluorescent_img
+            mask_folder = self.labeled_fluorescent_mask
+        elif self.mode == 'broadband':
+            image_folder = self.labeled_broadband_img
+            mask_folder = self.labeled_broadband_mask
+
+        if os.path.exists(image_folder):
+            for img_name in os.listdir(image_folder):
                 if img_name.endswith('.tif'):
-                    img_path = os.path.join(self.labeled_fluorescent_img, img_name)
+                    img_path = os.path.join(image_folder, img_name)
                     mask_name = img_name.replace('.tif', '_GT.tif')
-                    mask_path = os.path.join(self.labeled_fluorescent_mask, mask_name)
+                    mask_path = os.path.join(mask_folder, mask_name)
                     self.image_paths.append(img_path)
                     self.mask_paths.append(mask_path)
                     self.is_labeled.append(True)
@@ -72,7 +94,7 @@ class NKCellDataset(Dataset):
     def __len__(self) -> int:
         return len(self.image_paths)
 
-    def __getitem__(self, idx) -> Tuple[Image.Image, torch.Tensor, int]:
+    def __getitem__(self, idx) -> Tuple[Image.Image, torch.Tensor, int, str]:
         #print(f"Loading sample: {idx}")  # temporary debug message
         
         img_path = self.image_paths[idx]
@@ -87,11 +109,11 @@ class NKCellDataset(Dataset):
                 else:
                     image = self.transform(image)
                     mask = self.transform(mask)
-            return image, mask, 1  # 1 indicates labeled
+            return image, mask, 1, img_path  # 1 indicates labeled + return img_path
         else:  # Unlabeled
             if self.transform:
                 image = self.transform(image)
-            return image, torch.zeros_like(image[0:1]), 0  # Dummy mask, 0 indicates unlabeled
+            return image, torch.zeros_like(image[0:1]), 0, img_path  # Dummy mask, 0 indicates unlabeled + return img_path
 
     def _compute_md5(self, file_path) -> str:
         """ Compute the MD5 checksum of a file. """

@@ -39,7 +39,7 @@ PARAMETERS = {
     "freeze_opts": [True, False],
     "optimizers": ['adam'], # None of the best use sgd
     "learning_rates": [1e-4,5e-4,1e-3],
-    "resize": [(128, 128)],
+    "resize": [(512, 512)],
     "outer_n_splits": 3
     }
 

@@ -12,7 +12,7 @@ import numpy as np
 import tqdm
 from sklearn.model_selection import KFold
 
-from dataset import NKCellDataset, JointTransform
+from dataset import NKCellDataset, JointTransform, extract_hour_from_filename
 from models.unet import create_unet
 from segmentation_models_pytorch.losses import DiceLoss
 import torch.nn as nn
@@ -24,8 +24,8 @@ def combined_loss(pred, target):
     return 0.5 * dice_loss(pred, target) + 0.5 * bce_loss(pred, target)
 
 def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5, figure_prefix=""):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
+    device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+    global_iou_per_image = {}  # img_path → iou
     # Define transformation pipelines for training and validation.
     train_base_transform = T.Compose([
     T.RandomCrop((256, 256)),
@@ -58,10 +58,19 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
     ]
     print(f"Total labeled samples: {len(labeled_indices)}")
     
+    global_hours = []
+    global_ious = []
     # Set up KFold cross-validation.
     kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
     fold_metrics = []  # to save the best validation loss from each fold.
     
+    all_args = []
+    for fold, (train_idx, val_idx) in enumerate(kf.split(labeled_indices)):
+        args = (fold, train_idx, val_idx, labeled_indices, dataset_dir, device, batch_size, num_epochs, patience, figure_prefix)
+        all_args.append(args)
+
+    desired_num_workers = 3  # for example, use 5 workers or adjust
+
     # Begin cross-validation.
     for fold, (train_idx, val_idx) in enumerate(kf.split(labeled_indices)):
         # Map from KFold indices to absolute dataset indices.
@@ -84,22 +93,17 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
             encoder_weights="imagenet", 
             in_channels=3, 
             classes=1, 
-            freeze_encoder=False
+            freeze_encoder=True
         )
         model.to(device)
 
                 # Freeze selected encoder layers (conv1, bn1, layer1)
-        for name, param in model.encoder.named_parameters():
-            if name.startswith("conv1") or name.startswith("bn1") or name.startswith("layer1") or name.startswith("layer2"):
-                param.requires_grad = False
-            else:
-                param.requires_grad = True
 
         # Check if encoder parameters are frozen or not
         frozen_params = [name for name, param in model.encoder.named_parameters() if not param.requires_grad]
         print(f"Fold {fold+1}: Frozen encoder parameters count: {len(frozen_params)} / {len(list(model.encoder.parameters()))}")
         print(f"Using pretrained weights: {any('encoder' in key and '0.weight' in key for key in model.state_dict().keys())}")
-        optimizer = optim.Adam(model.parameters(), lr=0.001)
+        optimizer = optim.Adam(model.parameters(), lr=0.0005)
         
         best_val_loss = float('inf')
         patience_counter = 0
@@ -112,7 +116,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
             model.train()
             epoch_train_loss = 0.0
             
-            for images, masks, label_flags in train_loader:
+            for images, masks, label_flags, img_paths in train_loader:
                 images = images.to(device)
                 masks = masks.to(device)
                 
@@ -130,7 +134,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
                     
                     epoch_train_loss += loss.item() * len(labeled_batch_idx)
             
-            num_labeled = sum(label_flags.sum().item() for _, _, label_flags in train_loader)
+            num_labeled = sum(label_flags.sum().item() for _, _, label_flags, _ in train_loader)
             avg_train_loss = epoch_train_loss / num_labeled
             train_losses.append(avg_train_loss)
             
@@ -139,7 +143,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
             epoch_val_loss = 0.0
             iou_scores = []
             with torch.no_grad():
-                for images, masks, label_flags in val_loader:
+                for images, masks, label_flags, img_paths in val_loader:
                     images = images.to(device)
                     masks = masks.to(device)
                     
@@ -159,7 +163,16 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
                         intersection = (preds * labeled_masks).sum(dim=(1, 2, 3))
                         union = preds.sum(dim=(1, 2, 3)) + labeled_masks.sum(dim=(1, 2, 3))
                         iou = intersection / (union - intersection + 1e-8)
-                        iou_scores.extend(iou.cpu().numpy())
+                        ious = iou.cpu().numpy()
+                        iou_scores.extend(ious)
+
+                        # For each labeled sample, map IOU to its hour:
+                        for idx_in_batch, sample_iou in zip(labeled_batch_idx.cpu().numpy(), ious):
+                            img_path = img_paths[idx_in_batch]
+                            hour = extract_hour_from_filename(img_path)
+                            if hour is not None:
+                                global_hours.append(hour)
+                                global_ious.append(sample_iou)
 
             avg_val_loss = epoch_val_loss / len(val_indices)  # Only divide by labeled validation samples
             val_losses.append(avg_val_loss)
@@ -222,9 +235,20 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
     for metrics in fold_metrics:
         print(f"  Fold {metrics['fold']}: Best Validation Loss = {metrics['best_val_loss']:.4f}," f"Best IoU = {metrics['best_iou']:.4f}")
 
+    # --- Global IoU vs Hour plot ---
+    plt.figure(figsize=(8,5))
+    plt.scatter(global_hours, global_ious, color='green')
+    plt.title('Global IoU vs Hour (One point per image)')
+    plt.xlabel('Hour')
+    plt.ylabel('IoU')
+    plt.grid(True)
+    plt.savefig(time_folder + '/global_iou_vs_hour.png')
+    plt.close()
+
+    print(f"Saved global IoU vs Hour plot to {time_folder + '/global_iou_vs_hour.png'}")
 if __name__ == '__main__':
     current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
     time_folder = "exports/unet/"+current_time
     os.makedirs(time_folder, exist_ok=True)
 
-    run_cross_validation(num_epochs=100, batch_size=8, patience=10, n_splits=5, figure_prefix=time_folder+"/")
+    run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5, figure_prefix=time_folder+"/")
