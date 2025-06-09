@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -J train_dino_parallel
-#BSUB -q gpua10
+#BSUB -q gpua100
 #BSUB -n 8
 #BSUB -gpu "num=2:mode=shared"
 #BSUB -R "span[hosts=1]"
@@ -9,10 +9,10 @@
 #BSUB -oo gpuout/dino/train_dino_parallel_%J.out
 #BSUB -eo gpuout/dino/train_dino_parallel_%J.err
 
-module load cuda/12.8.1
+module load cuda/11.7
 
 # Activate conda environment
-source /work3/s234843/init_dinov2.sh
+source /work3/s234843/init_new_dinov2.sh
 
 # Run DINO training with distributed setup
 PYTHONPATH=. python -m torch.distributed.run \
