@@ -21,6 +21,9 @@ def create_unet(encoder_name: str = "resnet34",
     Returns:
         model (torch.nn.Module): The configured U-Net model.
     """
+    if encoder_weights == "dino":
+        pass
+    
     model = smp.Unet(
         encoder_name=encoder_name,
         encoder_weights=encoder_weights,
