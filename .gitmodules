@@ -1,3 +1,3 @@
-[submodule "dinov2-fork"]
-	path = dinov2-fork
-	url = git@github.com:MathiasKES/dinov2-fork.git
+[submodule "solo-learn"]
+	path = solo-learn
+	url = https://github.com/MathiasKES/solo-learn.git
