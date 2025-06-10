@@ -21,6 +21,7 @@ import argparse
 
 from dataset import NKCellDataset, JointTransform
 from models.unet import create_unet
+from models.unet import create_unet_with_dino_resnet18
 from segmentation_models_pytorch.losses import DiceLoss
 
 parser = argparse.ArgumentParser()
@@ -33,13 +34,13 @@ global PARAMETERS
 PARAMETERS = {
     "cpu_workers": 8 if not args.workers else args.workers,
     "EPOCHS": 100,
-    "batch_sizes": [8, 16], # None of the best use 32
+    "batch_sizes": [8, 16, 32],
     "loss_types": ['dice', 'combined'],
-    "encoders": ['resnet18','resnet34','resnet50'],
+    "encoders": ['dino'],
     "freeze_opts": [True, False],
-    "optimizers": ['adam'], # None of the best use sgd
+    "optimizers": ['adam', 'sgd'],
     "learning_rates": [1e-4,5e-4,1e-3],
-    "resize": [(512, 512)],
+    "resize": [(256, 256)],
     "outer_n_splits": 3
     }
 
@@ -90,9 +91,15 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
-    model = create_unet(
-        encoder_name=encoder_name,
-        encoder_weights="imagenet",
+    # model = create_unet(
+    #     encoder_name=encoder_name,
+    #     encoder_weights="imagenet",
+    #     in_channels=3,
+    #     classes=1,
+    #     freeze_encoder=freeze_encoder
+    # ).to(device)
+    model = create_unet_with_dino_resnet18(
+        ckpt_path="/work3/s234843/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt",
         in_channels=3,
         classes=1,
         freeze_encoder=freeze_encoder
