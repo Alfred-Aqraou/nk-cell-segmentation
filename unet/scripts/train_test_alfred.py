@@ -17,6 +17,13 @@ from models.unet import create_unet
 from segmentation_models_pytorch.losses import DiceLoss
 import torch.nn as nn
 
+from solo.methods.dino import DINO
+ckpt_path = "../../trained_models/dino/70queb8d/dino-70queb8d-ep=150.ckpt"
+dino_model = DINO.load_from_checkpoint(ckpt_path, strict=False)
+global resnet_encoder
+resnet_encoder = dino_model.backbone
+
+
 dice_loss = DiceLoss(mode='binary', from_logits=True)
 bce_loss = nn.BCEWithLogitsLoss()
 
@@ -88,12 +95,14 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         print(f"Train samples: {len(train_dataset)}, Validation samples: {len(val_dataset)}")
         
         # Create a new model instance for this fold.
+        global resnet_encoder
         model = create_unet(
-            encoder_name="resnet50", 
-            encoder_weights="imagenet", 
+            encoder_name="resnet18", 
+            encoder_weights=None, 
             in_channels=3, 
             classes=1, 
-            freeze_encoder=True
+            freeze_encoder=True,
+            custom_encoder=resnet_encoder
         )
         model.to(device)
 

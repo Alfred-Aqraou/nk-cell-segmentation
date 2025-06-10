@@ -7,7 +7,8 @@ def create_unet(encoder_name: str = "resnet34",
                 encoder_weights: str = "imagenet",
                 in_channels: int = 3,
                 classes: int = 1,
-                freeze_encoder: bool = True) -> torch.nn.Module:
+                freeze_encoder: bool = True,
+                custom_encoder: torch.nn.Module = None) -> torch.nn.Module:
     """
     Create a U-Net model using segmentation_models_pytorch with the specified configuration.
 
@@ -21,15 +22,16 @@ def create_unet(encoder_name: str = "resnet34",
     Returns:
         model (torch.nn.Module): The configured U-Net model.
     """
-    if encoder_weights == "dino":
-        pass
-    
+
     model = smp.Unet(
         encoder_name=encoder_name,
-        encoder_weights=encoder_weights,
+        encoder_weights=None if custom_encoder else encoder_weights,
         in_channels=in_channels,
         classes=classes,
     )
+
+    if custom_encoder is not None:
+        model.encoder.load_state_dict(custom_encoder.state_dict())
     
     if freeze_encoder:
         # Freeze encoder layers to preserve pretrained features
@@ -37,3 +39,6 @@ def create_unet(encoder_name: str = "resnet34",
             param.requires_grad = False
 
     return model
+
+if __name__ == "__main__":
+    ckpt_path = "../../trained_models/dino/"
