@@ -1,7 +1,7 @@
 import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
-
+from models.unet import create_unet_with_dino_resnet18
 from datetime import datetime
 import torch
 import torch.optim as optim
@@ -25,7 +25,7 @@ import torchvision.models as models
 # cfg["data"]["num_classes"] = 1
 # cfg["data"]["num_large_crops"] = 1
 # dino_model = DINO(cfg)
-ckpt_path = "/home/mathias/GitHub/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=96.ckpt"
+ckpt_path = "/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=96.ckpt"
 # ckpt = torch.load(ckpt_path, map_location="cpu")
 # dino_model.load_state_dict(ckpt["state_dict"], strict=False)
 # global resnet_encoder
@@ -132,13 +132,11 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         
         # Create a new model instance for this fold.
         global resnet18
-        model = create_unet(
-            encoder_name="resnet18", 
-            encoder_weights=None, 
-            in_channels=3, 
-            classes=1, 
-            freeze_encoder=True,
-            custom_encoder=resnet18
+        model = create_unet_with_dino_resnet18(
+            ckpt_path="/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt",
+            in_channels=3,
+            classes=1,
+            freeze_encoder=True
         )
         model.to(device)
 
