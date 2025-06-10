@@ -18,11 +18,47 @@ from segmentation_models_pytorch.losses import DiceLoss
 import torch.nn as nn
 
 from solo.methods.dino import DINO
-ckpt_path = "../../trained_models/dino/70queb8d/dino-70queb8d-ep=150.ckpt"
-dino_model = DINO.load_from_checkpoint(ckpt_path, strict=False)
-global resnet_encoder
-resnet_encoder = dino_model.backbone
+import torchvision.models as models
+# from omegaconf import OmegaConf
+# cfg = OmegaConf.load("/home/mathias/GitHub/02466-Project/solo-learn/scripts/pretrain/custom/dino.yaml")
+# print(cfg)
+# cfg["data"]["num_classes"] = 1
+# cfg["data"]["num_large_crops"] = 1
+# dino_model = DINO(cfg)
+ckpt_path = "/home/mathias/GitHub/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=96.ckpt"
+# ckpt = torch.load(ckpt_path, map_location="cpu")
+# dino_model.load_state_dict(ckpt["state_dict"], strict=False)
+# global resnet_encoder
+# resnet_encoder = dino_model.backbone
 
+# Load your DINO-trained checkpoint
+ckpt = torch.load(ckpt_path, map_location="cpu")
+state_dict = ckpt["state_dict"]
+
+# Remove 'backbone.' prefix and ignore fc weights
+encoder_weights = {
+    k.replace("backbone.", ""): v
+    for k, v in state_dict.items()
+    if k.startswith("backbone.") and not k.startswith("backbone.fc")
+}
+
+# Load weights into resnet18 backbone
+global resnet18
+resnet18 = models.resnet18(pretrained=False)
+
+# Remove the fc layer since we don’t use it
+resnet18.fc = torch.nn.Identity()
+
+# Now load weights
+missing, unexpected = resnet18.load_state_dict(encoder_weights, strict=False)
+
+print("Missing keys:", missing)
+print("Unexpected keys:", unexpected)
+
+# Now create a resnet18 model (same as DINO backbone):
+# global resnet_encoder
+# resnet_encoder = models.resnet18(pretrained=False)
+# resnet_encoder.load_state_dict(encoder_state_dict)
 
 dice_loss = DiceLoss(mode='binary', from_logits=True)
 bce_loss = nn.BCEWithLogitsLoss()
@@ -95,14 +131,14 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         print(f"Train samples: {len(train_dataset)}, Validation samples: {len(val_dataset)}")
         
         # Create a new model instance for this fold.
-        global resnet_encoder
+        global resnet18
         model = create_unet(
             encoder_name="resnet18", 
             encoder_weights=None, 
             in_channels=3, 
             classes=1, 
             freeze_encoder=True,
-            custom_encoder=resnet_encoder
+            custom_encoder=resnet18
         )
         model.to(device)
 

@@ -24,14 +24,15 @@ def create_unet(encoder_name: str = "resnet34",
     """
 
     model = smp.Unet(
-        encoder_name=encoder_name,
+        encoder_name=None if custom_encoder else encoder_name,
         encoder_weights=None if custom_encoder else encoder_weights,
         in_channels=in_channels,
         classes=classes,
     )
 
     if custom_encoder is not None:
-        model.encoder.load_state_dict(custom_encoder.state_dict())
+        # model.encoder.load_state_dict(custom_encoder.state_dict())
+        model.encoder = custom_encoder
     
     if freeze_encoder:
         # Freeze encoder layers to preserve pretrained features
@@ -39,6 +40,3 @@ def create_unet(encoder_name: str = "resnet34",
             param.requires_grad = False
 
     return model
-
-if __name__ == "__main__":
-    ckpt_path = "../../trained_models/dino/"
