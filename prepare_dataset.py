@@ -2,8 +2,8 @@ from pathlib import Path
 from PIL import Image
 import re
 
-input_dir = Path("dataset/fluorescent/without_masks")
-output_dir = Path("dataset/fluorescent/without_masks_256/dummy")
+input_dir = Path("/work3/s234843/02466-Project/dataset/fluorescent/without_masks")
+output_dir = Path("/work3/s234843/02466-Project/dataset/fluorescent/without_masks_256/dummy")
 output_dir.mkdir(parents=True, exist_ok=True)
 
 for tif_path in input_dir.glob("*.tif"):
@@ -14,7 +14,7 @@ for tif_path in input_dir.glob("*.tif"):
 
     hours = int(match.group(1))
     
-    if hours > 28:
+    if hours >= 28:
         img = Image.open(tif_path)
         img = img.resize((256, 256), Image.BICUBIC)
         out_path = output_dir / tif_path.with_suffix(".tif").name
