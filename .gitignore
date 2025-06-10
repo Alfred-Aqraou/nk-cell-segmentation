@@ -8,5 +8,6 @@ dataset.tar
 # Models
 *.pt
 *.pth
+*.ckpt
 
 __pycache__
