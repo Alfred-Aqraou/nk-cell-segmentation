@@ -3,10 +3,8 @@ from PIL import Image
 import re
 
 input_dir = Path("dataset/fluorescent/without_masks")
-output_dir = Path("dataset/fluorescent/without_masks_224")
+output_dir = Path("dataset/fluorescent/without_masks_256")
 output_dir.mkdir(parents=True, exist_ok=True)
-
-count = 0  # Add before the loop
 
 for tif_path in input_dir.glob("*.tif"):
     # Extract the time component from filename using regex
@@ -18,11 +16,8 @@ for tif_path in input_dir.glob("*.tif"):
     
     if hours >= 29:
         img = Image.open(tif_path)
-        img = img.resize((224, 224), Image.BICUBIC)
-        out_path = output_dir / tif_path.with_suffix(".png").name
+        img = img.resize((256, 256), Image.BICUBIC)
+        out_path = output_dir / tif_path.with_suffix(".tif").name
         img.save(out_path)
-        count += 1
-        if count >= 3000:
-            break
 
 print(f"Resized images saved to: {output_dir}")
