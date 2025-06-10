@@ -1,0 +1,13 @@
+Loaded module: cuda/11.7
+/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/layers/swiglu_ffn.py:43: UserWarning: xFormers is available (SwiGLU)
+  warnings.warn("xFormers is available (SwiGLU)")
+/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/layers/swiglu_ffn.py:43: UserWarning: xFormers is available (SwiGLU)
+  warnings.warn("xFormers is available (SwiGLU)")
+/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/layers/attention.py:27: UserWarning: xFormers is available (Attention)
+  warnings.warn("xFormers is available (Attention)")
+/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/layers/attention.py:27: UserWarning: xFormers is available (Attention)
+  warnings.warn("xFormers is available (Attention)")
+/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/layers/block.py:33: UserWarning: xFormers is available (Block)
+  warnings.warn("xFormers is available (Block)")
+/zhome/96/d/205311/02466-Project/dinov2-fork/dinov2/layers/block.py:33: UserWarning: xFormers is available (Block)
+  warnings.warn("xFormers is available (Block)")
