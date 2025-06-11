@@ -30,8 +30,7 @@ from segmentation_models_pytorch.losses import DiceLoss, JaccardLoss
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-w", "--workers", help = "Amount of CPU workers to run in parallel", type=int, default=8)
-parser.add_argument("-d", "--dino", help = "Provide a DINO checkpoint path", type=str, default=None)
-parser.add_argument("-e", "--encoders", help = "Specify encoders", nargs='+', default=['resnet18', 'resnet34', 'resnet50'])
+parser.add_argument("-e", "--encoders", help = "Specify encoders, you can also add a ckpt path", nargs='+', default=['resnet18', 'resnet34', 'resnet50'])
 parser.add_argument("-l", "--loss", help = "Specify loss types", nargs='+', default=['dice', 'combined'])
 args = parser.parse_args()
 print("Given arguments:")
@@ -104,12 +103,9 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
     # "/work3/s234843/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt"
-    if encoder_name == "dino":
-        if not dino_path:
-            print("Please specify dino checkpoint point when using dino encoder")
-            sys.exit()
+    if ".ckpt" in encoder_name:
         model = create_unet_with_dino_resnet18(
-            ckpt_path=dino_path,
+            ckpt_path=encoder_name,
             in_channels=3,
             classes=1,
             freeze_encoder=freeze_encoder
