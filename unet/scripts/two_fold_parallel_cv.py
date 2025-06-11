@@ -66,7 +66,7 @@ keys_to_multiply = [
 
 # Compute total combinations
 lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
-total_combinations = reduce(operator.mul, lengths)
+total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]
 pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
 
 
