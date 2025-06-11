@@ -1,0 +1,6 @@
+[34m[1mwandb[0m: logging graph, to disable use `wandb.watch(log_graph=False)`
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/plugins/precision/amp.py:54: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/trainer/configuration_validator.py:74: You defined a `validation_step` but have no `val_dataloader`. Skipping val loop.
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/distributed/distributed_c10d.py:4631: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user.
+  warnings.warn(  # warn only once
+Epoch 222:  77%|███████████████████████████████████████████████████████████████████████████████████████████████████▋                              | 56/73 [00:14<00:04,  3.80it/s, v_num=v5c2]

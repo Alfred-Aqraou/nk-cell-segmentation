@@ -1,0 +1,64 @@
+_wandb:
+    value:
+        cli_version: 0.20.1
+        m: []
+        python_version: 3.12.11
+        t:
+            "1":
+                - 1
+                - 5
+                - 41
+                - 49
+                - 53
+                - 63
+                - 74
+            "2":
+                - 1
+                - 5
+                - 41
+                - 49
+                - 53
+                - 63
+                - 74
+            "3":
+                - 16
+                - 55
+            "4": 3.12.11
+            "5": 0.20.1
+            "12": 0.20.1
+            "13": linux-x86_64
+EPOCHS:
+    value: 100
+batch_sizes:
+    value:
+        - 8
+        - 16
+        - 32
+cpu_workers:
+    value: 8
+encoders:
+    value:
+        - dino
+freeze_opts:
+    value:
+        - true
+        - false
+learning_rates:
+    value:
+        - 0.0001
+        - 0.0005
+        - 0.001
+loss_types:
+    value:
+        - dice
+        - combined
+optimizers:
+    value:
+        - adam
+        - sgd
+outer_n_splits:
+    value: 3
+resize:
+    value:
+        - - 256
+          - 256

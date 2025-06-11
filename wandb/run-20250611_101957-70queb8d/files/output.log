@@ -1,0 +1,32 @@
+[34m[1mwandb[0m: logging graph, to disable use `wandb.watch(log_graph=False)`
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/plugins/precision/amp.py:54: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/trainer/configuration_validator.py:74: You defined a `validation_step` but have no `val_dataloader`. Skipping val loop.
+Error executing job with overrides: []
+Traceback (most recent call last):
+  File "/zhome/96/d/205311/02466-Project/solo-learn/main_pretrain.py", line 234, in main
+    trainer.fit(model, train_loader, val_loader, ckpt_path=ckpt_path)
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/trainer/trainer.py", line 544, in fit
+    call._call_and_handle_interrupt(
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/trainer/call.py", line 43, in _call_and_handle_interrupt
+    return trainer.strategy.launcher.launch(trainer_fn, *args, trainer=trainer, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/strategies/launchers/subprocess_script.py", line 102, in launch
+    return function(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/trainer/trainer.py", line 580, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/trainer/trainer.py", line 955, in _run
+    self._checkpoint_connector._restore_modules_and_callbacks(ckpt_path)
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/checkpoint_connector.py", line 396, in _restore_modules_and_callbacks
+    self.restore_model()
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/checkpoint_connector.py", line 276, in restore_model
+    trainer.strategy.load_model_state_dict(self._loaded_checkpoint)
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/strategies/strategy.py", line 363, in load_model_state_dict
+    self.lightning_module.load_state_dict(checkpoint["state_dict"])
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 2593, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for DINO:
+	size mismatch for classifier.weight: copying a param with shape torch.Size([1, 512]) from checkpoint, the shape in current model is torch.Size([2, 512]).
+	size mismatch for classifier.bias: copying a param with shape torch.Size([1]) from checkpoint, the shape in current model is torch.Size([2]).
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
