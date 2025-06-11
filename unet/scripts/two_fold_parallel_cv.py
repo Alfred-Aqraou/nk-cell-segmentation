@@ -40,10 +40,10 @@ PARAMETERS = {
     "cpu_workers": args.workers,
     "EPOCHS": 100,
     "batch_sizes": [8, 16, 32],
-    "loss_types": ['dice', 'combined', 'iou'],
-    "encoders": ['dino'],
+    "loss_types": ['iou'], # 'dice', 'combined', 
+    "encoders": ['resnet18', 'resnet34', 'resnet50'],
     "freeze_opts": [True, False],
-    "optimizers": ['adam', 'sgd'],
+    "optimizers": ['adam'],
     "learning_rates": [1e-4,5e-4,1e-3],
     "resize": [(256, 256)],
     "outer_n_splits": 3
@@ -100,7 +100,10 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
     # "/work3/s234843/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt"
-    if dino_path:
+    if encoder_name == "dino":
+        if not dino_path:
+            print("Please specify dino checkpoint point when using dino encoder")
+            sys.exit()
         model = create_unet_with_dino_resnet18(
             ckpt_path=dino_path,
             in_channels=3,
