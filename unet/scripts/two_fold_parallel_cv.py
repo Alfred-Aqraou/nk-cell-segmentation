@@ -35,8 +35,6 @@ parser.add_argument("-l", "--loss", help = "Specify loss types", nargs='+', defa
 args = parser.parse_args()
 print("Given arguments:")
 print(args)
-if args.dino is not None:
-    dino_path = os.path.abspath(args.dino)
 
 global PARAMETERS
 PARAMETERS = {
@@ -105,7 +103,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     # "/work3/s234843/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt"
     if ".ckpt" in encoder_name:
         model = create_unet_with_dino_resnet18(
-            ckpt_path=encoder_name,
+            ckpt_path=os.path.abspath(encoder_name),
             in_channels=3,
             classes=1,
             freeze_encoder=freeze_encoder
