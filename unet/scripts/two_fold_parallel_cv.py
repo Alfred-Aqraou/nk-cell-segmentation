@@ -102,7 +102,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     #     freeze_encoder=freeze_encoder
     # ).to(device)
     model = create_unet_with_dino_resnet18(
-        ckpt_path="/work3/s234843/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt",
+        ckpt_path="/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt",
         in_channels=3,
         classes=1,
         freeze_encoder=freeze_encoder

@@ -9,7 +9,7 @@ output_dir = Path("/work3/s234843/02466-Project/dataset/without_masks_256/combin
 for i in range(len(input_dirs)):
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    for tif_path in tqdm.tqdm(input_dirs[i].glob("*.tif"), desc=f"{str(output_dir).split("/")[-1]} images"):
+    for tif_path in tqdm.tqdm(input_dirs[i].glob("*.tif"), desc=f"{str(input_dirs[i]).split("/")[-2]} images"):
         # Extract the time component from filename using regex
         match = re.search(r"_(\d{2})h(\d{2})m(\d{2})s_", tif_path.name)
         if not match:
