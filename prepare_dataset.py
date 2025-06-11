@@ -1,22 +1,15 @@
 from pathlib import Path
 from PIL import Image
-import re
+import re, tqdm
 
-#input_dir = Path("/work3/s234843/02466-Project/dataset/fluorescent/without_masks")
-# Input folders
-input_dirs = [
-    Path("/work3/s234843/02466-Project/dataset/fluorescent/without_masks"),
-    Path("/work3/s234843/02466-Project/dataset/broadband/without_masks"),
-    #Path("/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/dataset/broadband/without_masks"),
-    #Path("/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/dataset/fluorescent/without_masks"),
-]
-output_dir = Path("/work3/s234843/02466-Project/dataset/without_masks_256_combined/dummy")
-#output_dir = Path("/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/dataset/without_masks_256_combined/dummy")
-output_dir.mkdir(parents=True, exist_ok=True)
+input_dirs = [Path("/work3/s234843/02466-Project/dataset/fluorescent/without_masks"),
+             Path("/work3/s234843/02466-Project/dataset/broadband/without_masks")]
+output_dir = Path("/work3/s234843/02466-Project/dataset/without_masks_256/combined")
 
-for input_dir in input_dirs:
-    print(f"Processing folder: {input_dir}")
-    for tif_path in input_dir.glob("*.tif"):
+for i in range(len(input_dirs)):
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    for tif_path in tqdm.tqdm(input_dirs[i].glob("*.tif"), desc=f"{str(output_dir).split("/")[-1]} images"):
         # Extract the time component from filename using regex
         match = re.search(r"_(\d{2})h(\d{2})m(\d{2})s_", tif_path.name)
         if not match:
@@ -30,4 +23,6 @@ for input_dir in input_dirs:
             out_path = output_dir / tif_path.with_suffix(".tif").name
             img.save(out_path)
 
-print(f"Resized images saved to: {output_dir}")
+    print(f"Resized images saved to: {output_dir}")
+
+print("Finished")
