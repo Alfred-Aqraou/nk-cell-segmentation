@@ -206,7 +206,7 @@ def outer_cross_validation(figure_prefix=""):
                 task = (batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_indices, val_indices, dataset_dir)
                 all_tasks.append(task)
         except ValueError:
-            pass
+            print("Failed to run, passing empty run")
 
     with Pool(processes=num_workers) as pool:
         all_results = pool.map(run_single_fold, all_tasks)
