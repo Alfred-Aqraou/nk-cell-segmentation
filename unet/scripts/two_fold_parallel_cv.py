@@ -2,7 +2,7 @@ import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
-from multiprocessing import Pool
+from multiprocessing import Pool, set_start_method
 import csv
 import torch
 import tqdm
@@ -323,8 +323,7 @@ def outer_cross_validation(figure_prefix=""):
     print("Time elapsed:", endtime-starttime)
 
 if __name__ == "__main__":
-    from multiprocessing import set_start_method
-    set_start_method('fork', force=True)
+    set_start_method('spawn', force=True)
 
     global dataset_dir
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
