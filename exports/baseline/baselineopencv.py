@@ -13,7 +13,7 @@ image_folder  = "/Users/aliafif/Desktop/Code/Fagprojekt/02466-Project/dataset/fl
 
 # ----------- Load labeled images -------------
 
-label_files = [f for f in os.listdir(labels_folder) if f.endswith('GT.tif')]
+label_files = sorted([f for f in os.listdir(labels_folder) if f.endswith('GT.tif')])
 labeled_indices = list(range(len(label_files)))
 
 print(f"Found {len(label_files)} labeled images.")
@@ -58,7 +58,9 @@ for fold, (train_idx, val_idx) in enumerate(kf.split(labeled_indices)):
 
         fold_iou_list.append(iou)
 
-    # Save per-image IoU for this fold
-    os.makedirs("exports/baseline", exist_ok=True)
-    np.save(f"exports/baseline/per_image_iou_fold{fold+1}_baseline.npy", np.array(fold_iou_list))
-    print(f"Saved fold {fold+1} IoUs to exports/baseline/per_image_iou_fold{fold+1}_baseline.npy")
+    # Save per-image IoU for this fold in unified baseline folder
+    export_dir = "exports/baseline/baseline_np"
+    os.makedirs(export_dir, exist_ok=True)
+    save_path = os.path.join(export_dir, f"per_image_iou_fold{fold+1}_baseline.npy")
+    np.save(save_path, np.array(fold_iou_list))
+    print(f"Saved fold {fold+1} IoUs to {save_path}")
