@@ -33,7 +33,8 @@ parser.add_argument("-d", "--dino", help = "Provide a DINO checkpoint path", typ
 args = parser.parse_args()
 print("Given arguments:")
 print(args)
-dino_path = os.path.abspath(args.dino)
+if args.dino is not None:
+    dino_path = os.path.abspath(args.dino)
 
 global PARAMETERS
 PARAMETERS = {
