@@ -1,0 +1,7 @@
+[34m[1mwandb[0m: logging graph, to disable use `wandb.watch(log_graph=False)`
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/plugins/precision/amp.py:54: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/trainer/configuration_validator.py:74: You defined a `validation_step` but have no `val_dataloader`. Skipping val loop.
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/distributed/distributed_c10d.py:4631: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user.
+  warnings.warn(  # warn only once
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/loops/fit_loop.py:293: The number of training batches (36) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+Epoch 399: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 36/36 [00:12<00:00,  2.96it/s, v_num=eb8d]
