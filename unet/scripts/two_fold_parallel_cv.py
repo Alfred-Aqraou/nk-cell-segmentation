@@ -2,7 +2,7 @@ import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
-from multiprocessing import Pool
+from multiprocessing import Pool, set_start_method
 import csv
 import torch
 import tqdm
@@ -16,6 +16,10 @@ from sklearn.model_selection import KFold
 from collections import defaultdict
 from datetime import datetime
 
+from functools import reduce
+import operator
+
+import re
 from typing import List
 # import pandas as pd
 
@@ -50,6 +54,22 @@ PARAMETERS = {
     "outer_n_splits": 3
     }
 
+keys_to_multiply = [
+    "batch_sizes",
+    "loss_types",
+    "encoders",
+    "freeze_opts",
+    "optimizers",
+    "learning_rates",
+    "resize"
+]
+
+# Compute total combinations
+lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
+total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]
+pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
+
+
 # Setup device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
 
@@ -76,6 +96,15 @@ def compute_iou(pred, target):
     intersection = (pred * target).sum()
     union = pred.sum() + target.sum() - intersection
     return (intersection / union).item() if union > 0 else 0.0
+
+def extract_encoder_name(encoder):
+    if not isinstance(encoder, str):
+        return str(encoder)
+    if "dino" in encoder and ".ckpt" in encoder:
+        match = re.search(r'dino/([^/]+)/dino-\1-ep=(\d+)\.ckpt', encoder)
+        if match:
+            return f"dino_{match.group(1)}_e{match.group(2)}"
+    return encoder  # Return original if not a dino path or no match
 
 def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir, num_epochs=100, patience=10):
     train_transforms = T.Compose([
@@ -129,9 +158,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     best_val_loss = float('inf')
     patience_counter = 0
 
-
-
-    for epoch in tqdm.tqdm(range(num_epochs), desc=f"Fold {fold+1} Training"):
+    for epoch in range(num_epochs):#, desc=f"Fold {fold+1} Training"):
         model.train()
         train_loss = 0.0
         for images, masks, label_flags, _ in train_loader:
@@ -180,6 +207,8 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         if patience_counter >= patience:
             print("Early stopping triggered.")
             break
+    
+    pbar.update(1)
 
     return avg_val_loss, avg_val_iou
 
@@ -291,7 +320,7 @@ def outer_cross_validation(figure_prefix=""):
     # Plot top 10 configurations
     print("Plotting top 10 configs")
     top_results = sorted(final_results, key=lambda r: r["mean_val_loss"])[:10]
-    labels = [f'{r["batch_size"]}-{r["loss_type"]}-{r["encoder"]}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
+    labels = [f'{r["batch_size"]}-{r["loss_type"]}-{extract_encoder_name(r["encoder"])}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
     losses = [r["mean_val_loss"] for r in top_results]
     plt.figure(figsize=(12, 6))
     plt.barh(labels, losses, color="skyblue")
@@ -313,8 +342,7 @@ def outer_cross_validation(figure_prefix=""):
     print("Time elapsed:", endtime-starttime)
 
 if __name__ == "__main__":
-    from multiprocessing import set_start_method
-    set_start_method('fork', force=True)
+    set_start_method('spawn', force=True)
 
     global dataset_dir
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
@@ -332,3 +360,4 @@ if __name__ == "__main__":
     # )
 
     outer_cross_validation(figure_prefix=export_folder+"/")
+    pbar.close()
