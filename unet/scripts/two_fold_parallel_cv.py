@@ -16,17 +16,46 @@ from sklearn.model_selection import KFold
 from collections import defaultdict
 from datetime import datetime
 
-import pandas as pd
+# import pandas as pd
 
 import argparse
 
-import wandb
+# import wandb
 
 from dataset import NKCellDataset, JointTransform
 from models.unet import create_unet
 from models.unet import create_unet_with_dino_resnet18
-from segmentation_models_pytorch.losses import DiceLoss
+from segmentation_models_pytorch.losses import DiceLoss, JaccardLoss
 
+parser = argparse.ArgumentParser()
+parser.add_argument("-w", "--workers", help = "Amount of CPU workers to run in parallel", type=int, default=8)
+parser.add_argument("-d", "--dino", help = "Provide a DINO checkpoint path", type=str, default=None)
+args = parser.parse_args()
+print("Given arguments:")
+print(args)
+dino_path = os.path.abspath(args.dino)
+
+global PARAMETERS
+PARAMETERS = {
+    "cpu_workers": args.workers,
+    "EPOCHS": 100,
+    "batch_sizes": [8, 16, 32],
+    "loss_types": ['dice', 'combined', 'iou'],
+    "encoders": ['dino'],
+    "freeze_opts": [True, False],
+    "optimizers": ['adam', 'sgd'],
+    "learning_rates": [1e-4,5e-4,1e-3],
+    "resize": [(256, 256)],
+    "outer_n_splits": 3
+    }
+
+# Setup device
+device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+
+# Loss functions
+dice_loss = DiceLoss(mode='binary', from_logits=True)
+bce_loss = nn.BCEWithLogitsLoss()
+iou_loss = JaccardLoss(mode='binary', from_logits=True)
 
 def combined_loss(pred, target):
     return 0.5 * dice_loss(pred, target) + 0.5 * bce_loss(pred, target)
@@ -36,6 +65,8 @@ def get_loss_function(loss_type):
         return lambda pred, target: dice_loss(pred, target)
     elif loss_type == "bce":
         return lambda pred, target: bce_loss(pred, target)
+    elif loss_type == 'iou':
+        return lambda pred, target: iou_loss(pred, target)
     else:
         return combined_loss
 
@@ -68,19 +99,23 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
-    # model = create_unet(
-    #     encoder_name=encoder_name,
-    #     encoder_weights="imagenet",
-    #     in_channels=3,
-    #     classes=1,
-    #     freeze_encoder=freeze_encoder
-    # ).to(device)
-    model = create_unet_with_dino_resnet18(
-        ckpt_path="/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt",
-        in_channels=3,
-        classes=1,
-        freeze_encoder=freeze_encoder
-    ).to(device)
+    # "/work3/s234843/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt"
+    if dino_path:
+        model = create_unet_with_dino_resnet18(
+            ckpt_path=dino_path,
+            in_channels=3,
+            classes=1,
+            freeze_encoder=freeze_encoder
+        ).to(device)
+    else:
+        model = create_unet(
+            encoder_name=encoder_name,
+            encoder_weights="imagenet",
+            in_channels=3,
+            classes=1,
+            freeze_encoder=freeze_encoder
+        ).to(device)
+    
 
     if optimizer_type == "adam":
         optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -126,13 +161,13 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         avg_val_loss = val_loss / len(val_indices)
         avg_val_iou = val_iou / len(val_indices)
 
-        wandb.log({
-            "epoch": epoch,
-            "train_loss": train_loss / len(train_loader.dataset),
-            "val_loss": avg_val_loss,
-            "val_iou": avg_val_iou,
-            "fold": fold
-        })
+        # wandb.log({
+        #     "epoch": epoch,
+        #     "train_loss": train_loss / len(train_loader.dataset),
+        #     "val_loss": avg_val_loss,
+        #     "val_iou": avg_val_iou,
+        #     "fold": fold
+        # })
 
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
@@ -167,7 +202,7 @@ def run_single_fold(args):
         "val_loss": val_loss,
         "val_iou": val_iou
     }
-    wandb.log(result)
+    # wandb.log(result)
     return result
 
 def outer_cross_validation(figure_prefix=""):
@@ -199,14 +234,11 @@ def outer_cross_validation(figure_prefix=""):
     all_tasks = []
     for combo in product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize):
         batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize = combo
-        try:
-            for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
-                train_indices = np.array(labeled_indices)[train_idx].tolist()
-                val_indices = np.array(labeled_indices)[val_idx].tolist()
-                task = (batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_indices, val_indices, dataset_dir)
-                all_tasks.append(task)
-        except ValueError:
-            print("Failed to run, passing empty run")
+        for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
+            train_indices = np.array(labeled_indices)[train_idx].tolist()
+            val_indices = np.array(labeled_indices)[val_idx].tolist()
+            task = (batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_indices, val_indices, dataset_dir)
+            all_tasks.append(task)
 
     with Pool(processes=num_workers) as pool:
         all_results = pool.map(run_single_fold, all_tasks)
@@ -240,9 +272,9 @@ def outer_cross_validation(figure_prefix=""):
         print(f"Config: BS={combo_key[0]}, Loss={combo_key[1]}, Encoder={combo_key[2]}, Freeze={combo_key[3]}, Opt={combo_key[4]}, LR={combo_key[5]}")
         print(f"Mean Val Loss: {mean_val_loss:.4f} ± {std_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f} ± {std_val_iou:.4f}")
 
-    wandb.log({
-        "final_results_table": wandb.Table(dataframe=pd.DataFrame(final_results))
-    })
+    # wandb.log({
+    #     "final_results_table": wandb.Table(dataframe=pd.DataFrame(final_results))
+    # })
 
     # Save results to CSV
     print("Writing results.csv")
@@ -271,9 +303,9 @@ def outer_cross_validation(figure_prefix=""):
     plt.close()
     print("Finished plotting")
 
-    wandb.log({
-        "top_10_val_loss_plot": wandb.Image(figure_prefix + "top_10_configs.png")
-    })
+    # wandb.log({
+    #     "top_10_val_loss_plot": wandb.Image(figure_prefix + "top_10_configs.png")
+    # })
 
     endtime = datetime.now()
     print("Started at:", starttime)
@@ -283,39 +315,6 @@ def outer_cross_validation(figure_prefix=""):
 if __name__ == "__main__":
     set_start_method('spawn', force=True)
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-w", "--workers", help = "Amount of CPU workers to run in parallel", type=int)
-    args = parser.parse_args()
-    print("Given arguments:")
-    print(args)
-
-    global PARAMETERS
-    PARAMETERS = {
-        "cpu_workers": 8 if not args.workers else args.workers,
-        "EPOCHS": 100,
-        "batch_sizes": [8, 16, 32],
-        "loss_types": ['dice', 'combined'],
-        "encoders": ['dino'],
-        "freeze_opts": [True, False],
-        "optimizers": ['adam', 'sgd'],
-        "learning_rates": [1e-4,5e-4,1e-3],
-        "resize": [(256, 256)],
-        "outer_n_splits": 3
-        }
-
-    wandb.login()
-    run = wandb.init(
-        project="U-net parallel",  # Specify your project
-        config=PARAMETERS,
-    )
-
-    # Setup device
-    device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
-
-    # Loss functions
-    dice_loss = DiceLoss(mode='binary', from_logits=True)
-    bce_loss = nn.BCEWithLogitsLoss()
-
     global dataset_dir
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
@@ -324,5 +323,11 @@ if __name__ == "__main__":
     current_time = starttime.strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
     export_folder = "exports/unet/"+current_time
     os.makedirs(export_folder, exist_ok=True)
+
+    # wandb.login()
+    # run = wandb.init(
+    #     project="U-net parallel",  # Specify your project
+    #     config=PARAMETERS,
+    # )
 
     outer_cross_validation(figure_prefix=export_folder+"/")
