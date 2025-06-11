@@ -98,7 +98,6 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         #     classes=1,
         #     freeze_encoder=True
         # )
-        # model.to(device)
 
         model = create_unet(
             encoder_name="resnet50",   # here you just specify which encoder
@@ -107,6 +106,8 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
             classes=1,
             freeze_encoder=True
         )
+
+        model.to(device)
 
         # Check if encoder parameters are frozen or not
         frozen_params = [name for name, param in model.encoder.named_parameters() if not param.requires_grad]
