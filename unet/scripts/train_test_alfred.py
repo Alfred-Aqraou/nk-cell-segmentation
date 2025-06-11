@@ -93,20 +93,20 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         print(f"Train samples: {len(train_dataset)}, Validation samples: {len(val_dataset)}")
         
         # Create a new model instance for this fold.
-        model = create_unet_with_dino_resnet18(
-            ckpt_path="/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/trained_models/dino/dino-fdnzv5c2-ep=399.ckpt",
+        #model = create_unet_with_dino_resnet18(
+        #    ckpt_path="/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/trained_models/dino/dino-fdnzv5c2-ep=399.ckpt",
+        #    in_channels=3,
+        #    classes=1,
+        #    freeze_encoder=True
+        #)
+
+        model = create_unet(
+            encoder_name="resnet50",   # here you just specify which encoder
+            encoder_weights="imagenet",  # use standard ImageNet weights
             in_channels=3,
             classes=1,
             freeze_encoder=True
         )
-
-        # model = create_unet(
-        #     encoder_name="resnet50",   # here you just specify which encoder
-        #     encoder_weights="imagenet",  # use standard ImageNet weights
-        #     in_channels=3,
-        #     classes=1,
-        #     freeze_encoder=True
-        # )
 
         model.to(device)
 
@@ -242,7 +242,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         
         print(f"Fold {fold+1} completed with best validation loss: {best_val_loss:.4f}\n")
         # Save per-image IoU for this fold to disk
-        np.save(figure_prefix + f"per_image_iou_fold{fold+1}.npy", np.array(fold_iou_list))
+        np.save(figure_prefix + f"resnet50_per_image_iou_fold{fold+1}.npy", np.array(fold_iou_list))
     
     # Summary of cross-validation.
     print("Cross-validation complete. Summary of best validation losses per fold:")
@@ -256,7 +256,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
     plt.xlabel('Hour')
     plt.ylabel('IoU')
     plt.grid(True)
-    plt.savefig(time_folder + '/global_iou_vs_hour.png')
+    plt.savefig(time_folder + '/resnet50_global_iou_vs_hour.png')
     plt.close()
 
     print(f"Saved global IoU vs Hour plot to {time_folder + '/global_iou_vs_hour.png'}")
