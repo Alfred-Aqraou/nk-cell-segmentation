@@ -16,6 +16,9 @@ from sklearn.model_selection import KFold
 from collections import defaultdict
 from datetime import datetime
 
+from functools import reduce
+import operator
+
 import re
 from typing import List
 # import pandas as pd
@@ -50,6 +53,22 @@ PARAMETERS = {
     "resize": [(256, 256)],
     "outer_n_splits": 3
     }
+
+keys_to_multiply = [
+    "batch_sizes",
+    "loss_types",
+    "encoders",
+    "freeze_opts",
+    "optimizers",
+    "learning_rates",
+    "resize"
+]
+
+# Compute total combinations
+lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
+total_combinations = reduce(operator.mul, lengths)
+pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
+
 
 # Setup device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
@@ -139,9 +158,9 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     best_val_loss = float('inf')
     patience_counter = 0
 
+    global combinations
 
-
-    for epoch in tqdm.tqdm(range(num_epochs), desc=f"Fold {fold+1} Training"):
+    for epoch in range(num_epochs):#, desc=f"Fold {fold+1} Training"):
         model.train()
         train_loss = 0.0
         for images, masks, label_flags, _ in train_loader:
@@ -190,6 +209,8 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         if patience_counter >= patience:
             print("Early stopping triggered.")
             break
+    
+    pbar.update(1)
 
     return avg_val_loss, avg_val_iou
 
@@ -325,6 +346,8 @@ def outer_cross_validation(figure_prefix=""):
 if __name__ == "__main__":
     set_start_method('spawn', force=True)
 
+    global combinations
+
     global dataset_dir
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
@@ -341,3 +364,4 @@ if __name__ == "__main__":
     # )
 
     outer_cross_validation(figure_prefix=export_folder+"/")
+    pbar.close()
