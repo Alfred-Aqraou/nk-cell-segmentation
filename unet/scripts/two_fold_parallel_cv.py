@@ -27,32 +27,6 @@ from models.unet import create_unet
 from models.unet import create_unet_with_dino_resnet18
 from segmentation_models_pytorch.losses import DiceLoss
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-w", "--workers", help = "Amount of CPU workers to run in parallel", type=int)
-args = parser.parse_args()
-print("Given arguments:")
-print(args)
-
-global PARAMETERS
-PARAMETERS = {
-    "cpu_workers": 8 if not args.workers else args.workers,
-    "EPOCHS": 100,
-    "batch_sizes": [8, 16, 32],
-    "loss_types": ['dice', 'combined'],
-    "encoders": ['dino'],
-    "freeze_opts": [True, False],
-    "optimizers": ['adam', 'sgd'],
-    "learning_rates": [1e-4,5e-4,1e-3],
-    "resize": [(256, 256)],
-    "outer_n_splits": 3
-    }
-
-# Setup device
-device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
-
-# Loss functions
-dice_loss = DiceLoss(mode='binary', from_logits=True)
-bce_loss = nn.BCEWithLogitsLoss()
 
 def combined_loss(pred, target):
     return 0.5 * dice_loss(pred, target) + 0.5 * bce_loss(pred, target)
@@ -225,11 +199,14 @@ def outer_cross_validation(figure_prefix=""):
     all_tasks = []
     for combo in product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize):
         batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize = combo
-        for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
-            train_indices = np.array(labeled_indices)[train_idx].tolist()
-            val_indices = np.array(labeled_indices)[val_idx].tolist()
-            task = (batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_indices, val_indices, dataset_dir)
-            all_tasks.append(task)
+        try:
+            for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
+                train_indices = np.array(labeled_indices)[train_idx].tolist()
+                val_indices = np.array(labeled_indices)[val_idx].tolist()
+                task = (batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_indices, val_indices, dataset_dir)
+                all_tasks.append(task)
+        except ValueError:
+            pass
 
     with Pool(processes=num_workers) as pool:
         all_results = pool.map(run_single_fold, all_tasks)
@@ -298,13 +275,46 @@ def outer_cross_validation(figure_prefix=""):
         "top_10_val_loss_plot": wandb.Image(figure_prefix + "top_10_configs.png")
     })
 
-    endtime = datetime.now().strftime("%m-%d/%H-%M-%S")
+    endtime = datetime.now()
     print("Started at:", starttime)
     print("Finished at:", endtime)
-    print("Time elapsed:", endtime-current_time)
+    print("Time elapsed:", endtime-starttime)
 
 if __name__ == "__main__":
     set_start_method('spawn', force=True)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-w", "--workers", help = "Amount of CPU workers to run in parallel", type=int)
+    args = parser.parse_args()
+    print("Given arguments:")
+    print(args)
+
+    global PARAMETERS
+    PARAMETERS = {
+        "cpu_workers": 8 if not args.workers else args.workers,
+        "EPOCHS": 100,
+        "batch_sizes": [8, 16, 32],
+        "loss_types": ['dice', 'combined'],
+        "encoders": ['dino'],
+        "freeze_opts": [True, False],
+        "optimizers": ['adam', 'sgd'],
+        "learning_rates": [1e-4,5e-4,1e-3],
+        "resize": [(256, 256)],
+        "outer_n_splits": 3
+        }
+
+    wandb.login()
+    run = wandb.init(
+        project="U-net parallel",  # Specify your project
+        config=PARAMETERS,
+    )
+
+    # Setup device
+    device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+
+    # Loss functions
+    dice_loss = DiceLoss(mode='binary', from_logits=True)
+    bce_loss = nn.BCEWithLogitsLoss()
 
     global dataset_dir
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
@@ -314,11 +324,5 @@ if __name__ == "__main__":
     current_time = starttime.strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
     export_folder = "exports/unet/"+current_time
     os.makedirs(export_folder, exist_ok=True)
-
-    wandb.login()
-    run = wandb.init(
-        project="U-net parallel",  # Specify your project
-        config=PARAMETERS,
-    )
 
     outer_cross_validation(figure_prefix=export_folder+"/")
