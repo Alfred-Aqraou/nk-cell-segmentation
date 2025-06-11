@@ -158,8 +158,6 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     best_val_loss = float('inf')
     patience_counter = 0
 
-    global combinations
-
     for epoch in range(num_epochs):#, desc=f"Fold {fold+1} Training"):
         model.train()
         train_loss = 0.0
@@ -345,8 +343,6 @@ def outer_cross_validation(figure_prefix=""):
 
 if __name__ == "__main__":
     set_start_method('spawn', force=True)
-
-    global combinations
 
     global dataset_dir
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
