@@ -20,7 +20,6 @@ import torch.nn as nn
 from solo.methods.dino import DINO
 import torchvision.models as models
 
-
 dice_loss = DiceLoss(mode='binary', from_logits=True)
 bce_loss = nn.BCEWithLogitsLoss()
 
@@ -28,7 +27,8 @@ def combined_loss(pred, target):
     return 0.5 * dice_loss(pred, target) + 0.5 * bce_loss(pred, target)
 
 def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5, figure_prefix=""):
-    device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+    #device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     global_iou_per_image = {}  # img_path → iou
     # Define transformation pipelines for training and validation.
     train_base_transform = T.Compose([
@@ -92,15 +92,21 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         print(f"Train samples: {len(train_dataset)}, Validation samples: {len(val_dataset)}")
         
         # Create a new model instance for this fold.
-        model = create_unet_with_dino_resnet18(
-            ckpt_path="/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt",
+        # model = create_unet_with_dino_resnet18(
+        #     ckpt_path="/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt",
+        #     in_channels=3,
+        #     classes=1,
+        #     freeze_encoder=True
+        # )
+        # model.to(device)
+
+        model = create_unet(
+            encoder_name="resnet50",   # here you just specify which encoder
+            encoder_weights="imagenet",  # use standard ImageNet weights
             in_channels=3,
             classes=1,
             freeze_encoder=True
         )
-        model.to(device)
-
-                # Freeze selected encoder layers (conv1, bn1, layer1)
 
         # Check if encoder parameters are frozen or not
         frozen_params = [name for name, param in model.encoder.named_parameters() if not param.requires_grad]
@@ -145,6 +151,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
             model.eval()
             epoch_val_loss = 0.0
             iou_scores = []
+            fold_iou_list = []
             with torch.no_grad():
                 for images, masks, label_flags, img_paths in val_loader:
                     images = images.to(device)
@@ -158,7 +165,6 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
                         loss = combined_loss(labeled_outputs, labeled_masks)
                         epoch_val_loss += loss.item() * len(labeled_batch_idx)
 
-                        # IOU score
                         # IOU score
                         preds = (torch.sigmoid(labeled_outputs) > 0.5).float()
                         if labeled_masks.dim() == 3:
@@ -176,6 +182,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
                             if hour is not None:
                                 global_hours.append(hour)
                                 global_ious.append(sample_iou)
+                            fold_iou_list.append(sample_iou)
 
             avg_val_loss = epoch_val_loss / len(val_indices)  # Only divide by labeled validation samples
             val_losses.append(avg_val_loss)
@@ -232,6 +239,8 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         plt.close()
         
         print(f"Fold {fold+1} completed with best validation loss: {best_val_loss:.4f}\n")
+        # Save per-image IoU for this fold to disk
+        np.save(figure_prefix + f"per_image_iou_fold{fold+1}.npy", np.array(fold_iou_list))
     
     # Summary of cross-validation.
     print("Cross-validation complete. Summary of best validation losses per fold:")
