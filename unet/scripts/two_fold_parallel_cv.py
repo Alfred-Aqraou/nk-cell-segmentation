@@ -122,7 +122,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     for epoch in tqdm.tqdm(range(num_epochs), desc=f"Fold {fold+1} Training"):
         model.train()
         train_loss = 0.0
-        for images, masks, label_flags in train_loader:
+        for images, masks, label_flags, _ in train_loader:
             images, masks = images.to(device), masks.to(device)
             outputs = model(images)
             labeled_idx = (label_flags == 1).nonzero(as_tuple=True)[0]
@@ -137,7 +137,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         val_loss = 0.0
         val_iou = 0.0
         with torch.no_grad():
-            for images, masks, label_flags in val_loader:
+            for images, masks, label_flags, _ in val_loader:
                 images, masks = images.to(device), masks.to(device)
                 outputs = model(images)
                 labeled_idx = (label_flags == 1).nonzero(as_tuple=True)[0]
