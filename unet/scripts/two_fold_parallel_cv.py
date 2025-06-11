@@ -16,6 +16,7 @@ from sklearn.model_selection import KFold
 from collections import defaultdict
 from datetime import datetime
 
+from typing import List
 # import pandas as pd
 
 import argparse
@@ -30,6 +31,8 @@ from segmentation_models_pytorch.losses import DiceLoss, JaccardLoss
 parser = argparse.ArgumentParser()
 parser.add_argument("-w", "--workers", help = "Amount of CPU workers to run in parallel", type=int, default=8)
 parser.add_argument("-d", "--dino", help = "Provide a DINO checkpoint path", type=str, default=None)
+parser.add_argument("-e", "--encoders", help = "Specify encoders", type=List[str], default=['resnet18', 'resnet34', 'resnet50'])
+parser.add_argument("-l", "--loss", help = "Specify loss types", type=List[str], default=['dice', 'combined'])
 args = parser.parse_args()
 print("Given arguments:")
 print(args)
@@ -41,8 +44,8 @@ PARAMETERS = {
     "cpu_workers": args.workers,
     "EPOCHS": 100,
     "batch_sizes": [8, 16, 32],
-    "loss_types": ['iou'], # 'dice', 'combined', 
-    "encoders": ['resnet18', 'resnet34', 'resnet50'],
+    "loss_types": args.loss, # 'dice', 'combined', 'iou
+    "encoders": args.encoders,
     "freeze_opts": [True, False],
     "optimizers": ['adam'],
     "learning_rates": [1e-4,5e-4,1e-3],
