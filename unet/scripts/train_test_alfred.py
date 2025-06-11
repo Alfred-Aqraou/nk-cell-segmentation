@@ -94,7 +94,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         
         # Create a new model instance for this fold.
         model = create_unet_with_dino_resnet18(
-            ckpt_path="/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt",
+            ckpt_path="/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/trained_models/dino/dino-fdnzv5c2-ep=399.ckpt",
             in_channels=3,
             classes=1,
             freeze_encoder=True
