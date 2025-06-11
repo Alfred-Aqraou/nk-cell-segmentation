@@ -16,6 +16,7 @@ from sklearn.model_selection import KFold
 from collections import defaultdict
 from datetime import datetime
 
+import re
 from typing import List
 # import pandas as pd
 
@@ -76,6 +77,15 @@ def compute_iou(pred, target):
     intersection = (pred * target).sum()
     union = pred.sum() + target.sum() - intersection
     return (intersection / union).item() if union > 0 else 0.0
+
+def extract_encoder_name(encoder):
+    if not isinstance(encoder, str):
+        return str(encoder)
+    if "dino" in encoder and ".ckpt" in encoder:
+        match = re.search(r'dino/([^/]+)/dino-\1-ep=(\d+)\.ckpt', encoder)
+        if match:
+            return f"dino_{match.group(1)}_e{match.group(2)}"
+    return encoder  # Return original if not a dino path or no match
 
 def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir, num_epochs=100, patience=10):
     train_transforms = T.Compose([
@@ -291,7 +301,7 @@ def outer_cross_validation(figure_prefix=""):
     # Plot top 10 configurations
     print("Plotting top 10 configs")
     top_results = sorted(final_results, key=lambda r: r["mean_val_loss"])[:10]
-    labels = [f'{r["batch_size"]}-{r["loss_type"]}-{r["encoder"]}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
+    labels = [f'{r["batch_size"]}-{r["loss_type"]}-{extract_encoder_name(r["encoder"])}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
     losses = [r["mean_val_loss"] for r in top_results]
     plt.figure(figsize=(12, 6))
     plt.barh(labels, losses, color="skyblue")
