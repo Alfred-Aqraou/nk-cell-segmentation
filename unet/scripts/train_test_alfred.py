@@ -50,7 +50,14 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
     
     # Construct dataset_dir relative to this file.
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
+    possible_paths = [
+    "/Users/aliafif/Desktop/Code/Fagprojekt/02466-Project/dataset",
+    "/work3/s234843/02466-Project/dataset",
+    os.path.join(os.path.dirname(__file__), "dataset")
+    ]
+    dataset_dir = next((p for p in possible_paths if os.path.exists(p)), None)
+    if dataset_dir is None:
+        raise FileNotFoundError("Dataset directory not found in any of the expected locations.")
     
     # Create two dataset instances:
     full_dataset_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transform)
