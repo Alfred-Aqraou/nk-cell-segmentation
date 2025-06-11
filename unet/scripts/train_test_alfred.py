@@ -14,7 +14,7 @@ from sklearn.model_selection import KFold
 
 from dataset import NKCellDataset, JointTransform, extract_hour_from_filename
 from models.unet import create_unet
-from segmentation_models_pytorch.losses import DiceLoss
+from segmentation_models_pytorch.losses import DiceLoss, JaccardLoss
 import torch.nn as nn
 
 from solo.methods.dino import DINO
@@ -22,13 +22,14 @@ import torchvision.models as models
 
 dice_loss = DiceLoss(mode='binary', from_logits=True)
 bce_loss = nn.BCEWithLogitsLoss()
+iou_loss = JaccardLoss(mode='binary', from_logits=True)
 
 def combined_loss(pred, target):
     return 0.5 * dice_loss(pred, target) + 0.5 * bce_loss(pred, target)
 
 def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5, figure_prefix=""):
-    #device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
-    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+    #device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     global_iou_per_image = {}  # img_path → iou
     # Define transformation pipelines for training and validation.
     train_base_transform = T.Compose([
@@ -92,20 +93,20 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         print(f"Train samples: {len(train_dataset)}, Validation samples: {len(val_dataset)}")
         
         # Create a new model instance for this fold.
-        # model = create_unet_with_dino_resnet18(
-        #     ckpt_path="/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt",
-        #     in_channels=3,
-        #     classes=1,
-        #     freeze_encoder=True
-        # )
-
-        model = create_unet(
-            encoder_name="resnet50",   # here you just specify which encoder
-            encoder_weights="imagenet",  # use standard ImageNet weights
+        model = create_unet_with_dino_resnet18(
+            ckpt_path="/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/trained_models/dino/70queb8d/dino-70queb8d-ep=399.ckpt",
             in_channels=3,
             classes=1,
             freeze_encoder=True
         )
+
+        # model = create_unet(
+        #     encoder_name="resnet50",   # here you just specify which encoder
+        #     encoder_weights="imagenet",  # use standard ImageNet weights
+        #     in_channels=3,
+        #     classes=1,
+        #     freeze_encoder=True
+        # )
 
         model.to(device)
 
@@ -136,7 +137,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
                 if len(labeled_batch_idx) > 0:
                     labeled_outputs = outputs[labeled_batch_idx]
                     labeled_masks = masks[labeled_batch_idx]
-                    loss = dice_loss(labeled_outputs, labeled_masks)#combined_loss(labeled_outputs, labeled_masks)
+                    loss = iou_loss(labeled_outputs, labeled_masks) #dice_loss(labeled_outputs, labeled_masks)#combined_loss(labeled_outputs, labeled_masks)
                     
                     optimizer.zero_grad()
                     loss.backward()
