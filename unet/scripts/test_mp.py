@@ -13,6 +13,7 @@ if __name__ == "__main__":
     set_start_method('fork', force=True)
     print("After set_start_method, before with")
     with Pool(4) as pool:
-        print("After with, before map")
+        print("Inside with, before map")
         pool.map(debug_task, range(4))
-        print("After map")
+        print("Inside with, After map")
+    print("After with")
