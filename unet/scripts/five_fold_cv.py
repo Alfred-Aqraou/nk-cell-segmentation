@@ -90,7 +90,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
     # Define transformation pipelines for training and validation.
     train_base_transform = T.Compose([
     # T.RandomCrop(PARAMETERS["resize"]),
-    T.RandomResizedCrop(size=256, scale=(0.7, 1.0), ratio=(0.75, 1.33)),
+    T.RandomResizedCrop(size=PARAMETERS["resize"][0], scale=(0.7, 1.0), ratio=(0.75, 1.33)),
     T.RandomHorizontalFlip(p=0.5),
     T.RandomVerticalFlip(p=0.5),
     T.RandomRotation(degrees=30),
