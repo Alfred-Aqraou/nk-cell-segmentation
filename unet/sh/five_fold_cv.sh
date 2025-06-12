@@ -1,7 +1,7 @@
 #!/bin/sh
-#BSUB -q gpuv100
-#BSUB -J unet_test
-#BSUB -n 4
+#BSUB -q gpua100
+#BSUB -J five_fold_cv
+#BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -W 24:00
 #BSUB -R "rusage[mem=8GB]"
@@ -14,12 +14,21 @@
 #BSUB -N
 ### -- Specify the output and error file. %J is the job-id --
 ### -- -o and -e mean append, -oo and -eo mean overwrite --
-#BSUB -oo gpuout/unet/unet_test-%J.out
-#BSUB -eo gpuout/unet/unet_test-%J.err
+#BSUB -oo gpuout/unet/%P_%J.out
+#BSUB -eo gpuout/unet/%P_%J.err
 
 nvidia-smi
 # Load the cuda module
 module load cuda/12.8.1
 
 source /work3/s234843/init_project.sh
-python unet/scripts/unet_test.py
+python unet/scripts/five_fold_cv.py \
+    --epochs 100 \
+    --batchsize 16 \
+    --loss "dice" \
+    --encoder "resnet50" \
+    --freeze "True" \
+    --optimizer "adam" \
+    --lr 0.0005 \
+    --resize 256 256 \
+    --nsplits 5

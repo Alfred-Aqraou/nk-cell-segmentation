@@ -14,8 +14,8 @@
 #BSUB -N
 ### -- Specify the output and error file. %J is the job-id --
 ### -- -o and -e mean append, -oo and -eo mean overwrite --
-#BSUB -oo gpuout/unet/two_fold_parallel_cv-%J.out
-#BSUB -eo gpuout/unet/two_fold_parallel_cv-%J.err
+#BSUB -oo gpuout/unet/%P_%J.out
+#BSUB -eo gpuout/unet/%P_%J.err
 
 nvidia-smi
 # Load the cuda module
@@ -25,5 +25,5 @@ source /work3/s234843/init_project.sh
 python unet/scripts/two_fold_parallel_cv.py \
 	--workers 8 \
 	--encoders "/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt" \
-		   "/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt" \
+			   "/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt" \
 	--loss "dice" "combined" "iou"

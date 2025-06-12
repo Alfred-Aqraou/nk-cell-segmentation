@@ -24,16 +24,64 @@ dice_loss = DiceLoss(mode='binary', from_logits=True)
 bce_loss = nn.BCEWithLogitsLoss()
 iou_loss = JaccardLoss(mode='binary', from_logits=True)
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--epochs", help = 'Specify epochs. I.e: 100', required=True, type=int)
+parser.add_argument("--batchsize", help = 'Specify batch size. I.e: 16', required=True, type=int)
+parser.add_argument("--loss", help = 'Specify loss type. I.e: "dice"', required=True, type=str)
+parser.add_argument("--encoder", help = 'Specify encoder, you can also add a ckpt path. I.e: "resnet50"', required=True, type=str)
+parser.add_argument("--freeze", help = 'Specify whether to use freeze_opts. I.e: True', required=True, type=bool)
+parser.add_argument("--optimizer", help = 'Specify optimizer. I.e: "adam"', required=True, type=str)
+parser.add_argument("--lr", help = 'Specify learning rate. I.e: 0.0005', required=True, type=float)
+parser.add_argument("--resize", help = 'Specify dimensions to resize to. I.e: 256 256', nargs='+', required=True, type=int)
+parser.add_argument("--nsplits", help = 'Specify outer n splits. I.e: 5', required=True, type=int)
+
+args = parser.parse_args()
+print("Given arguments:")
+print(args)
+
+args.freeze = str(args.freeze).strip().lower() in ("true", "1", "yes", "y", "t")
+
+args.resize = tuple(args.resize)
+for i in args.resize:
+    assert isinstance(i, int)
+
+PARAMETERS = {
+    "EPOCHS": args.epochs,
+    "batch_size": args.batchsize,
+    "loss_type": args.loss, # 'dice', 'combined', 'iou
+    "encoder": args.encoder,
+    "freeze_opt": args.freeze,
+    "optimizer": args.optimizer,
+    "learning_rate": args.lr,
+    "resize": args.resize,
+    "outer_n_splits": args.nsplits
+    }
+
+
+
+
+
 def combined_loss(pred, target):
     return 0.5 * dice_loss(pred, target) + 0.5 * bce_loss(pred, target)
 
-def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5, figure_prefix=""):
+def get_loss_function(loss_type):
+    if loss_type == "dice":
+        return lambda pred, target: dice_loss(pred, target)
+    elif loss_type == "bce":
+        return lambda pred, target: bce_loss(pred, target)
+    elif loss_type == 'iou':
+        return lambda pred, target: iou_loss(pred, target)
+    else:
+        return combined_loss
+
+def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_prefix=""):
     device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
     #device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     global_iou_per_image = {}  # img_path → iou
     # Define transformation pipelines for training and validation.
     train_base_transform = T.Compose([
-    T.RandomCrop((256, 256)),
+    T.RandomCrop(PARAMETERS["resize"]),
     T.RandomHorizontalFlip(p=0.5),
     T.RandomVerticalFlip(p=0.5),
     T.RandomRotation(degrees=30),
@@ -44,7 +92,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
     train_transform = JointTransform(train_base_transform)
 
     val_transform = T.Compose([
-        T.CenterCrop((256, 256)),
+        T.CenterCrop(PARAMETERS["resize"]),
         T.ToTensor(),
     ])
     
@@ -81,8 +129,6 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         args = (fold, train_idx, val_idx, labeled_indices, dataset_dir, device, batch_size, num_epochs, patience, figure_prefix)
         all_args.append(args)
 
-    desired_num_workers = 3  # for example, use 5 workers or adjust
-
     # Begin cross-validation.
     for fold, (train_idx, val_idx) in enumerate(kf.split(labeled_indices)):
         # Map from KFold indices to absolute dataset indices.
@@ -98,22 +144,22 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         
         print(f"\n=== Fold {fold+1}/{n_splits} ===")
         print(f"Train samples: {len(train_dataset)}, Validation samples: {len(val_dataset)}")
-        
-        # Create a new model instance for this fold.
-        #model = create_unet_with_dino_resnet18(
-        #    ckpt_path="/Users/AlfredAqraouXPS15/Desktop/DTU/Year 2/Semester 4/02466 Project work - Bsc of AI and data/02466-Project/trained_models/dino/dino-fdnzv5c2-ep=399.ckpt",
-        #    in_channels=3,
-        #    classes=1,
-        #    freeze_encoder=True
-        #)
 
-        model = create_unet(
-            encoder_name="resnet50",   # here you just specify which encoder
-            encoder_weights="imagenet",  # use standard ImageNet weights
-            in_channels=3,
-            classes=1,
-            freeze_encoder=True
-        )
+        if ".ckpt" in PARAMETERS['encoder']:
+            model = create_unet_with_dino_resnet18(
+                ckpt_path=os.path.abspath(PARAMETERS['encoder']),
+                in_channels=3,
+                classes=1,
+                freeze_encoder=PARAMETERS['freeze_opt']
+            ).to(device)
+        else:
+            model = create_unet(
+                encoder_name=PARAMETERS['encoder'],
+                encoder_weights="imagenet",
+                in_channels=3,
+                classes=1,
+                freeze_encoder=PARAMETERS['freeze_opt']
+            ).to(device)
 
         model.to(device)
 
@@ -121,13 +167,21 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         frozen_params = [name for name, param in model.encoder.named_parameters() if not param.requires_grad]
         print(f"Fold {fold+1}: Frozen encoder parameters count: {len(frozen_params)} / {len(list(model.encoder.parameters()))}")
         print(f"Using pretrained weights: {any('encoder' in key and '0.weight' in key for key in model.state_dict().keys())}")
-        optimizer = optim.Adam(model.parameters(), lr=0.0005)
+
+        if PARAMETERS['optimizer'] == "adam":
+            optimizer = optim.Adam(model.parameters(), lr=PARAMETERS['learning_rate'])
+        elif PARAMETERS['optimizer'] == "sgd":
+            optimizer = optim.SGD(model.parameters(), lr=PARAMETERS['learning_rate'], momentum=0.9)
+        else:
+            raise ValueError(f"Unsupported optimizer: {PARAMETERS['optimizer']}. Available optimizers: 'adam', 'sgd'")
         
         best_val_loss = float('inf')
         patience_counter = 0
         train_losses = []
         val_losses = []
         epoch_iou_scores = []
+
+        loss_fn = get_loss_function(PARAMETERS['loss_type'])
         
         # Training loop for the fold.
         for epoch in tqdm.tqdm(range(num_epochs), desc=f"Fold {fold+1} Training"):
@@ -144,7 +198,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
                 if len(labeled_batch_idx) > 0:
                     labeled_outputs = outputs[labeled_batch_idx]
                     labeled_masks = masks[labeled_batch_idx]
-                    loss = iou_loss(labeled_outputs, labeled_masks) #dice_loss(labeled_outputs, labeled_masks)#combined_loss(labeled_outputs, labeled_masks)
+                    loss = loss_fn(labeled_outputs, labeled_masks) #dice_loss(labeled_outputs, labeled_masks)#combined_loss(labeled_outputs, labeled_masks)
                     
                     optimizer.zero_grad()
                     loss.backward()
@@ -171,7 +225,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
                     if len(labeled_batch_idx) > 0:
                         labeled_outputs = outputs[labeled_batch_idx]
                         labeled_masks = masks[labeled_batch_idx]
-                        loss = combined_loss(labeled_outputs, labeled_masks)
+                        loss = loss_fn(labeled_outputs, labeled_masks)
                         epoch_val_loss += loss.item() * len(labeled_batch_idx)
 
                         # IOU score
@@ -229,7 +283,7 @@ def run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5,
         plt.plot(epochs_range, val_losses, label='Val Loss', color='orange')
         plt.title(f"Fold {fold+1} Loss Curve")
         plt.xlabel('Epoch')
-        plt.ylabel('Loss')
+        plt.ylabel(f'Loss ({PARAMETERS['loss_type']})')
         plt.legend()
         plt.grid(True)
         plt.savefig(figure_prefix+f"loss_curve_fold{fold+1}.png")
@@ -272,4 +326,4 @@ if __name__ == '__main__':
     time_folder = "exports/unet/"+current_time
     os.makedirs(time_folder, exist_ok=True)
 
-    run_cross_validation(num_epochs=100, batch_size=16, patience=10, n_splits=5, figure_prefix=time_folder+"/")
+    run_cross_validation(num_epochs=PARAMETERS['EPOCHS'], batch_size=PARAMETERS['batch_size'], n_splits=PARAMETERS['outer_n_splits'], patience=10, figure_prefix=time_folder+"/")

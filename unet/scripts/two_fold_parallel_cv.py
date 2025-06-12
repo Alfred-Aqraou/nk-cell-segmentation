@@ -23,7 +23,6 @@ import re
 from typing import List
 # import pandas as pd
 
-import argparse
 
 # import wandb
 
@@ -32,6 +31,7 @@ from models.unet import create_unet
 from models.unet import create_unet_with_dino_resnet18
 from segmentation_models_pytorch.losses import DiceLoss, JaccardLoss
 
+import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-w", "--workers", help = "Amount of CPU workers to run in parallel", type=int, default=8)
 parser.add_argument("-e", "--encoders", help = "Specify encoders, you can also add a ckpt path", nargs='+', default=['resnet18', 'resnet34', 'resnet50'])
@@ -119,7 +119,6 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         T.CenterCrop(resize),
         T.ToTensor(),
     ])
-    current_dir = os.path.dirname(os.path.abspath(__file__))
     full_train = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(train_transforms))
     full_val = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(val_transforms))
 
