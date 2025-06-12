@@ -24,7 +24,8 @@ from matplotlib.axes import Axes
 #     ])
 
 transform = T.Compose([
-        T.RandomCrop((256, 256)),
+        # T.RandomCrop((256, 256)),
+        T.RandomResizedCrop(size=256, scale=(0.7, 1.0), ratio=(0.75, 1.33)),
         T.RandomHorizontalFlip(),
         T.RandomVerticalFlip(),
         T.RandomRotation(degrees=30),
