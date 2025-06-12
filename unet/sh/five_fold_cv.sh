@@ -30,11 +30,11 @@ module load cuda/12.8.1
 source /work3/s234843/init_project.sh
 python unet/scripts/five_fold_cv.py \
     --epochs 100 \
-    --batchsize 16 \
-    --loss "dice" \
-    --encoder "/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt" \
-    --freeze "False" \
+    --batchsize 8 \
+    --loss "iou" \
+    --encoder "resnet50" \
+    --freeze "True" \
     --optimizer "adam" \
-    --lr 0.0001 \
+    --lr 0.0005 \
     --resize 256 256 \
     --nsplits 5
