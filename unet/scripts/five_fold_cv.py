@@ -267,12 +267,6 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
             epoch_iou_scores.append(mean_iou)
             print(f"Fold {fold+1}, Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f},IoU: {mean_iou:.4f}")
             
-            for img_path in per_image_running_sum:
-                hour = extract_hour_from_filename(img_path)
-                if hour is not None:
-                    mean_iou = per_image_running_sum[img_path] / per_image_count[img_path]
-                    global_hours.append(hour)
-                    global_ious.append(mean_iou)
 
             tolerance = 0.015
             if avg_val_loss < best_val_loss:
@@ -323,6 +317,13 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
         plt.close()
         
         print(f"Fold {fold+1} completed with best validation loss: {best_val_loss:.4f}\n")
+        # After fold is complete, update global_hours and global_ious once per fold
+        for img_path in per_image_running_sum:
+            hour = extract_hour_from_filename(img_path)
+            if hour is not None:
+                mean_iou = per_image_running_sum[img_path] / per_image_count[img_path]
+                global_hours.append(hour)
+                global_ious.append(mean_iou)
         # Save per-image IoU for this fold to disk
         np.save(figure_prefix + f"{extract_encoder_name(PARAMETERS["encoder"])}_per_image_iou_fold{fold+1}.npy", np.array(fold_iou_list))
     
