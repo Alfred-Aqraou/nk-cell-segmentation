@@ -46,6 +46,9 @@ args.resize = tuple(args.resize)
 for i in args.resize:
     assert isinstance(i, int)
 
+if ".ckpt" in args.encoder:
+    assert os.path.isfile(args.encoder)
+
 PARAMETERS = {
     "EPOCHS": args.epochs,
     "batch_size": args.batchsize,
@@ -57,10 +60,6 @@ PARAMETERS = {
     "resize": args.resize,
     "outer_n_splits": args.nsplits
     }
-
-
-
-
 
 def combined_loss(pred, target):
     return 0.5 * dice_loss(pred, target) + 0.5 * bce_loss(pred, target)
