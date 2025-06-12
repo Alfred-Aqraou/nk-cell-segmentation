@@ -34,9 +34,9 @@ from segmentation_models_pytorch.losses import DiceLoss, JaccardLoss
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--workers", help = "Amount of CPU workers to run in parallel", type=int, default=8)
+parser.add_argument("--epochs", help = 'Specify epochs. I.e: 100', required=True, type=int)
 parser.add_argument("--encoders", help = "Specify encoders, you can also add a ckpt path", nargs='+', required=True, type=str) # ['resnet18', 'resnet34', 'resnet50']
 parser.add_argument("--loss", help = "Specify loss types", nargs='+', required=True) # ['dice', 'combined']
-parser.add_argument("--epochs", help = 'Specify epochs. I.e: 100', required=True, type=int)
 parser.add_argument("--batchsizes", help = 'Specify batch sizes. I.e: 8 16', nargs='+', required=True, type=int)
 parser.add_argument("--freeze", help = 'Specify whether to use freeze_opts. I.e: True', nargs='+', required=True, type=bool)
 parser.add_argument("--optimizers", help = 'Specify optimizer. I.e: "adam"', nargs='+', required=True, type=str)
