@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, re
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from models.unet import create_unet_with_dino_resnet18
@@ -73,6 +73,15 @@ def get_loss_function(loss_type):
         return lambda pred, target: iou_loss(pred, target)
     else:
         return combined_loss
+    
+def extract_encoder_name(encoder):
+    if not isinstance(encoder, str):
+        return str(encoder)
+    if "dino" in encoder and ".ckpt" in encoder:
+        match = re.search(r'dino/([^/]+)/dino-\1-ep=(\d+)\.ckpt', encoder)
+        if match:
+            return f"dino_{match.group(1)}_e{match.group(2)}"
+    return encoder  # Return original if not a dino path or no match
 
 def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_prefix=""):
     device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
@@ -214,6 +223,10 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
             epoch_val_loss = 0.0
             iou_scores = []
             fold_iou_list = []
+
+            per_image_running_sum = {}
+            per_image_count = {}
+
             with torch.no_grad():
                 for images, masks, label_flags, img_paths in val_loader:
                     images = images.to(device)
@@ -242,9 +255,11 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
                             img_path = img_paths[idx_in_batch]
                             hour = extract_hour_from_filename(img_path)
                             if hour is not None:
-                                global_hours.append(hour)
-                                global_ious.append(sample_iou)
-                            fold_iou_list.append(sample_iou)
+                                if img_path not in per_image_running_sum:
+                                    per_image_running_sum[img_path] = 0.0
+                                    per_image_count[img_path] = 0
+                                per_image_running_sum[img_path] += sample_iou
+                                per_image_count[img_path] += 1
 
             avg_val_loss = epoch_val_loss / len(val_indices)  # Only divide by labeled validation samples
             val_losses.append(avg_val_loss)
@@ -252,6 +267,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
             epoch_iou_scores.append(mean_iou)
             print(f"Fold {fold+1}, Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f},IoU: {mean_iou:.4f}")
             
+
             tolerance = 0.015
             if avg_val_loss < best_val_loss:
                 best_val_loss = avg_val_loss
@@ -285,7 +301,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
         plt.ylabel(f'Loss ({PARAMETERS['loss_type']})')
         plt.legend()
         plt.grid(True)
-        plt.savefig(figure_prefix+f"loss_curve_fold{fold+1}.png")
+        plt.savefig(figure_prefix+f"{extract_encoder_name(PARAMETERS["encoder"])}_loss_curve_fold{fold+1}.png")
         plt.close()
 
         # Plot IoU vs Epochs
@@ -297,12 +313,19 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
         plt.ylabel('IoU Score')
         plt.legend()
         plt.grid(True)
-        plt.savefig(figure_prefix+f"iou_curve_fold{fold+1}.png")
+        plt.savefig(figure_prefix+f"{extract_encoder_name(PARAMETERS["encoder"])}_iou_curve_fold{fold+1}.png")
         plt.close()
         
         print(f"Fold {fold+1} completed with best validation loss: {best_val_loss:.4f}\n")
+        # After fold is complete, update global_hours and global_ious once per fold
+        for img_path in per_image_running_sum:
+            hour = extract_hour_from_filename(img_path)
+            if hour is not None:
+                mean_iou = per_image_running_sum[img_path] / per_image_count[img_path]
+                global_hours.append(hour)
+                global_ious.append(mean_iou)
         # Save per-image IoU for this fold to disk
-        np.save(figure_prefix + f"resnet50_per_image_iou_fold{fold+1}.npy", np.array(fold_iou_list))
+        np.save(figure_prefix + f"{extract_encoder_name(PARAMETERS["encoder"])}_per_image_iou_fold{fold+1}.npy", np.array(fold_iou_list))
     
     # Summary of cross-validation.
     print("Cross-validation complete. Summary of best validation losses per fold:")
@@ -316,7 +339,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
     plt.xlabel('Hour')
     plt.ylabel('IoU')
     plt.grid(True)
-    plt.savefig(time_folder + '/resnet50_global_iou_vs_hour.png')
+    plt.savefig(f'{time_folder}/{extract_encoder_name(PARAMETERS["encoder"])}_global_iou_vs_hour.png')
     plt.close()
 
     print(f"Saved global IoU vs Hour plot to {time_folder + '/global_iou_vs_hour.png'}")
