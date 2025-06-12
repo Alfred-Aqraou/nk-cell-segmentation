@@ -21,14 +21,20 @@ nvidia-smi
 # Load the cuda module
 module load cuda/12.8.1
 
+# Broadband and Fluorescent
+# /work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt
+
+# Fluorescent
+# /work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt
+
 source /work3/s234843/init_project.sh
 python unet/scripts/five_fold_cv.py \
     --epochs 100 \
     --batchsize 16 \
     --loss "dice" \
-    --encoder "resnet50" \
-    --freeze "True" \
+    --encoder "/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt" \
+    --freeze "False" \
     --optimizer "adam" \
-    --lr 0.0005 \
+    --lr 0.0001 \
     --resize 256 256 \
     --nsplits 5
