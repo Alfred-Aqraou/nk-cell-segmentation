@@ -53,7 +53,7 @@ args.freeze = str(args.freeze).strip().lower() in ("true", "1", "yes", "y", "t")
 args.resize = tuple(args.resize)
 for i in args.resize:
     assert isinstance(i, int)
-assert len(args.resize) > 2
+assert len(args.resize) == 2
 
 global PARAMETERS
 PARAMETERS = {
@@ -65,7 +65,7 @@ PARAMETERS = {
     "freeze_opts": [*args.freeze],
     "optimizers": [*args.optimizers],
     "learning_rates": [*args.lr],
-    "resize": [args.resize], #(256, 256)],
+    "resize": [args.resize], #(256, 256),
     "outer_n_splits": args.nsplits #3
     }
 
