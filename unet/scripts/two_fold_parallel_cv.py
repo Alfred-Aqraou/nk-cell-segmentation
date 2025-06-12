@@ -38,7 +38,7 @@ parser.add_argument("--epochs", help = 'Specify epochs. I.e: 100', required=True
 parser.add_argument("--encoders", help = "Specify encoders, you can also add a ckpt path", nargs='+', required=True, type=str) # ['resnet18', 'resnet34', 'resnet50']
 parser.add_argument("--loss", help = "Specify loss types", nargs='+', required=True) # ['dice', 'combined']
 parser.add_argument("--batchsizes", help = 'Specify batch sizes. I.e: 8 16', nargs='+', required=True, type=int)
-parser.add_argument("--freeze", help = 'Specify whether to use freeze_opts. I.e: True', nargs='+', required=True, type=bool)
+parser.add_argument("--freeze", help = 'Specify whether to use freeze_opts. I.e: True False', nargs='+', required=True, type=bool)
 parser.add_argument("--optimizers", help = 'Specify optimizer. I.e: "adam"', nargs='+', required=True, type=str)
 parser.add_argument("--lr", help = 'Specify learning rate. I.e: 0.0005 0.0001', nargs='+', required=True, type=float)
 parser.add_argument("--resize", help = 'Specify dimensions to resize to. I.e: 256 256', nargs='+', required=True, type=int)
@@ -48,7 +48,7 @@ args = parser.parse_args()
 print("Given arguments:")
 print(args)
 
-args.freeze = str(args.freeze).strip().lower() in ("true", "1", "yes", "y", "t")
+args.freeze = [str(val).strip().lower() in ("true", "1", "yes", "y", "t") for val in args.freeze]
 
 args.resize = tuple(args.resize)
 for i in args.resize:
