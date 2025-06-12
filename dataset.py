@@ -324,7 +324,18 @@ class NKCellDataset(Dataset):
 
 
 if __name__ == "__main__":
-    dataset = NKCellDataset()
+    import torchvision.transforms as T
+    train_base_transform = T.Compose([
+        # T.RandomCrop(PARAMETERS["resize"]),
+        T.RandomResizedCrop(size=256, scale=(0.7, 1.0), ratio=(0.75, 1.33)),
+        T.RandomHorizontalFlip(p=0.5),
+        T.RandomVerticalFlip(p=0.5),
+        T.RandomRotation(degrees=30),
+        T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+        #T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
+        T.ToTensor(),
+    ])
+    dataset = NKCellDataset(dataset_dir="/work3/s234834/02466-Project/dataset")
     # dataset.download(verify=True)  # Set verify=True for the first download to check integrity
-    dataset.create_well_grid_gif(mode='fluorescent', downscale=2, verbose=True)
-    dataset.create_well_grid_gif(mode='broadband', downscale=2, verbose=True)
+    dataset.create_well_grid_gif(mode='fluorescent', verbose=True)
+    dataset.create_well_grid_gif(mode='broadband', verbose=True)

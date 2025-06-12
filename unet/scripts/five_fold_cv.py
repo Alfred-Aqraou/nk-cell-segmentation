@@ -89,15 +89,15 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
     global_iou_per_image = {}  # img_path → iou
     # Define transformation pipelines for training and validation.
     train_base_transform = T.Compose([
-    # T.RandomCrop(PARAMETERS["resize"]),
-    T.RandomResizedCrop(size=PARAMETERS["resize"][0], scale=(0.7, 1.0), ratio=(0.75, 1.33)),
-    T.RandomHorizontalFlip(p=0.5),
-    T.RandomVerticalFlip(p=0.5),
-    T.RandomRotation(degrees=30),
-    T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
-    #T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
-    T.ToTensor(),
-])
+        # T.RandomCrop(PARAMETERS["resize"]),
+        T.RandomResizedCrop(size=PARAMETERS["resize"][0], scale=(0.7, 1.0), ratio=(0.75, 1.33)),
+        T.RandomHorizontalFlip(p=0.5),
+        T.RandomVerticalFlip(p=0.5),
+        T.RandomRotation(degrees=30),
+        T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+        #T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
+        T.ToTensor(),
+    ])
     train_transform = JointTransform(train_base_transform)
 
     val_transform = T.Compose([
