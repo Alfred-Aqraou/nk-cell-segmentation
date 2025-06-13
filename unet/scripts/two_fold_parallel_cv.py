@@ -32,6 +32,16 @@ from models.unet import create_unet_with_dino_resnet18
 from segmentation_models_pytorch.losses import DiceLoss, JaccardLoss
 
 import argparse
+import random
+
+SEED = 42
+random.seed(SEED)
+np.random.seed(SEED)
+torch.manual_seed(SEED)
+torch.cuda.manual_seed_all(SEED)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--workers", help = "Amount of CPU workers to run in parallel", type=int, default=8)
 parser.add_argument("--epochs", help = 'Specify epochs. I.e: 100', required=True, type=int)
@@ -272,7 +282,7 @@ def outer_cross_validation(figure_prefix=""):
         i for i, mask_path in enumerate(dataset.mask_paths)
         if mask_path is not None and os.path.exists(mask_path)
     ]
-    outer_kf = KFold(n_splits=outer_n_splits, shuffle=True, random_state=42)
+    outer_kf = KFold(n_splits=outer_n_splits, shuffle=True, random_state=SEED)
 
     all_tasks = []
     for combo in product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize):
