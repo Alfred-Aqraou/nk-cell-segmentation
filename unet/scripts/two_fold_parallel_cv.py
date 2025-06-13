@@ -25,10 +25,10 @@ import re
 
 from models.unet import create_unet_with_dino_resnet18
 from models.unet import create_unet
+
 def run_single_fold(args):
-    dataset_dir, batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx = args
+    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx = args
     val_loss, val_iou = CV.train_and_evaluate(
-        dataset_dir,
         train_idx, val_idx,
         batch_size, encoder, freeze_encoder,
         opt_type, loss_type, fold, lr, resize
@@ -113,11 +113,8 @@ class CV:
                 return f"dino_{match.group(1)}_e{match.group(2)}"
         return encoder  # Return original if not a dino path or no match
     
-# train_idx, val_idx,
-# batch_size, encoder, freeze_encoder,
-# opt_type, loss_type, fold, lr, resize
     @staticmethod
-    def train_and_evaluate(dataset_dir, train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, patience=10):
+    def train_and_evaluate(self, train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, patience=10):
         train_transforms = T.Compose([
             T.RandomCrop(resize),
             T.RandomHorizontalFlip(),
@@ -130,8 +127,8 @@ class CV:
             T.CenterCrop(resize),
             T.ToTensor(),
         ])
-        full_train = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(train_transforms))
-        full_val = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(val_transforms))
+        full_train = NKCellDataset(dataset_dir=self.dataset_dir, transform=JointTransform(train_transforms))
+        full_val = NKCellDataset(dataset_dir=self.dataset_dir, transform=JointTransform(val_transforms))
 
         train_dataset = Subset(full_train, train_indices)
         val_dataset = Subset(full_val, val_indices)
@@ -242,7 +239,7 @@ class CV:
             for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
                 train_indices = np.array(labeled_indices)[train_idx].tolist()
                 val_indices = np.array(labeled_indices)[val_idx].tolist()
-                task = (self.dataset_dir, batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_indices, val_indices)
+                task = (batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_indices, val_indices)
                 all_tasks.append(task)
 
         with Pool(processes=num_workers) as pool:
