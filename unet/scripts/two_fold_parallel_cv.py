@@ -26,12 +26,12 @@ import re
 from models.unet import create_unet_with_dino_resnet18
 from models.unet import create_unet
 
-def run_single_fold(args):
-    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx = args
-    val_loss, val_iou = CV.train_and_evaluate(
+def run_single_fold(self, args):
+    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir = args
+    val_loss, val_iou = self._train_and_evaluate(
         train_idx, val_idx,
         batch_size, encoder, freeze_encoder,
-        opt_type, loss_type, fold, lr, resize
+        opt_type, loss_type, fold, lr, resize, dataset_dir
     )
     result = {
         "batch_size": batch_size,
@@ -58,7 +58,7 @@ class CV:
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
 
-        self.parameters: dict = parameters
+        self.parameters = parameters
 
         # Calculate combinations to approximate ETA
         keys_to_multiply = [
@@ -113,8 +113,7 @@ class CV:
                 return f"dino_{match.group(1)}_e{match.group(2)}"
         return encoder  # Return original if not a dino path or no match
     
-    @staticmethod
-    def train_and_evaluate(self, train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, patience=10):
+    def _train_and_evaluate(self, train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, num_epochs, patience=10):
         train_transforms = T.Compose([
             T.RandomCrop(resize),
             T.RandomHorizontalFlip(),
@@ -165,7 +164,7 @@ class CV:
         best_val_loss = float('inf')
         patience_counter = 0
 
-        for epoch in range(self.parameters["EPOCHS"]):
+        for epoch in range(num_epochs):
             model.train()
             train_loss = 0.0
             for images, masks, label_flags, _ in train_loader:
@@ -239,7 +238,7 @@ class CV:
             for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
                 train_indices = np.array(labeled_indices)[train_idx].tolist()
                 val_indices = np.array(labeled_indices)[val_idx].tolist()
-                task = (batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_indices, val_indices)
+                task = (batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_indices, val_indices, self.dataset_dir)
                 all_tasks.append(task)
 
         with Pool(processes=num_workers) as pool:
