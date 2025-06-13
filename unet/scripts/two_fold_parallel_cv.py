@@ -26,6 +26,27 @@ import re
 from models.unet import create_unet_with_dino_resnet18
 from models.unet import create_unet
 
+def run_single_fold(self, args):
+    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir = args
+    val_loss, val_iou = self._train_and_evaluate(
+        train_idx, val_idx,
+        batch_size, encoder, freeze_encoder,
+        opt_type, loss_type, fold, lr, resize, dataset_dir
+    )
+    result = {
+        "batch_size": batch_size,
+        "loss_type": loss_type,
+        "encoder": encoder,
+        "freeze_encoder": freeze_encoder,
+        "optimizer": opt_type,
+        "lr": lr,
+        "resize": resize,
+        "fold": fold,
+        "val_loss": val_loss,
+        "val_iou": val_iou
+    }
+    return result
+
 class CV:
     def __init__(self, parameters, device, dataset_dir: str, export_dir: str, seed=42):
         self.seed = seed
@@ -189,26 +210,7 @@ class CV:
 
         return avg_val_loss, avg_val_iou
     
-    def _run_single_fold(self, args):
-        batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir = args
-        val_loss, val_iou = self._train_and_evaluate(
-            train_idx, val_idx,
-            batch_size, encoder, freeze_encoder,
-            opt_type, loss_type, fold, lr, resize, dataset_dir
-        )
-        result = {
-            "batch_size": batch_size,
-            "loss_type": loss_type,
-            "encoder": encoder,
-            "freeze_encoder": freeze_encoder,
-            "optimizer": opt_type,
-            "lr": lr,
-            "resize": resize,
-            "fold": fold,
-            "val_loss": val_loss,
-            "val_iou": val_iou
-        }
-        return result
+
     
     def run(self):
         # Hyperparameters
@@ -240,7 +242,7 @@ class CV:
                 all_tasks.append(task)
 
         with Pool(processes=num_workers) as pool:
-            all_results = pool.map(self._run_single_fold, all_tasks)
+            all_results = pool.map(run_single_fold, all_tasks)
 
         # Process results
         combo_results = defaultdict(list)
