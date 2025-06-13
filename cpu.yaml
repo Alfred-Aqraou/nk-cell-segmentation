@@ -4,20 +4,22 @@ channels:
   - nodefaults
 dependencies:
   - python=3.12
-  - conda-forge::numpy
-  - conda-forge::matplotlib
-  - conda-forge::pandas
-  - conda-forge::pillow
-  - conda-forge::requests
-  - conda-forge::tqdm
-  - conda-forge::segmentation-models-pytorch
-  - conda-forge::transformers
-  - conda-forge::scikit-learn
-  - conda-forge::accelerate
-  - conda-forge::natsort
-  - pip
+  - numpy=2.2.6
+  - matplotlib=3.10.3
+  - pandas=2.3.0
+  - pillow=11.2.1
+  - requests=2.32.3
+  - tqdm=4.67.1
+  - segmentation-models-pytorch=0.5.0
+  - transformers=4.52.4
+  - scikit-learn=1.6.1
+  - accelerate=1.7.0
+  - natsort=8.4.0
+  - wandb=0.20.1
+  - pip=25.1.1
   - pip:
-    - torch --index-url https://download.pytorch.org/whl/cpu
-    - torchvision --index-url https://download.pytorch.org/whl/cpu
-    - torchaudio --index-url https://download.pytorch.org/whl/cpu
-    
+    - --extra-index-url https://download.pytorch.org/whl/cpu
+    - --extra-index-url https://developer.download.nvidia.com/compute/redist
+    - torch==2.7.1
+    - torchvision==0.22.0
+    - -e ./solo-learn[dali,umap,h5]
