@@ -25,7 +25,7 @@ source /work3/s234843/init_project.sh
 python unet/scripts/two_fold_parallel_cv.py \
 	--workers 8 \
     --epochs 100 \
-    --encoders "resnet50" "resnet18" "/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt" "/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt" \
+    --encoders "resnet50" "resnet18" \
     --loss "iou" "dice" "combined" \
     --batchsizes 8 16 \
     --freeze "True" "False" \
