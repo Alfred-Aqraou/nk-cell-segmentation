@@ -25,6 +25,17 @@ bce_loss = nn.BCEWithLogitsLoss()
 iou_loss = JaccardLoss(mode='binary', from_logits=True)
 
 import argparse
+
+import random
+
+SEED = 42
+random.seed(SEED)
+np.random.seed(SEED)
+torch.manual_seed(SEED)
+torch.cuda.manual_seed_all(SEED)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--epochs", help = 'Specify epochs. I.e: 100', required=True, type=int)
 parser.add_argument("--batchsize", help = 'Specify batch size. I.e: 16', required=True, type=int)
@@ -130,7 +141,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
     global_hours = []
     global_ious = []
     # Set up KFold cross-validation.
-    kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
+    kf = KFold(n_splits=n_splits, shuffle=True, random_state=SEED)
     fold_metrics = []  # to save the best validation loss from each fold.
     
     all_args = []
