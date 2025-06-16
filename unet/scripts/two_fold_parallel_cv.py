@@ -60,10 +60,10 @@ print(args)
 
 args.freeze = [str(val).strip().lower() in ("true", "1", "yes", "y", "t") for val in args.freeze]
 
-args.resize = tuple(args.resize)
-for i in args.resize:
-    assert isinstance(i, int)
-assert len(args.resize) == 2
+# args.resize = tuple(args.resize)
+# for i in args.resize:
+#     assert isinstance(i, int)
+# assert len(args.resize) == 2
 
 global PARAMETERS
 PARAMETERS = {
