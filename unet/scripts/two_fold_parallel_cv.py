@@ -51,7 +51,7 @@ parser.add_argument("--batchsizes", help = 'Specify batch sizes. I.e: 8 16', nar
 parser.add_argument("--freeze", help = 'Specify whether to use freeze_opts. I.e: True False', nargs='+', required=True, type=bool)
 parser.add_argument("--optimizers", help = 'Specify optimizer. I.e: "adam"', nargs='+', required=True, type=str)
 parser.add_argument("--lr", help = 'Specify learning rate. I.e: 0.0005 0.0001', nargs='+', required=True, type=float)
-parser.add_argument("--resize", help = 'Specify dimensions to resize to. I.e: 256 256', nargs='+', required=True, type=int)
+parser.add_argument("--resize", help = 'Specify dimensions to resize to. I.e: 256 512', nargs='+', required=True, type=int)
 parser.add_argument("--nsplits", help = 'Specify outer n splits. I.e: 5', required=True, type=int)
 
 args = parser.parse_args()
@@ -75,7 +75,7 @@ PARAMETERS = {
     "freeze_opts": [*args.freeze],
     "optimizers": [*args.optimizers],
     "learning_rates": [*args.lr],
-    "resize": [args.resize], #(256, 256),
+    "resize": [*args.resize], #(256, 256),
     "outer_n_splits": args.nsplits #3
     }
 
@@ -133,7 +133,7 @@ def extract_encoder_name(encoder):
 
 def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir, num_epochs=100, patience=10):
     train_transforms = T.Compose([
-        T.RandomCrop(resize),
+        T.RandomCrop((resize, resize)),
         T.RandomHorizontalFlip(),
         T.RandomVerticalFlip(),
         T.RandomRotation(degrees=30),
@@ -141,7 +141,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         T.ToTensor(),
     ])
     val_transforms = T.Compose([
-        T.CenterCrop(resize),
+        T.CenterCrop((resize, resize)),
         T.ToTensor(),
     ])
     full_train = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(train_transforms))
@@ -212,14 +212,6 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         avg_val_loss = val_loss / len(val_indices)
         avg_val_iou = val_iou / len(val_indices)
 
-        # wandb.log({
-        #     "epoch": epoch,
-        #     "train_loss": train_loss / len(train_loader.dataset),
-        #     "val_loss": avg_val_loss,
-        #     "val_iou": avg_val_iou,
-        #     "fold": fold
-        # })
-
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
             patience_counter = 0
@@ -255,7 +247,6 @@ def run_single_fold(args):
         "val_loss": val_loss,
         "val_iou": val_iou
     }
-    # wandb.log(result)
     return result
 
 def outer_cross_validation(figure_prefix=""):
@@ -325,10 +316,6 @@ def outer_cross_validation(figure_prefix=""):
         print(f"Config: BS={combo_key[0]}, Loss={combo_key[1]}, Encoder={combo_key[2]}, Freeze={combo_key[3]}, Opt={combo_key[4]}, LR={combo_key[5]}")
         print(f"Mean Val Loss: {mean_val_loss:.4f} ± {std_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f} ± {std_val_iou:.4f}")
 
-    # wandb.log({
-    #     "final_results_table": wandb.Table(dataframe=pd.DataFrame(final_results))
-    # })
-
     # Save results to CSV
     print("Writing results.csv")
     try:
@@ -356,10 +343,6 @@ def outer_cross_validation(figure_prefix=""):
     plt.close()
     print("Finished plotting")
 
-    # wandb.log({
-    #     "top_10_val_loss_plot": wandb.Image(figure_prefix + "top_10_configs.png")
-    # })
-
     endtime = datetime.now()
     print("Started at:", starttime)
     print("Finished at:", endtime)
@@ -376,12 +359,6 @@ if __name__ == "__main__":
     current_time = starttime.strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
     export_folder = "exports/unet/"+current_time
     os.makedirs(export_folder, exist_ok=True)
-
-    # wandb.login()
-    # run = wandb.init(
-    #     project="U-net parallel",  # Specify your project
-    #     config=PARAMETERS,
-    # )
 
     outer_cross_validation(figure_prefix=export_folder+"/")
     pbar.close()
