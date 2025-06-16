@@ -221,7 +221,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             patience_counter += 1
 
         if patience_counter >= patience:
-            print("Early stopping triggered.")
+            print(f"Early stopping triggered after {epoch} epochs.")
             break
     
     pbar.update(1)
