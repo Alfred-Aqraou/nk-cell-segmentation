@@ -1,0 +1,47 @@
+Loaded module: cuda/12.8.1
+Combinations finished:   0%|          | 0/108 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/108 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/108 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/108 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/108 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/108 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/108 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/108 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/108 [00:00<?, ?it/s]Combinations finished:   1%|          | 1/108 [01:06<1:58:56, 66.70s/it]Combinations finished:   1%|          | 1/108 [01:12<2:08:36, 72.12s/it]Combinations finished:   1%|          | 1/108 [01:19<2:20:55, 79.02s/it]Combinations finished:   1%|          | 1/108 [01:30<2:41:47, 90.72s/it]Combinations finished:   1%|          | 1/108 [01:31<2:44:03, 91.99s/it]Combinations finished:   1%|          | 1/108 [02:09<3:50:46, 129.41s/it]Combinations finished:   2%|▏         | 2/108 [02:32<2:15:44, 76.83s/it]Combinations finished:   2%|▏         | 2/108 [02:46<2:28:50, 84.25s/it]Combinations finished:   1%|          | 1/108 [02:50<5:03:54, 170.42s/it]Combinations finished:   1%|          | 1/108 [02:59<5:20:01, 179.46s/it]Combinations finished:   2%|▏         | 2/108 [03:15<2:54:57, 99.03s/it]Combinations finished:   2%|▏         | 2/108 [03:35<3:15:25, 110.61s/it]Combinations finished:   2%|▏         | 2/108 [03:45<3:14:12, 109.93s/it]Combinations finished:   3%|▎         | 3/108 [03:54<2:19:02, 79.45s/it]Combinations finished:   2%|▏         | 2/108 [04:15<4:05:13, 138.81s/it]Combinations finished:   3%|▎         | 3/108 [04:47<2:33:43, 87.84s/it] Combinations finished:   3%|▎         | 3/108 [04:56<2:50:01, 97.16s/it] Combinations finished:   3%|▎         | 3/108 [04:57<2:55:46, 100.45s/it]Combinations finished:   3%|▎         | 3/108 [05:27<3:28:13, 118.99s/it]Combinations finished:   2%|▏         | 2/108 [05:43<5:03:38, 171.88s/it]Combinations finished:   4%|▎         | 4/108 [05:50<2:42:47, 93.92s/it]Combinations finished:   4%|▎         | 4/108 [06:00<2:28:01, 85.40s/it] Process SpawnPoolWorker-2:
+Process SpawnPoolWorker-7:
+Process SpawnPoolWorker-8:
+Process SpawnPoolWorker-5:
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/threading.py", line 355, in wait
+    waiter.acquire()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/threading.py", line 655, in wait
+    signaled = self._cond.wait(timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/threading.py", line 364, in wait
+    self._acquire_restore(saved_state)
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/threading.py", line 311, in _acquire_restore
+    def _acquire_restore(self, x):
+
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/two_fold_parallel_cv.py", line 363, in <module>
+    outer_cross_validation(figure_prefix=export_folder+"/")
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/two_fold_parallel_cv.py", line 288, in outer_cross_validation
+    all_results = pool.map(run_single_fold, all_tasks)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 367, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 768, in get
+    self.wait(timeout)
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 765, in wait
+    self._event.wait(timeout)
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/threading.py", line 652, in wait
+    with self._cond:
+         ^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/threading.py", line 303, in __exit__
+    return self._lock.__exit__(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: release unlocked lock
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 4 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

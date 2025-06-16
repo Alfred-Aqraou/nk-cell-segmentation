@@ -1,0 +1,39 @@
+Mon Jun 16 11:56:45 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A40                     On  |   00000000:65:00.0 Off |                    0 |
+|  0%   27C    P8             22W /  300W |       0MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Started at: 2025-06-16 11:57:16.911354
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)

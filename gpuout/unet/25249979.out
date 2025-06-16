@@ -1,0 +1,103 @@
+Mon Jun 16 12:11:03 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A40                     On  |   00000000:65:00.0 Off |                    0 |
+|  0%   61C    P0            180W /  300W |   11512MiB /  46068MiB |     95%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A         1071563      C   ...a3/envs/02466_cuda/bin/python       1434MiB |
+|    0   N/A  N/A         1071564      C   ...a3/envs/02466_cuda/bin/python       1434MiB |
+|    0   N/A  N/A         1071565      C   ...a3/envs/02466_cuda/bin/python       1428MiB |
+|    0   N/A  N/A         1071566      C   ...a3/envs/02466_cuda/bin/python       1434MiB |
+|    0   N/A  N/A         1071567      C   ...a3/envs/02466_cuda/bin/python       1434MiB |
+|    0   N/A  N/A         1071568      C   ...a3/envs/02466_cuda/bin/python       1434MiB |
+|    0   N/A  N/A         1071569      C   ...a3/envs/02466_cuda/bin/python       1434MiB |
+|    0   N/A  N/A         1071570      C   ...a3/envs/02466_cuda/bin/python       1434MiB |
++-----------------------------------------------------------------------------------------+
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Started at: 2025-06-16 12:11:33.532294
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Early stopping triggered after 26 epochs.
+Early stopping triggered after 53 epochs.
+Early stopping triggered after 73 epochs.
+Early stopping triggered after 54 epochs.
+Early stopping triggered after 99 epochs.
+Early stopping triggered after 33 epochs.
+Early stopping triggered after 50 epochs.
+Early stopping triggered after 38 epochs.
+Early stopping triggered after 36 epochs.
+Early stopping triggered after 37 epochs.
+Early stopping triggered after 42 epochs.
+Early stopping triggered after 31 epochs.
+Early stopping triggered after 76 epochs.
+Early stopping triggered after 51 epochs.
+Early stopping triggered after 44 epochs.
+Early stopping triggered after 59 epochs.
+Early stopping triggered after 88 epochs.
+Early stopping triggered after 51 epochs.
+Early stopping triggered after 31 epochs.
+Early stopping triggered after 65 epochs.
+Early stopping triggered after 81 epochs.
+Early stopping triggered after 49 epochs.
+Early stopping triggered after 28 epochs.
+Early stopping triggered after 73 epochs.
+Early stopping triggered after 48 epochs.
+Early stopping triggered after 39 epochs.
+Early stopping triggered after 45 epochs.
+Early stopping triggered after 46 epochs.
+Early stopping triggered after 56 epochs.
+Early stopping triggered after 22 epochs.
+Early stopping triggered after 95 epochs.
+Early stopping triggered after 48 epochs.
+Early stopping triggered after 52 epochs.
+Early stopping triggered after 71 epochs.
+Early stopping triggered after 62 epochs.
+Early stopping triggered after 44 epochs.
+Early stopping triggered after 30 epochs.
+Early stopping triggered after 54 epochs.
+Early stopping triggered after 44 epochs.
+Early stopping triggered after 43 epochs.
+Early stopping triggered after 42 epochs.
+Early stopping triggered after 61 epochs.
+Early stopping triggered after 54 epochs.
+Early stopping triggered after 10 epochs.
+Early stopping triggered after 56 epochs.
+Early stopping triggered after 86 epochs.
+Early stopping triggered after 40 epochs.
+Early stopping triggered after 28 epochs.
+Early stopping triggered after 31 epochs.
+Early stopping triggered after 25 epochs.
+Early stopping triggered after 64 epochs.
+Early stopping triggered after 64 epochs.
+Early stopping triggered after 41 epochs.
+Early stopping triggered after 64 epochs.
+Early stopping triggered after 41 epochs.
+Early stopping triggered after 45 epochs.
+Early stopping triggered after 36 epochs.
