@@ -1,0 +1,390 @@
+Mon Jun 16 10:17:45 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A40                     On  |   00000000:B1:00.0 Off |                    0 |
+|  0%   30C    P8             22W /  300W |       0MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt', '/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Started at: 2025-06-16 10:18:17.785172
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt', '/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt', '/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt', '/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt', '/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt', '/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt', '/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt', '/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt', '/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Early stopping triggered.
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+[INFO] Loaded DINO weights into ResNet18. Missing keys: ['fc.weight', 'fc.bias'], Unexpected keys: []
+Config: BS=8, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1974 ± 0.0272, Mean Val IoU: 0.8427 ± 0.0177
+Config: BS=8, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1881 ± 0.0283, Mean Val IoU: 0.8496 ± 0.0196
+Config: BS=8, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2166 ± 0.0304, Mean Val IoU: 0.8448 ± 0.0181
+Config: BS=8, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2060 ± 0.0130, Mean Val IoU: 0.8272 ± 0.0155
+Config: BS=8, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1980 ± 0.0177, Mean Val IoU: 0.8307 ± 0.0104
+Config: BS=8, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2285 ± 0.0121, Mean Val IoU: 0.8362 ± 0.0138
+Config: BS=8, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1120 ± 0.0157, Mean Val IoU: 0.8356 ± 0.0255
+Config: BS=8, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1097 ± 0.0163, Mean Val IoU: 0.8341 ± 0.0202
+Config: BS=8, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1298 ± 0.0123, Mean Val IoU: 0.8375 ± 0.0164
+Config: BS=8, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1115 ± 0.0115, Mean Val IoU: 0.8382 ± 0.0182
+Config: BS=8, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1096 ± 0.0148, Mean Val IoU: 0.8361 ± 0.0213
+Config: BS=8, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1341 ± 0.0104, Mean Val IoU: 0.8283 ± 0.0166
+Config: BS=8, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1849 ± 0.0133, Mean Val IoU: 0.8283 ± 0.0164
+Config: BS=8, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1781 ± 0.0122, Mean Val IoU: 0.8388 ± 0.0174
+Config: BS=8, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1869 ± 0.0145, Mean Val IoU: 0.8366 ± 0.0183
+Config: BS=8, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1874 ± 0.0141, Mean Val IoU: 0.8275 ± 0.0234
+Config: BS=8, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1942 ± 0.0203, Mean Val IoU: 0.8141 ± 0.0272
+Config: BS=8, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1974 ± 0.0151, Mean Val IoU: 0.8212 ± 0.0188
+Config: BS=16, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2079 ± 0.0171, Mean Val IoU: 0.8368 ± 0.0138
+Config: BS=16, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1997 ± 0.0267, Mean Val IoU: 0.8410 ± 0.0192
+Config: BS=16, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2568 ± 0.0287, Mean Val IoU: 0.8320 ± 0.0135
+Config: BS=16, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2301 ± 0.0133, Mean Val IoU: 0.8145 ± 0.0170
+Config: BS=16, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.2192 ± 0.0253, Mean Val IoU: 0.8155 ± 0.0235
+Config: BS=16, Loss=iou, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2580 ± 0.0254, Mean Val IoU: 0.8264 ± 0.0146
+Config: BS=16, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1180 ± 0.0103, Mean Val IoU: 0.8349 ± 0.0163
+Config: BS=16, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1135 ± 0.0129, Mean Val IoU: 0.8374 ± 0.0139
+Config: BS=16, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1488 ± 0.0146, Mean Val IoU: 0.8238 ± 0.0130
+Config: BS=16, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1221 ± 0.0059, Mean Val IoU: 0.8241 ± 0.0113
+Config: BS=16, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1223 ± 0.0120, Mean Val IoU: 0.8159 ± 0.0136
+Config: BS=16, Loss=dice, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1607 ± 0.0177, Mean Val IoU: 0.8192 ± 0.0114
+Config: BS=16, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1822 ± 0.0181, Mean Val IoU: 0.8373 ± 0.0193
+Config: BS=16, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1848 ± 0.0093, Mean Val IoU: 0.8335 ± 0.0141
+Config: BS=16, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2002 ± 0.0137, Mean Val IoU: 0.8299 ± 0.0190
+Config: BS=16, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1902 ± 0.0092, Mean Val IoU: 0.8216 ± 0.0148
+Config: BS=16, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1883 ± 0.0165, Mean Val IoU: 0.8284 ± 0.0246
+Config: BS=16, Loss=combined, Encoder=/work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2196 ± 0.0148, Mean Val IoU: 0.8134 ± 0.0119
+Writing results.csv
+Finished writing results.csv
+Plotting top 10 configs
+Finished plotting
+Started at: 2025-06-16 10:18:17.785172
+Finished at: 2025-06-16 11:13:13.902734
+Time elapsed: 0:54:56.117562

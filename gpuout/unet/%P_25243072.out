@@ -1,0 +1,237 @@
+Mon Jun 16 09:44:50 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A40                     On  |   00000000:65:00.0 Off |                    0 |
+|  0%   26C    P8             21W /  300W |       0MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Started at: 2025-06-16 09:45:26.942018
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet50', 'resnet18'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=[True, True], optimizers=['adam'], lr=[0.0005, 0.001, 0.0001], resize=[256, 256], nsplits=3)
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Early stopping triggered.
+Config: BS=8, Loss=iou, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2051 ± 0.0249, Mean Val IoU: 0.8412 ± 0.0240
+Config: BS=8, Loss=iou, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1972 ± 0.0169, Mean Val IoU: 0.8416 ± 0.0146
+Config: BS=8, Loss=iou, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2141 ± 0.0121, Mean Val IoU: 0.8528 ± 0.0117
+Config: BS=8, Loss=iou, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2020 ± 0.0195, Mean Val IoU: 0.8444 ± 0.0125
+Config: BS=8, Loss=iou, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.2032 ± 0.0283, Mean Val IoU: 0.8287 ± 0.0197
+Config: BS=8, Loss=iou, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2252 ± 0.0193, Mean Val IoU: 0.8397 ± 0.0130
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1158 ± 0.0082, Mean Val IoU: 0.8527 ± 0.0140
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1224 ± 0.0099, Mean Val IoU: 0.8490 ± 0.0180
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1259 ± 0.0134, Mean Val IoU: 0.8494 ± 0.0141
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1118 ± 0.0128, Mean Val IoU: 0.8399 ± 0.0195
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1141 ± 0.0266, Mean Val IoU: 0.8368 ± 0.0294
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1275 ± 0.0130, Mean Val IoU: 0.8430 ± 0.0129
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1721 ± 0.0071, Mean Val IoU: 0.8494 ± 0.0096
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1710 ± 0.0139, Mean Val IoU: 0.8551 ± 0.0211
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1797 ± 0.0106, Mean Val IoU: 0.8423 ± 0.0155
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1763 ± 0.0117, Mean Val IoU: 0.8425 ± 0.0146
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1766 ± 0.0145, Mean Val IoU: 0.8419 ± 0.0164
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1873 ± 0.0112, Mean Val IoU: 0.8395 ± 0.0154
+Config: BS=16, Loss=iou, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2040 ± 0.0131, Mean Val IoU: 0.8529 ± 0.0140
+Config: BS=16, Loss=iou, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.2377 ± 0.0308, Mean Val IoU: 0.8126 ± 0.0339
+Config: BS=16, Loss=iou, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.3231 ± 0.1549, Mean Val IoU: 0.7391 ± 0.2289
+Config: BS=16, Loss=iou, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1981 ± 0.0095, Mean Val IoU: 0.8438 ± 0.0093
+Config: BS=16, Loss=iou, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.2028 ± 0.0247, Mean Val IoU: 0.8506 ± 0.0163
+Config: BS=16, Loss=iou, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2389 ± 0.0241, Mean Val IoU: 0.8402 ± 0.0143
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1129 ± 0.0091, Mean Val IoU: 0.8532 ± 0.0068
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1431 ± 0.0353, Mean Val IoU: 0.8134 ± 0.0522
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2072 ± 0.1338, Mean Val IoU: 0.7312 ± 0.2475
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1147 ± 0.0056, Mean Val IoU: 0.8413 ± 0.0052
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1136 ± 0.0129, Mean Val IoU: 0.8462 ± 0.0215
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1594 ± 0.0153, Mean Val IoU: 0.8315 ± 0.0129
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1702 ± 0.0121, Mean Val IoU: 0.8484 ± 0.0167
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1782 ± 0.0218, Mean Val IoU: 0.8465 ± 0.0239
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1868 ± 0.0123, Mean Val IoU: 0.8495 ± 0.0146
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2179 ± 0.0765, Mean Val IoU: 0.8029 ± 0.0657
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.001
+Mean Val Loss: 0.1895 ± 0.0185, Mean Val IoU: 0.8219 ± 0.0209
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2059 ± 0.0287, Mean Val IoU: 0.8309 ± 0.0159
+Writing results.csv
+Finished writing results.csv
+Plotting top 10 configs
+Finished plotting
+Started at: 2025-06-16 09:45:26.942018
+Finished at: 2025-06-16 10:37:48.801263
+Time elapsed: 0:52:21.859245
