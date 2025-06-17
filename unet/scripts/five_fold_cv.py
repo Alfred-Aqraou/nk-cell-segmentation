@@ -151,9 +151,11 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
         args = (fold, train_idx, val_idx, labeled_indices, dataset_dir, device, batch_size, num_epochs, patience, figure_prefix)
         all_args.append(args)
 
+    best_fold_iou = 0
+
     # Begin cross-validation.
     for fold, (train_idx, val_idx) in enumerate(kf.split(labeled_indices)):
-        model_save_name = f"best_model_fold{fold}.pth"
+        model_save_name = f"best_model_fold{fold+1}.pth"
         # Map from KFold indices to absolute dataset indices.
         train_indices = np.array(labeled_indices)[train_idx].tolist()
         val_indices   = np.array(labeled_indices)[val_idx].tolist()
@@ -281,9 +283,14 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
                 best_val_loss = avg_val_loss
                 patience_counter = 0
                 if model_save_path:
-                    iou_str = f"{mean_iou:.4f}".replace(".", "-")
-                    savepath = os.path.join(model_save_path, f"{iou_str}-"+model_save_name)
-                    torch.save(model.state_dict(), os.path.abspath(savepath))
+                    if mean_iou > best_fold_iou:
+                        iou_str = f"{mean_iou:.4f}".replace(".", "_")
+                        savepath = os.path.join(model_save_path, f"{iou_str}-{model_save_name}")
+                        for file in os.listdir(model_save_path):
+                            os.remove(file)
+                        torch.save(model.state_dict(), os.path.abspath(savepath))
+                        # os.remove(os.path.join(model_save_path, f"{best_fold_iou}-best_model_fold{best_fold_iou[0]+1}.pth"))
+                        best_fold_iou = mean_iou
             elif avg_val_loss < best_val_loss + tolerance:
                 # Within tolerance; reset patience.
                 patience_counter = 0
@@ -332,7 +339,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
         print(f"Fold {fold+1} completed with best validation loss: {best_val_loss:.4f}\n")
         # Save per-image IoU for this fold to disk
         np.save(figure_prefix + f"{extract_encoder_name(PARAMETERS["encoder"])}_per_image_iou_fold{fold+1}.npy", np.array(fold_iou_list))
-    
+
     # Summary of cross-validation.
     print("Cross-validation complete. Summary of best validation losses per fold:")
     for metrics in fold_metrics:
