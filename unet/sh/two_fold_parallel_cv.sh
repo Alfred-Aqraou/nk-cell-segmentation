@@ -14,8 +14,8 @@
 #BSUB -N
 ### -- Specify the output and error file. %J is the job-id --
 ### -- -o and -e mean append, -oo and -eo mean overwrite --
-#BSUB -oo gpuout/unet/%J.out
-#BSUB -eo gpuout/unet/%J.err
+#BSUB -oo gpuout/unet/parallel_%J.out
+#BSUB -eo gpuout/unet/parallel_%J.err
 
 # /work3/s234843/02466-Project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt
 # /work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt
