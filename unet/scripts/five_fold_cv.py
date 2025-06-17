@@ -46,7 +46,7 @@ parser.add_argument("--optimizer", help = 'Specify optimizer. I.e: "adam"', requ
 parser.add_argument("--lr", help = 'Specify learning rate. I.e: 0.0005', required=True, type=float)
 parser.add_argument("--resize", help = 'Specify dimensions to resize to. I.e: 256 256', nargs='+', required=True, type=int)
 parser.add_argument("--nsplits", help = 'Specify outer n splits. I.e: 5', required=True, type=int)
-parser.add_argument("--save", help = 'Whether to save a model', required=False, type=bool, default="n")
+parser.add_argument("--modelpath", help = 'Path to save model, leave blank to not save', required=False, type=str, default="")
 
 
 args = parser.parse_args()
@@ -54,8 +54,6 @@ print("Given arguments:")
 print(args)
 
 args.freeze = str(args.freeze).strip().lower() in ("true", "1", "yes", "y", "t")
-save_model = str(args.save).strip().lower() in ("true", "1", "yes", "y", "t")
-
 
 args.resize = tuple(args.resize)
 for i in args.resize:
@@ -98,7 +96,7 @@ def extract_encoder_name(encoder):
             return f"dino_{match.group(1)}_e{match.group(2)}"
     return encoder  # Return original if not a dino path or no match
 
-def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_prefix="", save: bool = False):
+def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_prefix="", model_save_path: str = ""):
     device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
     #device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     global_iou_per_image = {}  # img_path → iou
@@ -282,10 +280,9 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
             if avg_val_loss < best_val_loss:
                 best_val_loss = avg_val_loss
                 patience_counter = 0
-                if save:
-                    iou_str = f"{mean_iou:.4f}".replaec(".", "-")
-                    savepath = os.path.join(figure_prefix, f"{iou_str}-"+model_save_name)
-                    os.makedirs(os.path.dirname(savepath), exist_ok=True)
+                if model_save_path:
+                    iou_str = f"{mean_iou:.4f}".replace(".", "-")
+                    savepath = os.path.join(model_save_path, f"{iou_str}-"+model_save_name)
                     torch.save(model.state_dict(), os.path.abspath(savepath))
             elif avg_val_loss < best_val_loss + tolerance:
                 # Within tolerance; reset patience.
@@ -345,7 +342,11 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
 
 if __name__ == '__main__':
     current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
+    
     time_folder = "exports/unet/"+current_time
     os.makedirs(time_folder, exist_ok=True)
 
-    run_cross_validation(num_epochs=PARAMETERS['EPOCHS'], batch_size=PARAMETERS['batch_size'], n_splits=PARAMETERS['outer_n_splits'], patience=10, figure_prefix=time_folder+"/", save=save_model)
+    modelpath = os.path.join(args.modelpath, current_time)
+    os.makedirs(modelpath)
+
+    run_cross_validation(num_epochs=PARAMETERS['EPOCHS'], batch_size=PARAMETERS['batch_size'], n_splits=PARAMETERS['outer_n_splits'], patience=10, figure_prefix=time_folder+"/", model_save_path=modelpath)
