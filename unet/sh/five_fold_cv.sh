@@ -1,5 +1,5 @@
 #!/bin/sh
-#BSUB -q gpua100
+#BSUB -q gpua40
 #BSUB -J five_fold_cv
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
@@ -14,8 +14,8 @@
 #BSUB -N
 ### -- Specify the output and error file. %J is the job-id --
 ### -- -o and -e mean append, -oo and -eo mean overwrite --
-#BSUB -oo gpuout/unet/%P_%J.out
-#BSUB -eo gpuout/unet/%P_%J.err
+#BSUB -oo gpuout/unet/fivefold_%J.out
+#BSUB -eo gpuout/unet/fivefold_%J.err
 
 nvidia-smi
 # Load the cuda module
@@ -31,10 +31,10 @@ source /work3/s234843/init_project.sh
 python unet/scripts/five_fold_cv.py \
     --epochs 100 \
     --batchsize 8 \
-    --loss "iou" \
-    --encoder "resnet50" \
-    --freeze "True" \
+    --loss "dice" \
+    --encoder "/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt" \
+    --freeze "False" \
     --optimizer "adam" \
-    --lr 0.0005 \
-    --resize 256 256 \
+    --lr 0.0001 \
+    --resize 512 512 \
     --nsplits 5
