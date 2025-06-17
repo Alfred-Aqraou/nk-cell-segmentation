@@ -14,7 +14,7 @@ for filename in filenames:
         print(f"❌ File missing: {filename}")
         continue
 
-    ious = np.load(path)
+    ious = np.load(path)$
     print(f"Loaded {len(ious)} IoUs from {filename}")
     all_ious.extend(ious)
 
