@@ -283,7 +283,10 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
                 best_val_loss = avg_val_loss
                 patience_counter = 0
                 if save:
-                    torch.save(model.state_dict(), os.path.abspath(os.path.join(figure_prefix, f"{mean_iou:.4f}_"+model_save_name)))
+                    iou_str = f"{mean_iou:.4f}".replaec(".", "-")
+                    savepath = os.path.join(figure_prefix, f"{iou_str}-"+model_save_name)
+                    os.makedirs(os.path.dirname(savepath), exist_ok=True)
+                    torch.save(model.state_dict(), os.path.abspath(savepath))
             elif avg_val_loss < best_val_loss + tolerance:
                 # Within tolerance; reset patience.
                 patience_counter = 0
