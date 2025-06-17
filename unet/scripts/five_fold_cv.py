@@ -99,22 +99,33 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
     #device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     global_iou_per_image = {}  # img_path → iou
     # Define transformation pipelines for training and validation.
-    train_base_transform = T.Compose([
-        T.RandomCrop(PARAMETERS["resize"]),
-        # T.RandomResizedCrop(size=PARAMETERS["resize"][0], scale=(0.7, 1.0), ratio=(0.75, 1.33)),
-        T.RandomHorizontalFlip(p=0.5),
-        T.RandomVerticalFlip(p=0.5),
-        T.RandomRotation(degrees=30),
-        T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
-        #T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
-        T.ToTensor(),
+    
+    common_geometric = T.Compose([
+    T.RandomResizedCrop(size=resize, scale=(0.7, 1.0), ratio=(0.75, 1.33)),
+    T.RandomHorizontalFlip(p=0.5),
+    T.RandomVerticalFlip(p=0.5),
+    T.RandomRotation(degrees=30),
     ])
-    train_transform = JointTransform(train_base_transform)
+
+    image_only = T.Compose([
+    common_geometric,
+    T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+    T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
+    T.ToTensor(),
+    ])
+
+    mask_only = T.Compose([
+    common_geometric,
+    T.ToTensor(),
+    ])
+    train_transforms = JointTransform(image_transform=image_only, mask_transform=mask_only)
 
     val_transform = T.Compose([
-        T.CenterCrop(PARAMETERS["resize"]),
+        T.CenterCrop((resize, resize)),
         T.ToTensor(),
     ])
+    val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform)
+
     
     # Construct dataset_dir relative to this file.
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -128,8 +139,8 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
         raise FileNotFoundError("Dataset directory not found in any of the expected locations.")
     
     # Create two dataset instances:
-    full_dataset_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transform)
-    full_dataset_val   = NKCellDataset(dataset_dir=dataset_dir, transform=val_transform)
+    full_dataset_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
+    full_dataset_val = NKCellDataset(dataset_dir=dataset_dir, transform=val_transforms)
     
     # Filter labeled samples (where mask_path exists on disk).
     labeled_indices = [
