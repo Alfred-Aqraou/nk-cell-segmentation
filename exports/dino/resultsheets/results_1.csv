@@ -1,2 +1,0 @@
-model_name,dice_score,backbone,head_type,loss,backbone_frozen,epochs,batch_size,patience,augmentation,scheduler,note,num_labeled,fold,timestamp
-dino_vits14_ssl,0.6089,dino_vits14,unet,dice,True,100,16,10,none,none,baseline frozen backbone,33,,2025-06-06 09:33:30
