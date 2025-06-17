@@ -1,0 +1,213 @@
+Mon Jun 16 20:54:13 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A40                     On  |   00000000:B1:00.0 Off |                    0 |
+|  0%   26C    P8             21W /  300W |       0MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Started at: 2025-06-16 20:54:52.127156
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[8, 16], freeze=['False'], optimizers=['adam'], lr=[0.001, 0.0001, 0.0005], resize=[256], nsplits=3)
+Early stopping triggered after 70 epochs.
+Early stopping triggered after 54 epochs.
+Early stopping triggered after 37 epochs.
+Early stopping triggered after 48 epochs.
+Early stopping triggered after 36 epochs.
+Early stopping triggered after 37 epochs.
+Early stopping triggered after 21 epochs.
+Early stopping triggered after 60 epochs.
+Early stopping triggered after 42 epochs.
+Early stopping triggered after 62 epochs.
+Early stopping triggered after 45 epochs.
+Early stopping triggered after 35 epochs.
+Early stopping triggered after 58 epochs.
+Early stopping triggered after 37 epochs.
+Early stopping triggered after 59 epochs.
+Early stopping triggered after 32 epochs.
+Early stopping triggered after 42 epochs.
+Early stopping triggered after 54 epochs.
+Early stopping triggered after 53 epochs.
+Early stopping triggered after 56 epochs.
+Early stopping triggered after 66 epochs.
+Early stopping triggered after 64 epochs.
+Early stopping triggered after 32 epochs.
+Early stopping triggered after 97 epochs.
+Early stopping triggered after 52 epochs.
+Early stopping triggered after 60 epochs.
+Early stopping triggered after 71 epochs.
+Early stopping triggered after 73 epochs.
+Early stopping triggered after 53 epochs.
+Early stopping triggered after 47 epochs.
+Early stopping triggered after 56 epochs.
+Early stopping triggered after 98 epochs.
+Early stopping triggered after 69 epochs.
+Early stopping triggered after 70 epochs.
+Early stopping triggered after 32 epochs.
+Early stopping triggered after 35 epochs.
+Early stopping triggered after 83 epochs.
+Early stopping triggered after 89 epochs.
+Early stopping triggered after 60 epochs.
+Early stopping triggered after 87 epochs.
+Early stopping triggered after 89 epochs.
+Early stopping triggered after 43 epochs.
+Early stopping triggered after 46 epochs.
+Early stopping triggered after 32 epochs.
+Early stopping triggered after 82 epochs.
+Early stopping triggered after 33 epochs.
+Early stopping triggered after 37 epochs.
+Early stopping triggered after 16 epochs.
+Early stopping triggered after 95 epochs.
+Early stopping triggered after 69 epochs.
+Early stopping triggered after 49 epochs.
+Early stopping triggered after 47 epochs.
+Early stopping triggered after 53 epochs.
+Early stopping triggered after 62 epochs.
+Early stopping triggered after 68 epochs.
+Early stopping triggered after 51 epochs.
+Early stopping triggered after 52 epochs.
+Early stopping triggered after 34 epochs.
+Early stopping triggered after 51 epochs.
+Early stopping triggered after 53 epochs.
+Early stopping triggered after 47 epochs.
+Early stopping triggered after 82 epochs.
+Early stopping triggered after 40 epochs.
+Early stopping triggered after 46 epochs.
+Early stopping triggered after 51 epochs.
+Early stopping triggered after 47 epochs.
+Early stopping triggered after 38 epochs.
+Early stopping triggered after 35 epochs.
+Early stopping triggered after 31 epochs.
+Early stopping triggered after 43 epochs.
+Early stopping triggered after 92 epochs.
+Early stopping triggered after 27 epochs.
+Early stopping triggered after 45 epochs.
+Early stopping triggered after 61 epochs.
+Early stopping triggered after 69 epochs.
+Early stopping triggered after 19 epochs.
+Early stopping triggered after 94 epochs.
+Early stopping triggered after 97 epochs.
+Early stopping triggered after 63 epochs.
+Early stopping triggered after 60 epochs.
+Early stopping triggered after 57 epochs.
+Early stopping triggered after 35 epochs.
+Early stopping triggered after 46 epochs.
+Early stopping triggered after 37 epochs.
+Early stopping triggered after 23 epochs.
+Early stopping triggered after 31 epochs.
+Early stopping triggered after 30 epochs.
+Early stopping triggered after 49 epochs.
+Early stopping triggered after 57 epochs.
+Early stopping triggered after 94 epochs.
+Early stopping triggered after 99 epochs.
+Early stopping triggered after 87 epochs.
+Early stopping triggered after 61 epochs.
+Early stopping triggered after 46 epochs.
+Early stopping triggered after 44 epochs.
+Config: BS=8, Loss=iou, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2382 ± 0.0695, Mean Val IoU: 0.7794 ± 0.0697
+Config: BS=8, Loss=iou, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2242 ± 0.0098, Mean Val IoU: 0.8335 ± 0.0179
+Config: BS=8, Loss=iou, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2305 ± 0.0588, Mean Val IoU: 0.7918 ± 0.0601
+Config: BS=8, Loss=iou, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2761 ± 0.0641, Mean Val IoU: 0.7830 ± 0.0334
+Config: BS=8, Loss=iou, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2116 ± 0.0092, Mean Val IoU: 0.8503 ± 0.0191
+Config: BS=8, Loss=iou, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2158 ± 0.0533, Mean Val IoU: 0.8422 ± 0.0255
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2093 ± 0.0619, Mean Val IoU: 0.6920 ± 0.1013
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1252 ± 0.0175, Mean Val IoU: 0.8554 ± 0.0087
+Config: BS=8, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1184 ± 0.0118, Mean Val IoU: 0.8420 ± 0.0292
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2241 ± 0.0411, Mean Val IoU: 0.7313 ± 0.1120
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1400 ± 0.0140, Mean Val IoU: 0.8485 ± 0.0160
+Config: BS=8, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1365 ± 0.0152, Mean Val IoU: 0.8489 ± 0.0174
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2668 ± 0.0546, Mean Val IoU: 0.8119 ± 0.0379
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1787 ± 0.0154, Mean Val IoU: 0.8376 ± 0.0207
+Config: BS=8, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1737 ± 0.0171, Mean Val IoU: 0.8498 ± 0.0253
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2057 ± 0.0358, Mean Val IoU: 0.8319 ± 0.0259
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1861 ± 0.0081, Mean Val IoU: 0.8313 ± 0.0092
+Config: BS=8, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2086 ± 0.0204, Mean Val IoU: 0.8047 ± 0.0455
+Config: BS=16, Loss=iou, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2762 ± 0.0421, Mean Val IoU: 0.7766 ± 0.0389
+Config: BS=16, Loss=iou, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2383 ± 0.0089, Mean Val IoU: 0.8374 ± 0.0066
+Config: BS=16, Loss=iou, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2135 ± 0.0217, Mean Val IoU: 0.8530 ± 0.0184
+Config: BS=16, Loss=iou, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.3636 ± 0.1021, Mean Val IoU: 0.7217 ± 0.1601
+Config: BS=16, Loss=iou, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2610 ± 0.0239, Mean Val IoU: 0.8398 ± 0.0096
+Config: BS=16, Loss=iou, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.2171 ± 0.0239, Mean Val IoU: 0.8427 ± 0.0305
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.1337 ± 0.0215, Mean Val IoU: 0.8016 ± 0.0255
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1534 ± 0.0091, Mean Val IoU: 0.8366 ± 0.0095
+Config: BS=16, Loss=dice, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1531 ± 0.0216, Mean Val IoU: 0.8134 ± 0.0396
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.1485 ± 0.0269, Mean Val IoU: 0.8263 ± 0.0505
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1307 ± 0.0083, Mean Val IoU: 0.8524 ± 0.0078
+Config: BS=16, Loss=dice, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1394 ± 0.0257, Mean Val IoU: 0.8436 ± 0.0019
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.2283 ± 0.0614, Mean Val IoU: 0.8005 ± 0.0542
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.1959 ± 0.0023, Mean Val IoU: 0.8394 ± 0.0162
+Config: BS=16, Loss=combined, Encoder=resnet18, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1836 ± 0.0278, Mean Val IoU: 0.8369 ± 0.0256
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.001
+Mean Val Loss: 0.4589 ± 0.2183, Mean Val IoU: 0.7026 ± 0.0341
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0001
+Mean Val Loss: 0.2012 ± 0.0085, Mean Val IoU: 0.8357 ± 0.0115
+Config: BS=16, Loss=combined, Encoder=resnet50, Freeze=False, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1778 ± 0.0144, Mean Val IoU: 0.8428 ± 0.0224
+Writing results.csv
+Finished writing results.csv
+Plotting top 10 configs
+Finished plotting
+Started at: 2025-06-16 20:54:52.127156
+Finished at: 2025-06-16 21:23:05.865093
+Time elapsed: 0:28:13.737937
