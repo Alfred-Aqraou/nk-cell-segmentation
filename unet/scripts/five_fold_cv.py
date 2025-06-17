@@ -155,7 +155,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
 
     # Begin cross-validation.
     for fold, (train_idx, val_idx) in enumerate(kf.split(labeled_indices)):
-        model_save_path = os.path.abspath(os.path.join(figure_prefix, f"best_model_fold{fold}.pth"))
+        model_save_name = f"best_model_fold{fold}.pth"
         # Map from KFold indices to absolute dataset indices.
         train_indices = np.array(labeled_indices)[train_idx].tolist()
         val_indices   = np.array(labeled_indices)[val_idx].tolist()
@@ -283,7 +283,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
                 best_val_loss = avg_val_loss
                 patience_counter = 0
                 if save:
-                    torch.save(model.state_dict(), model_save_path)
+                    torch.save(model.state_dict(), os.path.abspath(os.path.join(figure_prefix, f"{mean_iou:.4f}_"+model_save_name)))
             elif avg_val_loss < best_val_loss + tolerance:
                 # Within tolerance; reset patience.
                 patience_counter = 0
