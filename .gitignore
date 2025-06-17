@@ -13,3 +13,5 @@ dataset.tar
 *.ckpt
 
 __pycache__
+
+.DS_Store
