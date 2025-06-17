@@ -123,7 +123,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
     train_transforms = JointTransform(image_transform=image_only, mask_transform=mask_only)
 
     val_transform = T.Compose([
-        T.CenterCrop((PARAMETERS['resize'],PARAMETERS['resize'])),
+        T.CenterCrop(PARAMETERS['resize']),
         T.ToTensor(),
     ])
     val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform)
