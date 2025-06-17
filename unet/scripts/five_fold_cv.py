@@ -46,12 +46,16 @@ parser.add_argument("--optimizer", help = 'Specify optimizer. I.e: "adam"', requ
 parser.add_argument("--lr", help = 'Specify learning rate. I.e: 0.0005', required=True, type=float)
 parser.add_argument("--resize", help = 'Specify dimensions to resize to. I.e: 256 256', nargs='+', required=True, type=int)
 parser.add_argument("--nsplits", help = 'Specify outer n splits. I.e: 5', required=True, type=int)
+parser.add_argument("--save", help = 'Whether to save a model', required=False, type=bool, default="n")
+
 
 args = parser.parse_args()
 print("Given arguments:")
 print(args)
 
 args.freeze = str(args.freeze).strip().lower() in ("true", "1", "yes", "y", "t")
+save_model = str(args.save).strip().lower() in ("true", "1", "yes", "y", "t")
+
 
 args.resize = tuple(args.resize)
 for i in args.resize:
@@ -94,7 +98,7 @@ def extract_encoder_name(encoder):
             return f"dino_{match.group(1)}_e{match.group(2)}"
     return encoder  # Return original if not a dino path or no match
 
-def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_prefix=""):
+def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_prefix="", save: bool = False):
     device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
     #device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     global_iou_per_image = {}  # img_path → iou
@@ -151,6 +155,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
 
     # Begin cross-validation.
     for fold, (train_idx, val_idx) in enumerate(kf.split(labeled_indices)):
+        model_save_path = os.path.abspath(os.path.join(figure_prefix, f"best_model_fold{fold}.pth"))
         # Map from KFold indices to absolute dataset indices.
         train_indices = np.array(labeled_indices)[train_idx].tolist()
         val_indices   = np.array(labeled_indices)[val_idx].tolist()
@@ -277,9 +282,12 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
             if avg_val_loss < best_val_loss:
                 best_val_loss = avg_val_loss
                 patience_counter = 0
+                if save:
+                    torch.save(model.state_dict(), model_save_path)
             elif avg_val_loss < best_val_loss + tolerance:
                 # Within tolerance; reset patience.
                 patience_counter = 0
+                # torch.save(model.state_dict(), model_save_path)
             else:
                 patience_counter += 1
             
@@ -331,9 +339,10 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
         print(f"  Fold {metrics['fold']}: Best Validation Loss = {metrics['best_val_loss']:.4f}," f"Best IoU = {metrics['best_iou']:.4f}")
 
     print(f"Saved global IoU vs Hour plot to {time_folder + '/global_iou_vs_hour.png'}")
+
 if __name__ == '__main__':
     current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
     time_folder = "exports/unet/"+current_time
     os.makedirs(time_folder, exist_ok=True)
 
-    run_cross_validation(num_epochs=PARAMETERS['EPOCHS'], batch_size=PARAMETERS['batch_size'], n_splits=PARAMETERS['outer_n_splits'], patience=10, figure_prefix=time_folder+"/")
+    run_cross_validation(num_epochs=PARAMETERS['EPOCHS'], batch_size=PARAMETERS['batch_size'], n_splits=PARAMETERS['outer_n_splits'], patience=10, figure_prefix=time_folder+"/", save=save_model)
