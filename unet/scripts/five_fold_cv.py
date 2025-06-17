@@ -103,7 +103,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
     # Define transformation pipelines for training and validation.
     
     common_geometric = T.Compose([
-    T.RandomResizedCrop(size=resize, scale=(0.7, 1.0), ratio=(0.75, 1.33)),
+    T.RandomResizedCrop(size=PARAMETERS['resize'], scale=(0.7, 1.0), ratio=(0.75, 1.33)),
     T.RandomHorizontalFlip(p=0.5),
     T.RandomVerticalFlip(p=0.5),
     T.RandomRotation(degrees=30),
@@ -123,7 +123,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
     train_transforms = JointTransform(image_transform=image_only, mask_transform=mask_only)
 
     val_transform = T.Compose([
-        T.CenterCrop((resize, resize)),
+        T.CenterCrop((PARAMETERS['resize'],PARAMETERS['resize'])),
         T.ToTensor(),
     ])
     val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform)
