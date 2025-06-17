@@ -287,7 +287,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
                         iou_str = f"{mean_iou:.4f}".replace(".", "_")
                         savepath = os.path.join(model_save_path, f"{iou_str}-{model_save_name}")
                         for file in os.listdir(model_save_path):
-                            os.remove(file)
+                            os.remove(os.path.join(model_save_path, file))
                         torch.save(model.state_dict(), os.path.abspath(savepath))
                         # os.remove(os.path.join(model_save_path, f"{best_fold_iou}-best_model_fold{best_fold_iou[0]+1}.pth"))
                         best_fold_iou = mean_iou
