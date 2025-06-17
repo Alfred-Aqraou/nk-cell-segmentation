@@ -1,0 +1,428 @@
+Tue Jun 17 09:28:50 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A40                     On  |   00000000:B1:00.0 Off |                    0 |
+|  0%   26C    P8             21W /  300W |       0MiB /  46068MiB |      0%   E. Process |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Given arguments:
+Namespace(epochs=100, batchsize=8, loss='iou', encoder='resnet50', freeze=True, optimizer='adam', lr=0.001, resize=[512, 512], nsplits=5)
+Total labeled samples: 41
+
+=== Fold 1/5 ===
+Train samples: 32, Validation samples: 9
+Fold 1: Frozen encoder parameters count: 159 / 159
+Using pretrained weights: True
+Fold 1, Epoch [1/100], Train Loss: 0.5276, Val Loss: 0.5919,IoU: 0.4938
+Fold 1, Epoch [2/100], Train Loss: 0.3968, Val Loss: 0.5777,IoU: 0.4408
+Fold 1, Epoch [3/100], Train Loss: 0.3413, Val Loss: 0.6443,IoU: 0.3424
+Fold 1, Epoch [4/100], Train Loss: 0.3253, Val Loss: 0.5352,IoU: 0.4888
+Fold 1, Epoch [5/100], Train Loss: 0.3062, Val Loss: 0.4614,IoU: 0.5976
+Fold 1, Epoch [6/100], Train Loss: 0.2729, Val Loss: 0.3869,IoU: 0.6834
+Fold 1, Epoch [7/100], Train Loss: 0.2599, Val Loss: 0.3804,IoU: 0.6698
+Fold 1, Epoch [8/100], Train Loss: 0.2696, Val Loss: 0.3186,IoU: 0.7336
+Fold 1, Epoch [9/100], Train Loss: 0.2444, Val Loss: 0.2786,IoU: 0.7782
+Fold 1, Epoch [10/100], Train Loss: 0.2197, Val Loss: 0.2560,IoU: 0.8048
+Fold 1, Epoch [11/100], Train Loss: 0.2327, Val Loss: 0.3594,IoU: 0.6723
+Fold 1, Epoch [12/100], Train Loss: 0.2268, Val Loss: 0.3426,IoU: 0.6835
+Fold 1, Epoch [13/100], Train Loss: 0.2148, Val Loss: 0.3142,IoU: 0.7243
+Fold 1, Epoch [14/100], Train Loss: 0.2170, Val Loss: 0.3051,IoU: 0.7571
+Fold 1, Epoch [15/100], Train Loss: 0.2281, Val Loss: 0.3676,IoU: 0.6664
+Fold 1, Epoch [16/100], Train Loss: 0.2337, Val Loss: 0.2686,IoU: 0.8203
+Fold 1, Epoch [17/100], Train Loss: 0.2099, Val Loss: 0.2981,IoU: 0.7441
+Fold 1, Epoch [18/100], Train Loss: 0.2144, Val Loss: 0.2369,IoU: 0.7988
+Fold 1, Epoch [19/100], Train Loss: 0.2139, Val Loss: 0.1908,IoU: 0.8454
+Fold 1, Epoch [20/100], Train Loss: 0.2178, Val Loss: 0.2140,IoU: 0.8527
+Fold 1, Epoch [21/100], Train Loss: 0.2113, Val Loss: 0.2282,IoU: 0.8573
+Fold 1, Epoch [22/100], Train Loss: 0.2053, Val Loss: 0.2158,IoU: 0.8529
+Fold 1, Epoch [23/100], Train Loss: 0.2020, Val Loss: 0.2154,IoU: 0.8449
+Fold 1, Epoch [24/100], Train Loss: 0.2167, Val Loss: 0.1924,IoU: 0.8620
+Fold 1, Epoch [25/100], Train Loss: 0.2101, Val Loss: 0.1954,IoU: 0.8591
+Fold 1, Epoch [26/100], Train Loss: 0.2231, Val Loss: 0.1999,IoU: 0.8700
+Fold 1, Epoch [27/100], Train Loss: 0.2068, Val Loss: 0.2177,IoU: 0.8708
+Fold 1, Epoch [28/100], Train Loss: 0.1994, Val Loss: 0.2053,IoU: 0.8654
+Fold 1, Epoch [29/100], Train Loss: 0.2012, Val Loss: 0.1779,IoU: 0.8713
+Fold 1, Epoch [30/100], Train Loss: 0.2032, Val Loss: 0.1676,IoU: 0.8709
+Fold 1, Epoch [31/100], Train Loss: 0.2098, Val Loss: 0.1802,IoU: 0.8663
+Fold 1, Epoch [32/100], Train Loss: 0.1985, Val Loss: 0.1839,IoU: 0.8720
+Fold 1, Epoch [33/100], Train Loss: 0.1885, Val Loss: 0.2024,IoU: 0.8725
+Fold 1, Epoch [34/100], Train Loss: 0.1910, Val Loss: 0.2124,IoU: 0.8672
+Fold 1, Epoch [35/100], Train Loss: 0.1992, Val Loss: 0.1965,IoU: 0.8654
+Fold 1, Epoch [36/100], Train Loss: 0.1978, Val Loss: 0.1952,IoU: 0.8717
+Fold 1, Epoch [37/100], Train Loss: 0.1951, Val Loss: 0.1954,IoU: 0.8677
+Fold 1, Epoch [38/100], Train Loss: 0.1863, Val Loss: 0.2146,IoU: 0.8606
+Fold 1, Epoch [39/100], Train Loss: 0.2082, Val Loss: 0.1837,IoU: 0.8673
+Fold 1, Epoch [40/100], Train Loss: 0.1968, Val Loss: 0.1905,IoU: 0.8728
+Fold 1, Epoch [41/100], Train Loss: 0.2010, Val Loss: 0.2048,IoU: 0.8752
+Fold 1: Early stopping triggered at epoch 41.
+Fold 1 completed with best validation loss: 0.1676
+
+
+=== Fold 2/5 ===
+Train samples: 33, Validation samples: 8
+Fold 2: Frozen encoder parameters count: 159 / 159
+Using pretrained weights: True
+Fold 2, Epoch [1/100], Train Loss: 0.6031, Val Loss: 0.7089,IoU: 0.0351
+Fold 2, Epoch [2/100], Train Loss: 0.4498, Val Loss: 0.6897,IoU: 0.1606
+Fold 2, Epoch [3/100], Train Loss: 0.3932, Val Loss: 0.5780,IoU: 0.5988
+Fold 2, Epoch [4/100], Train Loss: 0.3205, Val Loss: 0.6285,IoU: 0.3676
+Fold 2, Epoch [5/100], Train Loss: 0.2886, Val Loss: 0.5494,IoU: 0.4808
+Fold 2, Epoch [6/100], Train Loss: 0.2529, Val Loss: 0.3770,IoU: 0.7232
+Fold 2, Epoch [7/100], Train Loss: 0.2669, Val Loss: 0.2907,IoU: 0.8144
+Fold 2, Epoch [8/100], Train Loss: 0.2462, Val Loss: 0.3035,IoU: 0.7588
+Fold 2, Epoch [9/100], Train Loss: 0.2315, Val Loss: 0.4122,IoU: 0.6604
+Fold 2, Epoch [10/100], Train Loss: 0.2514, Val Loss: 0.4356,IoU: 0.6006
+Fold 2, Epoch [11/100], Train Loss: 0.2378, Val Loss: 0.4040,IoU: 0.6178
+Fold 2, Epoch [12/100], Train Loss: 0.2313, Val Loss: 0.3505,IoU: 0.6930
+Fold 2, Epoch [13/100], Train Loss: 0.2367, Val Loss: 0.3481,IoU: 0.7415
+Fold 2, Epoch [14/100], Train Loss: 0.2335, Val Loss: 0.2159,IoU: 0.8493
+Fold 2, Epoch [15/100], Train Loss: 0.2240, Val Loss: 0.2453,IoU: 0.8124
+Fold 2, Epoch [16/100], Train Loss: 0.2294, Val Loss: 0.2370,IoU: 0.8235
+Fold 2, Epoch [17/100], Train Loss: 0.2274, Val Loss: 0.2193,IoU: 0.8377
+Fold 2, Epoch [18/100], Train Loss: 0.2263, Val Loss: 0.2279,IoU: 0.8406
+Fold 2, Epoch [19/100], Train Loss: 0.2116, Val Loss: 0.2044,IoU: 0.8509
+Fold 2, Epoch [20/100], Train Loss: 0.2159, Val Loss: 0.1891,IoU: 0.8588
+Fold 2, Epoch [21/100], Train Loss: 0.2081, Val Loss: 0.1865,IoU: 0.8595
+Fold 2, Epoch [22/100], Train Loss: 0.2102, Val Loss: 0.1767,IoU: 0.8670
+Fold 2, Epoch [23/100], Train Loss: 0.2247, Val Loss: 0.1896,IoU: 0.8593
+Fold 2, Epoch [24/100], Train Loss: 0.2039, Val Loss: 0.2070,IoU: 0.8488
+Fold 2, Epoch [25/100], Train Loss: 0.2144, Val Loss: 0.2250,IoU: 0.8209
+Fold 2, Epoch [26/100], Train Loss: 0.2000, Val Loss: 0.2062,IoU: 0.8353
+Fold 2, Epoch [27/100], Train Loss: 0.2158, Val Loss: 0.2053,IoU: 0.8321
+Fold 2, Epoch [28/100], Train Loss: 0.2164, Val Loss: 0.1907,IoU: 0.8592
+Fold 2, Epoch [29/100], Train Loss: 0.2104, Val Loss: 0.1846,IoU: 0.8629
+Fold 2, Epoch [30/100], Train Loss: 0.2141, Val Loss: 0.1709,IoU: 0.8554
+Fold 2, Epoch [31/100], Train Loss: 0.2063, Val Loss: 0.1937,IoU: 0.8389
+Fold 2, Epoch [32/100], Train Loss: 0.2035, Val Loss: 0.2301,IoU: 0.8230
+Fold 2, Epoch [33/100], Train Loss: 0.1928, Val Loss: 0.2084,IoU: 0.8470
+Fold 2, Epoch [34/100], Train Loss: 0.1904, Val Loss: 0.1795,IoU: 0.8645
+Fold 2, Epoch [35/100], Train Loss: 0.2011, Val Loss: 0.1807,IoU: 0.8644
+Fold 2, Epoch [36/100], Train Loss: 0.2035, Val Loss: 0.1814,IoU: 0.8462
+Fold 2, Epoch [37/100], Train Loss: 0.2200, Val Loss: 0.2004,IoU: 0.8344
+Fold 2, Epoch [38/100], Train Loss: 0.1919, Val Loss: 0.2104,IoU: 0.8370
+Fold 2, Epoch [39/100], Train Loss: 0.1992, Val Loss: 0.1991,IoU: 0.8328
+Fold 2, Epoch [40/100], Train Loss: 0.1951, Val Loss: 0.2153,IoU: 0.8172
+Fold 2, Epoch [41/100], Train Loss: 0.1937, Val Loss: 0.2297,IoU: 0.8130
+Fold 2, Epoch [42/100], Train Loss: 0.2165, Val Loss: 0.2013,IoU: 0.8407
+Fold 2, Epoch [43/100], Train Loss: 0.1986, Val Loss: 0.2034,IoU: 0.8421
+Fold 2, Epoch [44/100], Train Loss: 0.1864, Val Loss: 0.1939,IoU: 0.8428
+Fold 2, Epoch [45/100], Train Loss: 0.2044, Val Loss: 0.1868,IoU: 0.8482
+Fold 2, Epoch [46/100], Train Loss: 0.1835, Val Loss: 0.1867,IoU: 0.8551
+Fold 2: Early stopping triggered at epoch 46.
+Fold 2 completed with best validation loss: 0.1709
+
+
+=== Fold 3/5 ===
+Train samples: 33, Validation samples: 8
+Fold 3: Frozen encoder parameters count: 159 / 159
+Using pretrained weights: True
+Fold 3, Epoch [1/100], Train Loss: 0.5792, Val Loss: 0.8383,IoU: 0.0076
+Fold 3, Epoch [2/100], Train Loss: 0.4348, Val Loss: 0.9143,IoU: 0.0047
+Fold 3, Epoch [3/100], Train Loss: 0.3578, Val Loss: 0.8056,IoU: 0.0642
+Fold 3, Epoch [4/100], Train Loss: 0.3137, Val Loss: 0.4773,IoU: 0.6466
+Fold 3, Epoch [5/100], Train Loss: 0.2762, Val Loss: 0.3958,IoU: 0.7063
+Fold 3, Epoch [6/100], Train Loss: 0.2709, Val Loss: 0.3266,IoU: 0.7771
+Fold 3, Epoch [7/100], Train Loss: 0.2459, Val Loss: 0.2814,IoU: 0.8058
+Fold 3, Epoch [8/100], Train Loss: 0.2348, Val Loss: 0.2655,IoU: 0.7971
+Fold 3, Epoch [9/100], Train Loss: 0.2308, Val Loss: 0.2884,IoU: 0.7530
+Fold 3, Epoch [10/100], Train Loss: 0.2157, Val Loss: 0.2457,IoU: 0.7994
+Fold 3, Epoch [11/100], Train Loss: 0.2347, Val Loss: 0.2630,IoU: 0.7664
+Fold 3, Epoch [12/100], Train Loss: 0.2353, Val Loss: 0.2137,IoU: 0.8357
+Fold 3, Epoch [13/100], Train Loss: 0.2285, Val Loss: 0.2202,IoU: 0.8244
+Fold 3, Epoch [14/100], Train Loss: 0.2243, Val Loss: 0.2078,IoU: 0.8371
+Fold 3, Epoch [15/100], Train Loss: 0.2297, Val Loss: 0.2662,IoU: 0.7673
+Fold 3, Epoch [16/100], Train Loss: 0.2164, Val Loss: 0.2094,IoU: 0.8313
+Fold 3, Epoch [17/100], Train Loss: 0.2131, Val Loss: 0.2098,IoU: 0.8417
+Fold 3, Epoch [18/100], Train Loss: 0.2180, Val Loss: 0.1952,IoU: 0.8559
+Fold 3, Epoch [19/100], Train Loss: 0.2108, Val Loss: 0.1862,IoU: 0.8598
+Fold 3, Epoch [20/100], Train Loss: 0.2051, Val Loss: 0.1922,IoU: 0.8514
+Fold 3, Epoch [21/100], Train Loss: 0.2086, Val Loss: 0.2019,IoU: 0.8466
+Fold 3, Epoch [22/100], Train Loss: 0.2031, Val Loss: 0.1977,IoU: 0.8532
+Fold 3, Epoch [23/100], Train Loss: 0.2036, Val Loss: 0.1939,IoU: 0.8454
+Fold 3, Epoch [24/100], Train Loss: 0.2009, Val Loss: 0.1804,IoU: 0.8509
+Fold 3, Epoch [25/100], Train Loss: 0.2063, Val Loss: 0.1903,IoU: 0.8406
+Fold 3, Epoch [26/100], Train Loss: 0.2041, Val Loss: 0.1841,IoU: 0.8593
+Fold 3, Epoch [27/100], Train Loss: 0.1898, Val Loss: 0.1752,IoU: 0.8583
+Fold 3, Epoch [28/100], Train Loss: 0.2039, Val Loss: 0.1876,IoU: 0.8561
+Fold 3, Epoch [29/100], Train Loss: 0.2118, Val Loss: 0.2224,IoU: 0.8436
+Fold 3, Epoch [30/100], Train Loss: 0.1978, Val Loss: 0.2121,IoU: 0.8435
+Fold 3, Epoch [31/100], Train Loss: 0.2023, Val Loss: 0.1877,IoU: 0.8589
+Fold 3, Epoch [32/100], Train Loss: 0.2030, Val Loss: 0.1741,IoU: 0.8591
+Fold 3, Epoch [33/100], Train Loss: 0.1868, Val Loss: 0.1796,IoU: 0.8593
+Fold 3, Epoch [34/100], Train Loss: 0.1998, Val Loss: 0.2070,IoU: 0.8546
+Fold 3, Epoch [35/100], Train Loss: 0.2090, Val Loss: 0.1886,IoU: 0.8599
+Fold 3, Epoch [36/100], Train Loss: 0.1950, Val Loss: 0.1880,IoU: 0.8593
+Fold 3, Epoch [37/100], Train Loss: 0.2134, Val Loss: 0.1803,IoU: 0.8601
+Fold 3, Epoch [38/100], Train Loss: 0.1939, Val Loss: 0.1871,IoU: 0.8595
+Fold 3, Epoch [39/100], Train Loss: 0.2112, Val Loss: 0.1809,IoU: 0.8613
+Fold 3, Epoch [40/100], Train Loss: 0.1815, Val Loss: 0.2038,IoU: 0.8520
+Fold 3, Epoch [41/100], Train Loss: 0.1941, Val Loss: 0.1876,IoU: 0.8614
+Fold 3, Epoch [42/100], Train Loss: 0.1895, Val Loss: 0.1858,IoU: 0.8632
+Fold 3, Epoch [43/100], Train Loss: 0.1970, Val Loss: 0.1855,IoU: 0.8591
+Fold 3, Epoch [44/100], Train Loss: 0.1927, Val Loss: 0.1973,IoU: 0.8580
+Fold 3, Epoch [45/100], Train Loss: 0.2035, Val Loss: 0.1818,IoU: 0.8642
+Fold 3, Epoch [46/100], Train Loss: 0.1844, Val Loss: 0.1941,IoU: 0.8542
+Fold 3, Epoch [47/100], Train Loss: 0.2008, Val Loss: 0.1781,IoU: 0.8614
+Fold 3, Epoch [48/100], Train Loss: 0.1962, Val Loss: 0.2062,IoU: 0.8560
+Fold 3, Epoch [49/100], Train Loss: 0.1985, Val Loss: 0.2157,IoU: 0.8608
+Fold 3, Epoch [50/100], Train Loss: 0.1936, Val Loss: 0.1999,IoU: 0.8675
+Fold 3, Epoch [51/100], Train Loss: 0.1864, Val Loss: 0.1969,IoU: 0.8642
+Fold 3, Epoch [52/100], Train Loss: 0.1784, Val Loss: 0.1927,IoU: 0.8604
+Fold 3, Epoch [53/100], Train Loss: 0.2076, Val Loss: 0.1822,IoU: 0.8605
+Fold 3, Epoch [54/100], Train Loss: 0.1856, Val Loss: 0.1777,IoU: 0.8617
+Fold 3, Epoch [55/100], Train Loss: 0.1966, Val Loss: 0.1727,IoU: 0.8661
+Fold 3, Epoch [56/100], Train Loss: 0.1888, Val Loss: 0.1954,IoU: 0.8606
+Fold 3, Epoch [57/100], Train Loss: 0.1858, Val Loss: 0.1982,IoU: 0.8632
+Fold 3, Epoch [58/100], Train Loss: 0.1863, Val Loss: 0.1797,IoU: 0.8681
+Fold 3, Epoch [59/100], Train Loss: 0.1960, Val Loss: 0.1899,IoU: 0.8704
+Fold 3, Epoch [60/100], Train Loss: 0.1800, Val Loss: 0.1799,IoU: 0.8730
+Fold 3, Epoch [61/100], Train Loss: 0.1919, Val Loss: 0.1946,IoU: 0.8605
+Fold 3, Epoch [62/100], Train Loss: 0.1784, Val Loss: 0.2088,IoU: 0.8556
+Fold 3, Epoch [63/100], Train Loss: 0.1808, Val Loss: 0.1923,IoU: 0.8537
+Fold 3, Epoch [64/100], Train Loss: 0.1971, Val Loss: 0.1627,IoU: 0.8623
+Fold 3, Epoch [65/100], Train Loss: 0.1802, Val Loss: 0.1824,IoU: 0.8617
+Fold 3, Epoch [66/100], Train Loss: 0.1928, Val Loss: 0.1854,IoU: 0.8680
+Fold 3, Epoch [67/100], Train Loss: 0.1963, Val Loss: 0.1892,IoU: 0.8646
+Fold 3, Epoch [68/100], Train Loss: 0.2023, Val Loss: 0.1651,IoU: 0.8663
+Fold 3, Epoch [69/100], Train Loss: 0.1853, Val Loss: 0.1773,IoU: 0.8566
+Fold 3, Epoch [70/100], Train Loss: 0.1897, Val Loss: 0.1856,IoU: 0.8649
+Fold 3, Epoch [71/100], Train Loss: 0.1916, Val Loss: 0.1776,IoU: 0.8640
+Fold 3, Epoch [72/100], Train Loss: 0.1846, Val Loss: 0.1863,IoU: 0.8479
+Fold 3, Epoch [73/100], Train Loss: 0.1834, Val Loss: 0.1944,IoU: 0.8545
+Fold 3, Epoch [74/100], Train Loss: 0.1966, Val Loss: 0.1922,IoU: 0.8664
+Fold 3, Epoch [75/100], Train Loss: 0.1878, Val Loss: 0.1901,IoU: 0.8649
+Fold 3, Epoch [76/100], Train Loss: 0.1890, Val Loss: 0.2045,IoU: 0.8618
+Fold 3, Epoch [77/100], Train Loss: 0.1941, Val Loss: 0.1900,IoU: 0.8581
+Fold 3, Epoch [78/100], Train Loss: 0.1853, Val Loss: 0.1952,IoU: 0.8544
+Fold 3, Epoch [79/100], Train Loss: 0.1846, Val Loss: 0.1867,IoU: 0.8666
+Fold 3, Epoch [80/100], Train Loss: 0.1992, Val Loss: 0.1799,IoU: 0.8659
+Fold 3, Epoch [81/100], Train Loss: 0.1814, Val Loss: 0.1770,IoU: 0.8696
+Fold 3, Epoch [82/100], Train Loss: 0.2010, Val Loss: 0.1916,IoU: 0.8603
+Fold 3, Epoch [83/100], Train Loss: 0.1835, Val Loss: 0.2068,IoU: 0.8598
+Fold 3, Epoch [84/100], Train Loss: 0.1802, Val Loss: 0.1985,IoU: 0.8673
+Fold 3, Epoch [85/100], Train Loss: 0.1818, Val Loss: 0.1784,IoU: 0.8618
+Fold 3, Epoch [86/100], Train Loss: 0.1693, Val Loss: 0.1785,IoU: 0.8678
+Fold 3, Epoch [87/100], Train Loss: 0.1801, Val Loss: 0.1991,IoU: 0.8688
+Fold 3, Epoch [88/100], Train Loss: 0.1807, Val Loss: 0.1905,IoU: 0.8685
+Fold 3, Epoch [89/100], Train Loss: 0.1883, Val Loss: 0.1864,IoU: 0.8683
+Fold 3, Epoch [90/100], Train Loss: 0.1755, Val Loss: 0.1776,IoU: 0.8631
+Fold 3, Epoch [91/100], Train Loss: 0.1931, Val Loss: 0.1658,IoU: 0.8655
+Fold 3, Epoch [92/100], Train Loss: 0.1753, Val Loss: 0.1731,IoU: 0.8670
+Fold 3, Epoch [93/100], Train Loss: 0.1813, Val Loss: 0.1778,IoU: 0.8713
+Fold 3, Epoch [94/100], Train Loss: 0.1957, Val Loss: 0.1952,IoU: 0.8681
+Fold 3, Epoch [95/100], Train Loss: 0.1940, Val Loss: 0.1963,IoU: 0.8652
+Fold 3, Epoch [96/100], Train Loss: 0.1955, Val Loss: 0.2030,IoU: 0.8585
+Fold 3, Epoch [97/100], Train Loss: 0.1810, Val Loss: 0.1794,IoU: 0.8612
+Fold 3, Epoch [98/100], Train Loss: 0.1912, Val Loss: 0.1762,IoU: 0.8697
+Fold 3, Epoch [99/100], Train Loss: 0.1903, Val Loss: 0.1687,IoU: 0.8681
+Fold 3, Epoch [100/100], Train Loss: 0.1795, Val Loss: 0.1698,IoU: 0.8660
+Fold 3 completed with best validation loss: 0.1627
+
+
+=== Fold 4/5 ===
+Train samples: 33, Validation samples: 8
+Fold 4: Frozen encoder parameters count: 159 / 159
+Using pretrained weights: True
+Fold 4, Epoch [1/100], Train Loss: 0.5328, Val Loss: 0.5240,IoU: 0.4955
+Fold 4, Epoch [2/100], Train Loss: 0.4658, Val Loss: 0.5411,IoU: 0.4565
+Fold 4, Epoch [3/100], Train Loss: 0.4228, Val Loss: 0.5611,IoU: 0.4275
+Fold 4, Epoch [4/100], Train Loss: 0.3989, Val Loss: 0.5684,IoU: 0.4632
+Fold 4, Epoch [5/100], Train Loss: 0.3788, Val Loss: 0.4784,IoU: 0.6172
+Fold 4, Epoch [6/100], Train Loss: 0.3350, Val Loss: 0.3988,IoU: 0.7126
+Fold 4, Epoch [7/100], Train Loss: 0.3351, Val Loss: 0.3087,IoU: 0.8150
+Fold 4, Epoch [8/100], Train Loss: 0.3164, Val Loss: 0.3050,IoU: 0.8009
+Fold 4, Epoch [9/100], Train Loss: 0.3036, Val Loss: 0.3027,IoU: 0.7658
+Fold 4, Epoch [10/100], Train Loss: 0.2899, Val Loss: 0.2912,IoU: 0.7736
+Fold 4, Epoch [11/100], Train Loss: 0.2685, Val Loss: 0.2674,IoU: 0.8088
+Fold 4, Epoch [12/100], Train Loss: 0.2792, Val Loss: 0.2635,IoU: 0.8037
+Fold 4, Epoch [13/100], Train Loss: 0.2562, Val Loss: 0.2933,IoU: 0.7440
+Fold 4, Epoch [14/100], Train Loss: 0.2509, Val Loss: 0.2345,IoU: 0.8290
+Fold 4, Epoch [15/100], Train Loss: 0.2361, Val Loss: 0.2509,IoU: 0.8141
+Fold 4, Epoch [16/100], Train Loss: 0.2425, Val Loss: 0.2547,IoU: 0.7843
+Fold 4, Epoch [17/100], Train Loss: 0.2200, Val Loss: 0.2129,IoU: 0.8328
+Fold 4, Epoch [18/100], Train Loss: 0.2325, Val Loss: 0.2262,IoU: 0.8271
+Fold 4, Epoch [19/100], Train Loss: 0.2259, Val Loss: 0.1990,IoU: 0.8560
+Fold 4, Epoch [20/100], Train Loss: 0.2290, Val Loss: 0.2134,IoU: 0.8468
+Fold 4, Epoch [21/100], Train Loss: 0.2035, Val Loss: 0.2100,IoU: 0.8460
+Fold 4, Epoch [22/100], Train Loss: 0.2198, Val Loss: 0.2020,IoU: 0.8615
+Fold 4, Epoch [23/100], Train Loss: 0.2407, Val Loss: 0.2079,IoU: 0.8447
+Fold 4, Epoch [24/100], Train Loss: 0.2195, Val Loss: 0.2086,IoU: 0.8621
+Fold 4, Epoch [25/100], Train Loss: 0.2237, Val Loss: 0.1720,IoU: 0.8700
+Fold 4, Epoch [26/100], Train Loss: 0.2178, Val Loss: 0.1809,IoU: 0.8512
+Fold 4, Epoch [27/100], Train Loss: 0.2150, Val Loss: 0.1746,IoU: 0.8588
+Fold 4, Epoch [28/100], Train Loss: 0.2062, Val Loss: 0.2024,IoU: 0.8660
+Fold 4, Epoch [29/100], Train Loss: 0.2027, Val Loss: 0.1965,IoU: 0.8616
+Fold 4, Epoch [30/100], Train Loss: 0.2174, Val Loss: 0.1874,IoU: 0.8602
+Fold 4, Epoch [31/100], Train Loss: 0.1957, Val Loss: 0.2057,IoU: 0.8697
+Fold 4, Epoch [32/100], Train Loss: 0.2145, Val Loss: 0.2068,IoU: 0.8713
+Fold 4, Epoch [33/100], Train Loss: 0.2091, Val Loss: 0.1860,IoU: 0.8604
+Fold 4, Epoch [34/100], Train Loss: 0.1989, Val Loss: 0.1870,IoU: 0.8618
+Fold 4, Epoch [35/100], Train Loss: 0.2045, Val Loss: 0.1734,IoU: 0.8688
+Fold 4, Epoch [36/100], Train Loss: 0.1902, Val Loss: 0.2013,IoU: 0.8588
+Fold 4, Epoch [37/100], Train Loss: 0.2039, Val Loss: 0.2083,IoU: 0.8480
+Fold 4, Epoch [38/100], Train Loss: 0.2073, Val Loss: 0.1986,IoU: 0.8598
+Fold 4, Epoch [39/100], Train Loss: 0.2023, Val Loss: 0.1914,IoU: 0.8662
+Fold 4, Epoch [40/100], Train Loss: 0.2152, Val Loss: 0.1852,IoU: 0.8674
+Fold 4, Epoch [41/100], Train Loss: 0.2115, Val Loss: 0.1983,IoU: 0.8669
+Fold 4, Epoch [42/100], Train Loss: 0.2082, Val Loss: 0.1731,IoU: 0.8664
+Fold 4, Epoch [43/100], Train Loss: 0.2025, Val Loss: 0.1716,IoU: 0.8602
+Fold 4, Epoch [44/100], Train Loss: 0.1965, Val Loss: 0.1815,IoU: 0.8663
+Fold 4, Epoch [45/100], Train Loss: 0.2100, Val Loss: 0.1925,IoU: 0.8613
+Fold 4, Epoch [46/100], Train Loss: 0.1951, Val Loss: 0.1852,IoU: 0.8599
+Fold 4, Epoch [47/100], Train Loss: 0.2034, Val Loss: 0.1786,IoU: 0.8644
+Fold 4, Epoch [48/100], Train Loss: 0.1946, Val Loss: 0.1806,IoU: 0.8685
+Fold 4, Epoch [49/100], Train Loss: 0.1984, Val Loss: 0.1688,IoU: 0.8693
+Fold 4, Epoch [50/100], Train Loss: 0.1839, Val Loss: 0.1624,IoU: 0.8677
+Fold 4, Epoch [51/100], Train Loss: 0.1911, Val Loss: 0.1654,IoU: 0.8629
+Fold 4, Epoch [52/100], Train Loss: 0.1788, Val Loss: 0.1852,IoU: 0.8654
+Fold 4, Epoch [53/100], Train Loss: 0.2027, Val Loss: 0.1821,IoU: 0.8711
+Fold 4, Epoch [54/100], Train Loss: 0.1876, Val Loss: 0.1893,IoU: 0.8742
+Fold 4, Epoch [55/100], Train Loss: 0.1820, Val Loss: 0.1915,IoU: 0.8671
+Fold 4, Epoch [56/100], Train Loss: 0.1891, Val Loss: 0.1892,IoU: 0.8672
+Fold 4, Epoch [57/100], Train Loss: 0.1847, Val Loss: 0.1598,IoU: 0.8615
+Fold 4, Epoch [58/100], Train Loss: 0.2082, Val Loss: 0.1498,IoU: 0.8718
+Fold 4, Epoch [59/100], Train Loss: 0.1924, Val Loss: 0.1610,IoU: 0.8722
+Fold 4, Epoch [60/100], Train Loss: 0.1938, Val Loss: 0.2031,IoU: 0.8709
+Fold 4, Epoch [61/100], Train Loss: 0.2000, Val Loss: 0.2102,IoU: 0.8563
+Fold 4, Epoch [62/100], Train Loss: 0.1754, Val Loss: 0.1852,IoU: 0.8613
+Fold 4, Epoch [63/100], Train Loss: 0.1946, Val Loss: 0.1673,IoU: 0.8711
+Fold 4, Epoch [64/100], Train Loss: 0.1882, Val Loss: 0.1923,IoU: 0.8599
+Fold 4, Epoch [65/100], Train Loss: 0.1868, Val Loss: 0.1868,IoU: 0.8639
+Fold 4, Epoch [66/100], Train Loss: 0.1830, Val Loss: 0.1616,IoU: 0.8674
+Fold 4, Epoch [67/100], Train Loss: 0.1874, Val Loss: 0.1782,IoU: 0.8639
+Fold 4, Epoch [68/100], Train Loss: 0.1778, Val Loss: 0.1989,IoU: 0.8571
+Fold 4, Epoch [69/100], Train Loss: 0.1727, Val Loss: 0.1888,IoU: 0.8641
+Fold 4, Epoch [70/100], Train Loss: 0.1758, Val Loss: 0.1707,IoU: 0.8669
+Fold 4, Epoch [71/100], Train Loss: 0.1826, Val Loss: 0.1589,IoU: 0.8687
+Fold 4, Epoch [72/100], Train Loss: 0.1892, Val Loss: 0.1878,IoU: 0.8669
+Fold 4, Epoch [73/100], Train Loss: 0.1928, Val Loss: 0.1899,IoU: 0.8668
+Fold 4, Epoch [74/100], Train Loss: 0.1838, Val Loss: 0.1905,IoU: 0.8690
+Fold 4, Epoch [75/100], Train Loss: 0.1872, Val Loss: 0.2021,IoU: 0.8674
+Fold 4, Epoch [76/100], Train Loss: 0.1866, Val Loss: 0.1870,IoU: 0.8635
+Fold 4, Epoch [77/100], Train Loss: 0.1800, Val Loss: 0.1921,IoU: 0.8600
+Fold 4, Epoch [78/100], Train Loss: 0.1785, Val Loss: 0.1819,IoU: 0.8659
+Fold 4, Epoch [79/100], Train Loss: 0.1730, Val Loss: 0.2111,IoU: 0.8647
+Fold 4, Epoch [80/100], Train Loss: 0.1934, Val Loss: 0.1722,IoU: 0.8735
+Fold 4, Epoch [81/100], Train Loss: 0.1919, Val Loss: 0.1649,IoU: 0.8754
+Fold 4: Early stopping triggered at epoch 81.
+Fold 4 completed with best validation loss: 0.1498
+
+
+=== Fold 5/5 ===
+Train samples: 33, Validation samples: 8
+Fold 5: Frozen encoder parameters count: 159 / 159
+Using pretrained weights: True
+Fold 5, Epoch [1/100], Train Loss: 0.5525, Val Loss: 0.6399,IoU: 0.4498
+Fold 5, Epoch [2/100], Train Loss: 0.3961, Val Loss: 0.5247,IoU: 0.5091
+Fold 5, Epoch [3/100], Train Loss: 0.3455, Val Loss: 0.5858,IoU: 0.4310
+Fold 5, Epoch [4/100], Train Loss: 0.3183, Val Loss: 0.4739,IoU: 0.6886
+Fold 5, Epoch [5/100], Train Loss: 0.2928, Val Loss: 0.3949,IoU: 0.7440
+Fold 5, Epoch [6/100], Train Loss: 0.2705, Val Loss: 0.3273,IoU: 0.7799
+Fold 5, Epoch [7/100], Train Loss: 0.2664, Val Loss: 0.2781,IoU: 0.8055
+Fold 5, Epoch [8/100], Train Loss: 0.2511, Val Loss: 0.2526,IoU: 0.8108
+Fold 5, Epoch [9/100], Train Loss: 0.2355, Val Loss: 0.2339,IoU: 0.8169
+Fold 5, Epoch [10/100], Train Loss: 0.2537, Val Loss: 0.2195,IoU: 0.8199
+Fold 5, Epoch [11/100], Train Loss: 0.2501, Val Loss: 0.2556,IoU: 0.7722
+Fold 5, Epoch [12/100], Train Loss: 0.2204, Val Loss: 0.2075,IoU: 0.8231
+Fold 5, Epoch [13/100], Train Loss: 0.2307, Val Loss: 0.1961,IoU: 0.8353
+Fold 5, Epoch [14/100], Train Loss: 0.2210, Val Loss: 0.2145,IoU: 0.8198
+Fold 5, Epoch [15/100], Train Loss: 0.2368, Val Loss: 0.1983,IoU: 0.8366
+Fold 5, Epoch [16/100], Train Loss: 0.2420, Val Loss: 0.1883,IoU: 0.8430
+Fold 5, Epoch [17/100], Train Loss: 0.2293, Val Loss: 0.2174,IoU: 0.8394
+Fold 5, Epoch [18/100], Train Loss: 0.2067, Val Loss: 0.2120,IoU: 0.8572
+Fold 5, Epoch [19/100], Train Loss: 0.2271, Val Loss: 0.1722,IoU: 0.8657
+Fold 5, Epoch [20/100], Train Loss: 0.2184, Val Loss: 0.1746,IoU: 0.8567
+Fold 5, Epoch [21/100], Train Loss: 0.2074, Val Loss: 0.1760,IoU: 0.8611
+Fold 5, Epoch [22/100], Train Loss: 0.2073, Val Loss: 0.1876,IoU: 0.8642
+Fold 5, Epoch [23/100], Train Loss: 0.2097, Val Loss: 0.1692,IoU: 0.8536
+Fold 5, Epoch [24/100], Train Loss: 0.2147, Val Loss: 0.1706,IoU: 0.8492
+Fold 5, Epoch [25/100], Train Loss: 0.2145, Val Loss: 0.1620,IoU: 0.8602
+Fold 5, Epoch [26/100], Train Loss: 0.2053, Val Loss: 0.1902,IoU: 0.8569
+Fold 5, Epoch [27/100], Train Loss: 0.2055, Val Loss: 0.1690,IoU: 0.8609
+Fold 5, Epoch [28/100], Train Loss: 0.2041, Val Loss: 0.1583,IoU: 0.8645
+Fold 5, Epoch [29/100], Train Loss: 0.2150, Val Loss: 0.1558,IoU: 0.8670
+Fold 5, Epoch [30/100], Train Loss: 0.2082, Val Loss: 0.1633,IoU: 0.8776
+Fold 5, Epoch [31/100], Train Loss: 0.2110, Val Loss: 0.1668,IoU: 0.8598
+Fold 5, Epoch [32/100], Train Loss: 0.2003, Val Loss: 0.1620,IoU: 0.8667
+Fold 5, Epoch [33/100], Train Loss: 0.1995, Val Loss: 0.1620,IoU: 0.8656
+Fold 5, Epoch [34/100], Train Loss: 0.2190, Val Loss: 0.1540,IoU: 0.8680
+Fold 5, Epoch [35/100], Train Loss: 0.2011, Val Loss: 0.1677,IoU: 0.8643
+Fold 5, Epoch [36/100], Train Loss: 0.2068, Val Loss: 0.1709,IoU: 0.8665
+Fold 5, Epoch [37/100], Train Loss: 0.1991, Val Loss: 0.1672,IoU: 0.8722
+Fold 5, Epoch [38/100], Train Loss: 0.1966, Val Loss: 0.1739,IoU: 0.8642
+Fold 5, Epoch [39/100], Train Loss: 0.2026, Val Loss: 0.1791,IoU: 0.8583
+Fold 5, Epoch [40/100], Train Loss: 0.1978, Val Loss: 0.2079,IoU: 0.8374
+Fold 5, Epoch [41/100], Train Loss: 0.1971, Val Loss: 0.1824,IoU: 0.8626
+Fold 5, Epoch [42/100], Train Loss: 0.1985, Val Loss: 0.1889,IoU: 0.8740
+Fold 5, Epoch [43/100], Train Loss: 0.2076, Val Loss: 0.1648,IoU: 0.8692
+Fold 5, Epoch [44/100], Train Loss: 0.1991, Val Loss: 0.1703,IoU: 0.8625
+Fold 5, Epoch [45/100], Train Loss: 0.2110, Val Loss: 0.1787,IoU: 0.8691
+Fold 5, Epoch [46/100], Train Loss: 0.2132, Val Loss: 0.1572,IoU: 0.8741
+Fold 5, Epoch [47/100], Train Loss: 0.1914, Val Loss: 0.1810,IoU: 0.8523
+Fold 5, Epoch [48/100], Train Loss: 0.2179, Val Loss: 0.1718,IoU: 0.8674
+Fold 5, Epoch [49/100], Train Loss: 0.2093, Val Loss: 0.1805,IoU: 0.8686
+Fold 5, Epoch [50/100], Train Loss: 0.1914, Val Loss: 0.1805,IoU: 0.8639
+Fold 5, Epoch [51/100], Train Loss: 0.1918, Val Loss: 0.1742,IoU: 0.8751
+Fold 5, Epoch [52/100], Train Loss: 0.2131, Val Loss: 0.1672,IoU: 0.8649
+Fold 5, Epoch [53/100], Train Loss: 0.1913, Val Loss: 0.1611,IoU: 0.8636
+Fold 5, Epoch [54/100], Train Loss: 0.2003, Val Loss: 0.1640,IoU: 0.8628
+Fold 5, Epoch [55/100], Train Loss: 0.2094, Val Loss: 0.1923,IoU: 0.8706
+Fold 5, Epoch [56/100], Train Loss: 0.1915, Val Loss: 0.1854,IoU: 0.8591
+Fold 5, Epoch [57/100], Train Loss: 0.1903, Val Loss: 0.1809,IoU: 0.8595
+Fold 5, Epoch [58/100], Train Loss: 0.1896, Val Loss: 0.1809,IoU: 0.8620
+Fold 5, Epoch [59/100], Train Loss: 0.1898, Val Loss: 0.1700,IoU: 0.8694
+Fold 5, Epoch [60/100], Train Loss: 0.1920, Val Loss: 0.1683,IoU: 0.8625
+Fold 5, Epoch [61/100], Train Loss: 0.1940, Val Loss: 0.1686,IoU: 0.8690
+Fold 5, Epoch [62/100], Train Loss: 0.1932, Val Loss: 0.1685,IoU: 0.8680
+Fold 5, Epoch [63/100], Train Loss: 0.2045, Val Loss: 0.1600,IoU: 0.8740
+Fold 5, Epoch [64/100], Train Loss: 0.1923, Val Loss: 0.1611,IoU: 0.8789
+Fold 5, Epoch [65/100], Train Loss: 0.1784, Val Loss: 0.1982,IoU: 0.8758
+Fold 5, Epoch [66/100], Train Loss: 0.2118, Val Loss: 0.1948,IoU: 0.8579
+Fold 5, Epoch [67/100], Train Loss: 0.2123, Val Loss: 0.2248,IoU: 0.8664
+Fold 5, Epoch [68/100], Train Loss: 0.1866, Val Loss: 0.2248,IoU: 0.8657
+Fold 5, Epoch [69/100], Train Loss: 0.2009, Val Loss: 0.1743,IoU: 0.8744
+Fold 5, Epoch [70/100], Train Loss: 0.1860, Val Loss: 0.1625,IoU: 0.8774
+Fold 5, Epoch [71/100], Train Loss: 0.1834, Val Loss: 0.1709,IoU: 0.8747
+Fold 5, Epoch [72/100], Train Loss: 0.1835, Val Loss: 0.2107,IoU: 0.8576
+Fold 5, Epoch [73/100], Train Loss: 0.1883, Val Loss: 0.1782,IoU: 0.8681
+Fold 5, Epoch [74/100], Train Loss: 0.1917, Val Loss: 0.1587,IoU: 0.8715
+Fold 5, Epoch [75/100], Train Loss: 0.2015, Val Loss: 0.1572,IoU: 0.8673
+Fold 5, Epoch [76/100], Train Loss: 0.1959, Val Loss: 0.1685,IoU: 0.8606
+Fold 5, Epoch [77/100], Train Loss: 0.1903, Val Loss: 0.1911,IoU: 0.8719
+Fold 5, Epoch [78/100], Train Loss: 0.1876, Val Loss: 0.1732,IoU: 0.8691
+Fold 5, Epoch [79/100], Train Loss: 0.1847, Val Loss: 0.1719,IoU: 0.8687
+Fold 5, Epoch [80/100], Train Loss: 0.1941, Val Loss: 0.1587,IoU: 0.8676
+Fold 5, Epoch [81/100], Train Loss: 0.1843, Val Loss: 0.1387,IoU: 0.8756
+Fold 5, Epoch [82/100], Train Loss: 0.1928, Val Loss: 0.1577,IoU: 0.8729
+Fold 5, Epoch [83/100], Train Loss: 0.1885, Val Loss: 0.1779,IoU: 0.8700
+Fold 5, Epoch [84/100], Train Loss: 0.1953, Val Loss: 0.1731,IoU: 0.8719
+Fold 5, Epoch [85/100], Train Loss: 0.1937, Val Loss: 0.1571,IoU: 0.8754
+Fold 5, Epoch [86/100], Train Loss: 0.1908, Val Loss: 0.1622,IoU: 0.8751
+Fold 5, Epoch [87/100], Train Loss: 0.1804, Val Loss: 0.1860,IoU: 0.8692
+Fold 5, Epoch [88/100], Train Loss: 0.1861, Val Loss: 0.1614,IoU: 0.8616
+Fold 5, Epoch [89/100], Train Loss: 0.1889, Val Loss: 0.1617,IoU: 0.8606
+Fold 5, Epoch [90/100], Train Loss: 0.1813, Val Loss: 0.1678,IoU: 0.8662
+Fold 5, Epoch [91/100], Train Loss: 0.1915, Val Loss: 0.1810,IoU: 0.8634
+Fold 5: Early stopping triggered at epoch 91.
+Fold 5 completed with best validation loss: 0.1387
+
+Cross-validation complete. Summary of best validation losses per fold:
+  Fold 1: Best Validation Loss = 0.1676,Best IoU = 0.8752
+  Fold 2: Best Validation Loss = 0.1709,Best IoU = 0.8670
+  Fold 3: Best Validation Loss = 0.1627,Best IoU = 0.8730
+  Fold 4: Best Validation Loss = 0.1498,Best IoU = 0.8754
+  Fold 5: Best Validation Loss = 0.1387,Best IoU = 0.8789
+Saved global IoU vs Hour plot to exports/unet/06-17/09-29-47/global_iou_vs_hour.png
