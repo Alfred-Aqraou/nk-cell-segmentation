@@ -68,7 +68,8 @@ for fold, (train_idx, val_idx) in enumerate(kf.split(labeled_indices)):
             union = gt_binary.sum() + pred_binary.sum() - intersection
             iou = intersection / (union + 1e-8)
 
-            fold_iou_list.append(iou)
+            img_id = os.path.basename(image_path)
+            fold_iou_list.append((img_id, iou))
         except Exception as e:
             print(f"❗ Error processing {filename}: {e}")
             skipped_files.append(filename)
@@ -80,5 +81,5 @@ for fold, (train_idx, val_idx) in enumerate(kf.split(labeled_indices)):
     export_dir = "exports/baseline/baseline_np"
     os.makedirs(export_dir, exist_ok=True)
     save_path = os.path.join(export_dir, f"per_image_iou_fold{fold+1}_baseline.npy")
-    np.save(save_path, np.array(fold_iou_list))
+    np.save(save_path, np.array(fold_iou_list, dtype=object))
     print(f"💾 Saved fold {fold+1} IoUs to {save_path}")

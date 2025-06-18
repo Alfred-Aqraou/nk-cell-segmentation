@@ -281,7 +281,28 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
                             if hour is not None:
                                 global_hours.append(hour)
                                 global_ious.append(sample_iou)
-                            fold_iou_list.append(sample_iou)
+                            
+                            img_id = os.path.basename(img_path)  # Unique identifier
+                            fold_iou_list.append((img_id, sample_iou))
+
+                    # Save per-image IoU with IDs for this fold
+                        np.save(figure_prefix + f"{extract_encoder_name(PARAMETERS['encoder'])}_per_image_iou_fold{fold+1}.npy", 
+                        np.array(fold_iou_list, dtype=object))
+
+                        for idx_in_batch, sample_iou in zip(labeled_batch_idx.cpu().numpy(), ious):
+                            img_path = img_paths[idx_in_batch]
+                            hour = extract_hour_from_filename(img_path)
+                            if hour is not None:
+                                global_hours.append(hour)
+                                global_ious.append(sample_iou)
+                            
+                            img_id = os.path.basename(img_path)  # Unique identifier
+                            fold_iou_list.append((img_id, sample_iou))
+
+            # Save per-image IoU with IDs for this fold
+            np.save(figure_prefix + f"{extract_encoder_name(PARAMETERS['encoder'])}_per_image_iou_fold{fold+1}.npy", 
+            np.array(fold_iou_list, dtype=object))
+            
 
             avg_val_loss = epoch_val_loss / len(val_indices)  # Only divide by labeled validation samples
             val_losses.append(avg_val_loss)
@@ -349,7 +370,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
         
         print(f"Fold {fold+1} completed with best validation loss: {best_val_loss:.4f}\n")
         # Save per-image IoU for this fold to disk
-        np.save(figure_prefix + f"{extract_encoder_name(PARAMETERS["encoder"])}_per_image_iou_fold{fold+1}.npy", np.array(fold_iou_list))
+        np.save(figure_prefix + f"{extract_encoder_name(PARAMETERS["encoder"])}_per_image_iou_fold{fold+1}.npy", np.array(fold_iou_list, dtype=object))
 
     # Summary of cross-validation.
     print("Cross-validation complete. Summary of best validation losses per fold:")
