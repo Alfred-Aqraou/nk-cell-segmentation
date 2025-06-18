@@ -52,7 +52,8 @@ parser.add_argument("--freeze", help = 'Specify whether to use freeze_opts. I.e:
 parser.add_argument("--optimizers", help = 'Specify optimizer. I.e: "adam"', nargs='+', required=True, type=str)
 parser.add_argument("--lr", help = 'Specify learning rate. I.e: 0.0005 0.0001', nargs='+', required=True, type=float)
 parser.add_argument("--resize", help = 'Specify dimensions to resize to. I.e: 256 512', nargs='+', required=True, type=int)
-parser.add_argument("--nsplits", help = 'Specify outer n splits. I.e: 5', required=True, type=int)
+parser.add_argument("--outer", help = 'Specify outer n splits. I.e: 5', required=True, type=int)
+parser.add_argument("--inner", help = 'Specify inner n splits. I.e: 5', required=True, type=int)
 
 args = parser.parse_args()
 print("Given arguments:")
@@ -70,13 +71,14 @@ PARAMETERS = {
     "cpu_workers": args.workers,
     "EPOCHS": args.epochs,
     "batch_sizes": [*args.batchsizes],
-    "loss_types": [*args.loss], # 'dice', 'combined', 'iou
+    "loss_types": [*args.loss],
     "encoders": [*args.encoders],
     "freeze_opts": [*args.freeze],
     "optimizers": [*args.optimizers],
     "learning_rates": [*args.lr],
-    "resize": [*args.resize], #(256, 256),
-    "outer_n_splits": args.nsplits #3
+    "resize": [*args.resize],
+    "outer_n_splits": args.outer,
+    "inner_n_splits": args.inner
     }
 
 keys_to_multiply = [
@@ -91,7 +93,7 @@ keys_to_multiply = [
 
 # Compute total combinations
 lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
-total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]
+total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]*PARAMETERS["inner_n_splits"]
 pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
 
 
@@ -135,7 +137,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     # Create transforms inside function to avoid shared state
     def build_train_transform(resize):
         common_geometric = T.Compose([
-            T.RandomResizedCrop(size=resize, scale=(0.7, 1.0), ratio=(0.75, 1.33)),
+            T.RandomCrop(size=resize),
             T.RandomHorizontalFlip(p=0.5),
             T.RandomVerticalFlip(p=0.5),
             T.RandomRotation(degrees=30),
@@ -268,7 +270,6 @@ def run_single_fold(args):
     return result
 
 def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset, inner_folds=3):
-    from multiprocessing import Pool
     inner_kf = KFold(n_splits=inner_folds, shuffle=True, random_state=SEED)
     all_configs = list(product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize))
     # Collect all tasks for parallel execution
@@ -318,6 +319,7 @@ def outer_cross_validation(figure_prefix=""):
     optimizers = PARAMETERS["optimizers"]
     learning_rates = PARAMETERS["learning_rates"]
     resize = PARAMETERS["resize"]
+    inner_folds = PARAMETERS["inner_n_splits"]
 
     outer_n_splits = PARAMETERS["outer_n_splits"]
     num_workers = PARAMETERS["cpu_workers"]
@@ -347,7 +349,7 @@ def outer_cross_validation(figure_prefix=""):
             learning_rates=learning_rates,
             resize=resize,
             dataset=dataset,
-            inner_folds=3
+            inner_folds=inner_folds
         )
 
         # Train final model with best config on full training set, evaluate on val set
