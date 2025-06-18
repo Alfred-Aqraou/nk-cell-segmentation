@@ -311,7 +311,7 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
 
     all_results = []
 
-    for fold, (train_idx, val_idx) in tqdm.tqdm(enumerate(outer_kf.split(labeled_indices)), desc="Outer CV folds"):
+    for fold, (train_idx, val_idx) in tqdm.tqdm(enumerate(outer_kf.split(labeled_indices)), desc="Outer CV folds", total=outer_n_splits):
         train_indices = np.array(labeled_indices)[train_idx].tolist()
         val_indices = np.array(labeled_indices)[val_idx].tolist()
 
