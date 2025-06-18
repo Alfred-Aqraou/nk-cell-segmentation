@@ -2,21 +2,19 @@ import numpy as np
 import os
 
 # ----------- Settings -----------
-folder = "exports/baseline/baseline_np"
-filenames = [f"per_image_iou_fold{i}_baseline.npy" for i in range(1, 6)]
+filenames = [f"exports/baseline/baseline_np/per_image_iou_fold{i}_baseline.npy" for i in range(1, 6)]
 
 # ----------- Load and Aggregate -----------
 all_ious = []
 
 for filename in filenames:
-    path = os.path.join(folder, filename)
-    if not os.path.exists(path):
+    if not os.path.exists(filename):
         print(f"❌ File missing: {filename}")
         continue
 
-    ious = np.load(path)$
+    ious = np.load(filename, allow_pickle=True)
     print(f"Loaded {len(ious)} IoUs from {filename}")
-    all_ious.extend(ious)
+    all_ious.extend([float(iou) if isinstance(iou, (float, np.float32, np.float64)) else float(iou[1]) for iou in ious])
 
 # ----------- Compute Stats -----------
 if len(all_ious) == 0:
