@@ -187,6 +187,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             images, masks = images.to(device), masks.to(device)
             outputs = model(images)
             labeled_idx = (label_flags == 1).nonzero(as_tuple=True)[0]
+            print("Labeled samples:", len(labeled_idx), end="\r")
             if len(labeled_idx) > 0:
                 loss = loss_fn(outputs[labeled_idx], masks[labeled_idx])
                 optimizer.zero_grad()
@@ -310,7 +311,7 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
 
     all_results = []
 
-    for fold, (train_idx, val_idx) in tqdm(enumerate(outer_kf.split(labeled_indices)), desc="Outer CV folds"):
+    for fold, (train_idx, val_idx) in tqdm.tqdm(enumerate(outer_kf.split(labeled_indices)), desc="Outer CV folds"):
         train_indices = np.array(labeled_indices)[train_idx].tolist()
         val_indices = np.array(labeled_indices)[val_idx].tolist()
 
