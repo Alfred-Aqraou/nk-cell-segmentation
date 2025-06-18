@@ -1,5 +1,5 @@
 #!/bin/sh
-#BSUB -q gpua40
+#BSUB -q gpua100
 #BSUB -J five_fold_cv
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
@@ -37,4 +37,5 @@ python unet/scripts/five_fold_cv.py \
     --optimizer "adam" \
     --lr 0.0001 \
     --resize 512 512 \
-    --nsplits 5
+    --nsplits 5 #\
+#    --modelpath "/work3/s234843/02466-Project/models"

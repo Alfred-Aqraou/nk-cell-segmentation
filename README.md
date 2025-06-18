@@ -53,13 +53,13 @@ nano authorized_keys
 ```
 Paste your public key from step 1) by pressing: `Ctrl+Shift+V`. Now save and exit by pressing `Ctrl+X`, followed by `Y` and `Enter`. Now you should be able to connect to the HPC without VPN. If you plan on adding more devices to connect from, simply add a new line and paste that public key, then save and exit.
 
-Please view next section [Working with HPC](#working-with-hpc).
+Continue to next section [Working with HPC](#working-with-hpc).
 
 ## Working with HPC
 1. Login to HPC and use: `linuxsh`.
 2. Go to shared folder: `cd /work3/s234843/02466-Project`
 
-(If you cannot access this directory, contact Mathias)
+(If you cannot access this directory, contact Mathias - dataset is only available group members)
 
 3. Activate environment with: 
 ```bash
@@ -157,8 +157,8 @@ Close and save with `CTRL + X`, then `y`, then `Enter`.
 
 You should be done now and can begin working with git!
 
-## dinov2-fork
-In this project, we will be using a fork of dinov2 with our changes, i.e. implementation of dinov2. The fork works by acting as a "sub-repository" (aka submodule). You can download the submodule initially using:
+## solo-learn
+In this project, we will be using a fork of solo-learn with our configuration changes. The fork works by acting as a "sub-repository" (aka submodule). You can download the submodule initially using:
 ```bash
 git submodule update --init --recursive
 ```
@@ -171,14 +171,8 @@ git submodule update --recursive
 
 # Setting up environment
 DISCLAIMER: Do not do this on the HPC, it is already set up!
-## dinov2-fork
-The submodule already has a configured environment (`conda.yaml` or `conda-extras.yaml`), but this environment is only supported by CUDA-supported devices. Thus, we need a CUDA-device to use dinov2.
-
-The dinov2 conda environment can be setup with:
-```bash
-conda env create -f dinov2-fork/conda-extras.yaml
-conda activate dinov2
-```
+## solo-learn
+The submodule works with our conda environments described in [Our Project](#our-project).
 
 
 ## Our Project
