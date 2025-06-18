@@ -133,7 +133,7 @@ def extract_encoder_name(encoder):
 
 def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir, num_epochs=100, patience=10):
     common_geometric = T.Compose([
-    T.RandomResizedCrop(size=resize, scale=(0.7, 1.0), ratio=(0.75, 1.33)),
+    T.RandomCrop(size=resize),
     T.RandomHorizontalFlip(p=0.5),
     T.RandomVerticalFlip(p=0.5),
     T.RandomRotation(degrees=30),

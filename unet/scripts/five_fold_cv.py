@@ -103,7 +103,7 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
     # Define transformation pipelines for training and validation.
     
     common_geometric = T.Compose([
-    T.RandomResizedCrop(size=PARAMETERS['resize'], scale=(0.7, 1.0), ratio=(0.75, 1.33)),
+    T.RandomCrop(size=PARAMETERS['resize']),
     T.RandomHorizontalFlip(p=0.5),
     T.RandomVerticalFlip(p=0.5),
     T.RandomRotation(degrees=30),
