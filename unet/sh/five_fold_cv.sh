@@ -1,5 +1,5 @@
 #!/bin/sh
-#BSUB -q gpua40
+#BSUB -q gpua100
 #BSUB -J five_fold_cv
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
@@ -31,10 +31,11 @@ source /work3/s234843/init_project.sh
 python unet/scripts/five_fold_cv.py \
     --epochs 100 \
     --batchsize 8 \
-    --loss "dice" \
-    --encoder "/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt" \
-    --freeze "False" \
+    --loss "iou" \
+    --encoder "resnet50" \
+    --freeze "True" \
     --optimizer "adam" \
-    --lr 0.0001 \
+    --lr 0.001 \
     --resize 512 512 \
-    --nsplits 5
+    --nsplits 5 #\
+#    --modelpath "/work3/s234843/02466-Project/models"

@@ -31,7 +31,7 @@ python unet/scripts/two_layer_parallel_cv.py \
     --encoders "resnet18" "resnet50" \
     --loss "iou" "dice" "combined" \
     --batchsizes 8 16 \
-    --freeze "False" \
+    --freeze "True" "False" \
     --optimizers "adam" \
     --lr 0.001 0.0001 0.0005 \
     --resize 256 \
