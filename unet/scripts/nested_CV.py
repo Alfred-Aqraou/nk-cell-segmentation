@@ -118,7 +118,7 @@ def extract_encoder_name(encoder):
             return f"dino_{match.group(1)}_e{match.group(2)}"
     return encoder  # Return original if not a dino path or no match
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir, num_epochs=100, patience=10):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir: str, num_epochs=100, patience=10):
     common_geometric = T.Compose([
     T.RandomCrop(size=resize),
     T.RandomHorizontalFlip(p=0.5),
@@ -230,11 +230,11 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
 def run_single_fold(args):
     # Now expects dataset as final argument
-    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir = args
+    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir, num_epochs, patience = args
     val_loss, val_iou = train_and_evaluate(
-        train_idx, val_idx,
-        batch_size, encoder, freeze_encoder,
-        opt_type, loss_type, fold, lr, resize, dataset_dir
+        train_indices=train_idx, val_indices=val_idx,
+        batch_size=batch_size, encoder_name=encoder, freeze_encoder=freeze_encoder,
+        optimizer_type=opt_type, loss_type=loss_type, fold=fold, lr=lr, resize=resize, dataset_dir=dataset_dir, num_epochs=num_epochs, patience=patience
     )
     result = {
         "batch_size": batch_size,
@@ -250,7 +250,7 @@ def run_single_fold(args):
     }
     return result
 
-def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset_dir, inner_folds=3):
+def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset_dir: str, num_epochs: int, patience: int, inner_folds=3):
     inner_kf = KFold(n_splits=inner_folds, shuffle=True, random_state=SEED)
     all_configs = list(product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize))
     # Collect all tasks for parallel execution
@@ -259,7 +259,7 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
         inner_train = np.array(train_indices)[inner_train_idx].tolist()
         inner_val = np.array(train_indices)[inner_val_idx].tolist()
         for combo in all_configs:
-            task = (*combo, 0, inner_train, inner_val, dataset_dir)
+            task = (*combo, 0, inner_train, inner_val, dataset_dir, num_epochs, patience)
             tasks.append(task)
 
     # Run in parallel
@@ -285,10 +285,11 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
     best_config = min(avg_scores, key=avg_scores.get)
     return best_config
 
-def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset"):
+def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patience: int = 20):
     print("Started at:", starttime)
 
     # Hyperparameters
+    num_epochs = PARAMETERS["EPOCHS"]
     batch_sizes = PARAMETERS["batch_sizes"]
     loss_types = PARAMETERS["loss_types"]
     encoders = PARAMETERS["encoders"]
@@ -326,11 +327,14 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset"):
             learning_rates=learning_rates,
             resize=resize,
             dataset_dir=dataset_dir,
+            num_epochs=num_epochs,
+            patience=patience,
             inner_folds=inner_folds
         )
 
         # Train final model with best config on full training set, evaluate on val set
-        final_args = (*best_config, fold, train_indices, val_indices, dataset)
+        # batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir, num_epochs, patience = args
+        final_args = (*best_config, fold, train_indices, val_indices, dataset_dir, num_epochs, patience)
         result = run_single_fold(final_args)
         all_results.append(result)
 
