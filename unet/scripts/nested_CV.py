@@ -118,7 +118,7 @@ def extract_encoder_name(encoder):
             return f"dino_{match.group(1)}_e{match.group(2)}"
     return encoder  # Return original if not a dino path or no match
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset: NKCellDataset, num_epochs=100, patience=10):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir, num_epochs=100, patience=10):
     common_geometric = T.Compose([
     T.RandomCrop(size=resize),
     T.RandomHorizontalFlip(p=0.5),
@@ -145,16 +145,8 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     ])
     val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform)
 
-    dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
-
     full_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
     full_val = NKCellDataset(dataset_dir=dataset_dir, transform=val_transforms)
-
-    # full_train = dataset
-    # full_train.transform = train_transforms
-
-    # full_val = dataset
-    # full_val.transform = val_transforms
 
     train_dataset = Subset(full_train, train_indices)
     val_dataset = Subset(full_val, val_indices)
@@ -232,17 +224,17 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             print(f"Early stopping triggered after {epoch} epochs.")
             break
 
-    pbar.update(1)
+    # pbar.update(1)
     print("Completed one combination")
     return avg_val_loss, avg_val_iou
 
 def run_single_fold(args):
     # Now expects dataset as final argument
-    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset = args
+    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir = args
     val_loss, val_iou = train_and_evaluate(
         train_idx, val_idx,
         batch_size, encoder, freeze_encoder,
-        opt_type, loss_type, fold, lr, resize, dataset
+        opt_type, loss_type, fold, lr, resize, dataset_dir
     )
     result = {
         "batch_size": batch_size,
@@ -258,7 +250,7 @@ def run_single_fold(args):
     }
     return result
 
-def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset, inner_folds=3):
+def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset_dir, inner_folds=3):
     inner_kf = KFold(n_splits=inner_folds, shuffle=True, random_state=SEED)
     all_configs = list(product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize))
     # Collect all tasks for parallel execution
@@ -267,7 +259,7 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
         inner_train = np.array(train_indices)[inner_train_idx].tolist()
         inner_val = np.array(train_indices)[inner_val_idx].tolist()
         for combo in all_configs:
-            task = (*combo, 0, inner_train, inner_val, dataset)
+            task = (*combo, 0, inner_train, inner_val, dataset_dir)
             tasks.append(task)
 
     # Run in parallel
@@ -293,7 +285,7 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
     best_config = min(avg_scores, key=avg_scores.get)
     return best_config
 
-def outer_cross_validation(figure_prefix=""):
+def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset"):
     print("Started at:", starttime)
 
     # Hyperparameters
@@ -333,7 +325,7 @@ def outer_cross_validation(figure_prefix=""):
             optimizers=optimizers,
             learning_rates=learning_rates,
             resize=resize,
-            dataset=dataset,
+            dataset_dir=dataset_dir,
             inner_folds=inner_folds
         )
 
@@ -405,9 +397,7 @@ def outer_cross_validation(figure_prefix=""):
 
 if __name__ == "__main__":
     set_start_method('spawn', force=True)
-
-    global dataset_dir
-    dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
+    
 
     global starttime
     starttime = datetime.now()
@@ -415,21 +405,22 @@ if __name__ == "__main__":
     export_folder = "exports/unet/"+current_time
     os.makedirs(export_folder, exist_ok=True)
 
-    keys_to_multiply = [
-    "batch_sizes",
-    "loss_types",
-    "encoders",
-    "freeze_opts",
-    "optimizers",
-    "learning_rates",
-    "resize"
-]
+#     keys_to_multiply = [
+#     "batch_sizes",
+#     "loss_types",
+#     "encoders",
+#     "freeze_opts",
+#     "optimizers",
+#     "learning_rates",
+#     "resize"
+# ]
 
-    # Compute total combinations
-    lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
-    total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]*PARAMETERS["inner_n_splits"]
-    global pbar
-    pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
+#     # Compute total combinations
+#     lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
+#     total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]*PARAMETERS["inner_n_splits"]
+    # global pbar
+    # pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
 
-    outer_cross_validation(figure_prefix=export_folder+"/")
-    pbar.close()
+    dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
+    outer_cross_validation(figure_prefix=export_folder+"/", dataset_dir=dataset_dir)
+    # pbar.close()
