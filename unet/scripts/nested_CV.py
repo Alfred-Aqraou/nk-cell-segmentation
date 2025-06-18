@@ -160,7 +160,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     ])
     val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform)
 
-    global dataset_dir
+    dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
     full_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
     full_val = NKCellDataset(dataset_dir=dataset_dir, transform=val_transforms)
