@@ -133,7 +133,7 @@ def extract_encoder_name(encoder):
             return f"dino_{match.group(1)}_e{match.group(2)}"
     return encoder  # Return original if not a dino path or no match
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset, num_epochs=100, patience=10):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset: NKCellDataset, num_epochs=100, patience=10):
     common_geometric = T.Compose([
     T.RandomCrop(size=resize),
     T.RandomHorizontalFlip(p=0.5),
@@ -162,8 +162,14 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
     # Use Subset of the provided dataset, setting the appropriate transform per split
     # This avoids re-instantiating the dataset and ensures transforms are not shared
-    full_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
-    full_val = NKCellDataset(dataset_dir=dataset_dir, transform=val_transforms)
+    # full_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
+    # full_val = NKCellDataset(dataset_dir=dataset_dir, transform=val_transforms)
+
+    full_train = dataset
+    full_train.transform = train_transforms
+
+    full_val = dataset
+    full_val.transform = val_transforms
 
     train_dataset = Subset(full_train, train_indices)
     val_dataset = Subset(full_val, val_indices)
