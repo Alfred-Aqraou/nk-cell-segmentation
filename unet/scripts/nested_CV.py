@@ -347,10 +347,10 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
     final_results = []
     for combo_key, fold_results in combo_results.items():
         val_losses, val_ious = zip(*fold_results)
-        std_val_loss = np.std(val_losses)
-        std_val_iou = np.std(val_ious)
-        mean_val_loss = np.mean(val_losses)
-        mean_val_iou = np.mean(val_ious)
+        std_test_loss = np.std(val_losses)
+        std_test_iou = np.std(val_ious)
+        mean_test_loss = np.mean(val_losses)
+        mean_test_iou = np.mean(val_ious)
         final_results.append({
             "batch_size": combo_key[0],
             "loss_type": combo_key[1],
@@ -359,13 +359,13 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
             "optimizer": combo_key[4],
             "lr": combo_key[5],
             "resize": combo_key[6],
-            "mean_val_loss": mean_val_loss,
-            "std_val_loss": std_val_loss,
-            "mean_val_iou": mean_val_iou,
-            "std_val_iou": std_val_iou
+            "mean_test_loss": mean_test_loss,
+            "std_test_loss": std_test_loss,
+            "mean_test_iou": mean_test_iou,
+            "std_test_iou": std_test_iou
         })
         print(f"Config: BS={combo_key[0]}, Loss={combo_key[1]}, Encoder={combo_key[2]}, Freeze={combo_key[3]}, Opt={combo_key[4]}, LR={combo_key[5]}")
-        print(f"Mean Val Loss: {mean_val_loss:.4f} ± {std_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f} ± {std_val_iou:.4f}")
+        print(f"Mean Val Loss: {mean_test_loss:.4f} ± {std_test_loss:.4f}, Mean Val IoU: {mean_test_iou:.4f} ± {std_test_iou:.4f}")
 
     # Save results to CSV
     print("Writing results.csv")
@@ -381,9 +381,9 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
 
     # Plot top 10 configurations
     print("Plotting top 10 configs")
-    top_results = sorted(final_results, key=lambda r: r["mean_val_loss"])[:10]
+    top_results = sorted(final_results, key=lambda r: r["mean_test_loss"])[:10]
     labels = [f'{r["batch_size"]}-{r["loss_type"]}-{extract_encoder_name(r["encoder"])}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
-    losses = [r["mean_val_loss"] for r in top_results]
+    losses = [r["mean_test_loss"] for r in top_results]
     plt.figure(figsize=(12, 6))
     plt.barh(labels, losses, color="skyblue")
     plt.xlabel("Mean Validation Loss")
