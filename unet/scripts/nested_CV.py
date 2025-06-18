@@ -81,21 +81,6 @@ PARAMETERS = {
     "inner_n_splits": args.inner
     }
 
-keys_to_multiply = [
-    "batch_sizes",
-    "loss_types",
-    "encoders",
-    "freeze_opts",
-    "optimizers",
-    "learning_rates",
-    "resize"
-]
-
-# Compute total combinations
-lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
-total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]*PARAMETERS["inner_n_splits"]
-pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
-
 
 # Setup device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
@@ -248,6 +233,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             break
 
     pbar.update(1)
+    print("Completed one combination")
     return avg_val_loss, avg_val_iou
 
 def run_single_fold(args):
@@ -308,10 +294,6 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
     return best_config
 
 def outer_cross_validation(figure_prefix=""):
-    global starttime
-    global dataset_dir
-    global PARAMETERS
-
     print("Started at:", starttime)
 
     # Hyperparameters
@@ -432,6 +414,22 @@ if __name__ == "__main__":
     current_time = starttime.strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
     export_folder = "exports/unet/"+current_time
     os.makedirs(export_folder, exist_ok=True)
+
+    keys_to_multiply = [
+    "batch_sizes",
+    "loss_types",
+    "encoders",
+    "freeze_opts",
+    "optimizers",
+    "learning_rates",
+    "resize"
+]
+
+    # Compute total combinations
+    lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
+    total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]*PARAMETERS["inner_n_splits"]
+    global pbar
+    pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
 
     outer_cross_validation(figure_prefix=export_folder+"/")
     pbar.close()
