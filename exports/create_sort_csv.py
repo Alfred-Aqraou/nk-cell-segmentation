@@ -35,8 +35,8 @@ def standardize_column_values(df):
 
     # Replace specific full checkpoint paths with short labels
     replacements = {
-        '/work3/s234843/02466-project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt': '$\text{DINO}_{\text{B}}$',
-        '/work3/s234843/02466-project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt': '$\text{DINO}_{\text{BW}}$'
+        '/work3/s234843/02466-project/trained_models/old/dino/70queb8d/dino-70queb8d-ep=399.ckpt': '$\\text{DINO}_{\\text{B}}$',
+        '/work3/s234843/02466-project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt': '$\\text{DINO}_{\\text{BW}}$'
     }
 
     df['encoder'] = df['encoder'].replace(replacements)
