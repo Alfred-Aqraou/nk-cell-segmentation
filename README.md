@@ -1,4 +1,4 @@
-<img src="illustrations\gifs\broadband_grid_732x548.gif" width="292" height="219" /><img src="illustrations\gifs\fluorescent_grid_732x548.gif" width="292" height="219" />
+<img src="illustrations/gifs/transformed_fluorescent_grid_612x445.gif"  />
 
 # HPC
 ## Accessing the HPC

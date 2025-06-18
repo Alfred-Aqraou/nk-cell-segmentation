@@ -25,16 +25,17 @@ def extract_hour_from_filename(filename):
         return None
 
 class JointTransform:
-    def __init__(self, base_transform):
-        self.base_transform = base_transform
+    def __init__(self, image_transform, mask_transform):
+        self.image_transform = image_transform
+        self.mask_transform = mask_transform
 
     def __call__(self, img, mask):
         seed = torch.seed()
         torch.manual_seed(seed)
-        img = self.base_transform(img)
+        img = self.image_transform(img)
 
         torch.manual_seed(seed)
-        mask = self.base_transform(mask)
+        mask = self.mask_transform(mask)
 
         return img, mask
 
@@ -138,6 +139,13 @@ class NKCellDataset(Dataset):
 
         expected_hash = "957159D273EAD51073D490FE307768E9" # MD5
         url = f"https://mathias.eksworld.dk/files/{self._dataset_tar_path}"
+        temp_path = self._dataset_tar_path + ".part"
+
+        resume_header = {}
+        downloaded_bytes = 0
+        if os.path.exists(temp_path):
+            downloaded_bytes = os.path.getsize(temp_path)
+            resume_header = {'Range': f'bytes={downloaded_bytes}-'}
 
         if verify:
             if os.path.exists(self.dataset_dir):
@@ -155,41 +163,56 @@ class NKCellDataset(Dataset):
 
         print("Downloading dataset...")
         try:
-            with requests.get(url, auth=(user, pswd), timeout=5, stream=True, verify=False) as response:
-                response.raise_for_status()
-                print("Found file, downloading...")
+            with requests.get(url, auth=(user, pswd), headers=resume_header, timeout=60, stream=True, verify=False) as response:
+                if response.status_code not in [200, 206]:
+                    print(f"Unexpected status code {response.status_code}")
+                    return False
+                # response.raise_for_status()
+                # print("Found file, downloading...")
 
                 # Get the total file size from the Content-Length header (if available)
                 total_size = int(response.headers.get("content-length", 0))
-                with open(self._dataset_tar_path, 'wb') as f:
-                    with tqdm(total=total_size, unit="iB", unit_scale=True, desc="Downloading") as pbar:
+                mode = 'ab' if downloaded_bytes else 'wb'
+
+
+                with open(temp_path, mode) as f:
+                    with tqdm(total=total_size, initial=downloaded_bytes, unit="iB", unit_scale=True, desc="Downloading", dynamic_ncols=True, file=sys.stdout, ascii=True, mininterval=1) as pbar:
                         # Download in chunks
                         for chunk in response.iter_content(chunk_size=8192):  # 8KB chunks
                             if chunk:  # Filter out keep-alive chunks
                                 size = f.write(chunk)
                                 pbar.update(size)
+            
+            os.rename(temp_path, self._dataset_tar_path)
 
             # Verify downloaded file checksum
+            print("Checking hash...", end="\r")
             downloaded_hash = self._compute_md5(self._dataset_tar_path)
             if downloaded_hash != expected_hash:
                 print(f"Checksum mismatch! Expected {expected_hash}, got {downloaded_hash}")
-                os.remove(self._dataset_tar_path)
-                print("Redownload required, sorry...")
+                if str(input("Do you want to delete downloaded file that doesn't match? (y/n): ")).strip().lower() in ("true", "1", "yes", "y", "t"):
+                    os.remove(self._dataset_tar_path)
+                else:
+                    print("You must extract tar manually: `tar -xvf dataset.tar`")
+                print("Check that checksum has been modified, or redownload...")
                 return False
             print("Download completed and checksum verified!")
 
         except requests.exceptions.RequestException as e:
             print(f"Download failed: {e}")
             return False
+        except KeyboardInterrupt:
+            print("Interrupted download")
+            return False
 
         # Extract tar file
-        print("Extracting dataset...")
+        print("Extracting dataset...", end="\r")
         try:
             with tarfile.open(self._dataset_tar_path, 'r') as tar:
                 tar.extractall(path=".", filter="fully_trusted", numeric_owner=True)
-        except:
-            print("Could not extract dataset due to permission errors, please do it manually in terminal with:")
-            print("tar -xvf dataset.tar")
+        except Exception as e:
+            print(f"Extraction failed: {e}")
+            print("Try extracting manually: `tar -xvf dataset.tar`")
             return False
 
         print("Extracted successfully!")
@@ -227,16 +250,21 @@ class NKCellDataset(Dataset):
 
         return time_map
 
-    def _load_and_process_image(self, file_path, downscale):
+    def _load_and_process_image(self, file_path: str, downscale: int):
         """Load and process an image from its file path."""
         img = Image.open(file_path).convert('RGB')
+        if self.giftransform:
+            img = self.transform(img)
+            img = T.ToPILImage()(img)
         if downscale != 1:
             img = img.resize((img.width // downscale, img.height // downscale), Image.LANCZOS)
         return img
 
-    def create_well_grid_gif(self, cpu_cores: int = 8, mode: str = 'fluorescent', downscale: int = 1, frame_duration: int = 200, gif_dir: str = 'illustrations/gifs', verbose: bool = False):
+    def create_well_grid_gif(self, cpu_cores: int = 8, mode: str = 'fluorescent', downscale: int = 1, frame_duration: int = 200, gif_dir: str = 'illustrations/gifs', verbose: bool = False, transform: bool = False):
         """Create a GIF with lazy loading of images per frame."""
         assert mode in ['fluorescent', 'broadband'], "Mode must be 'fluorescent' or 'broadband'"
+
+        self.giftransform: bool = transform
 
         os.makedirs(gif_dir, exist_ok=True)
         rows = list("ABCDEFGH")  # 8 rows: A to H
@@ -257,6 +285,10 @@ class NKCellDataset(Dataset):
         first_timestamp = sorted_times[0]
         first_file = time_map[first_timestamp][next(iter(time_map[first_timestamp]))]
         sample_img = Image.open(first_file).convert('RGB')
+        if self.giftransform:
+            sample_img = self.transform(sample_img)
+            if isinstance(sample_img, torch.Tensor):
+                sample_img = T.ToPILImage()(sample_img)
         if downscale != 1:
             sample_img = sample_img.resize((sample_img.width // downscale, sample_img.height // downscale), Image.LANCZOS)
         img_width, img_height = sample_img.size
@@ -312,7 +344,7 @@ class NKCellDataset(Dataset):
 
         # Save the GIF
         if frames:
-            gif_path = os.path.join(gif_dir, f'{mode}_grid_{grid_width}x{grid_height}.gif')
+            gif_path = os.path.join(gif_dir, f'{"transformed_" if transform else ""}{mode}_grid_{grid_width}x{grid_height}.gif')
             frames[0].save(gif_path, save_all=True, append_images=frames[1:], duration=frame_duration, loop=0)
             print(f"Saved animated {mode} grid GIF to {gif_path}")
         else:
@@ -322,12 +354,11 @@ class NKCellDataset(Dataset):
     def label_flags(self):
         return [1 if labeled else 0 for labeled in self.is_labeled]
 
-
 if __name__ == "__main__":
     import torchvision.transforms as T
-    train_base_transform = T.Compose([
-        # T.RandomCrop(PARAMETERS["resize"]),
-        T.RandomResizedCrop(size=256, scale=(0.7, 1.0), ratio=(0.75, 1.33)),
+    transform = T.Compose([
+        T.RandomCrop((256, 256)),
+        # T.RandomResizedCrop(size=256, scale=(0.7, 1.0), ratio=(0.75, 1.33)),
         T.RandomHorizontalFlip(p=0.5),
         T.RandomVerticalFlip(p=0.5),
         T.RandomRotation(degrees=30),
@@ -335,7 +366,7 @@ if __name__ == "__main__":
         #T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
         T.ToTensor(),
     ])
-    dataset = NKCellDataset(dataset_dir="/work3/s234834/02466-Project/dataset")
+    dataset = NKCellDataset(dataset_dir="dataset", transform=transform)
     # dataset.download(verify=True)  # Set verify=True for the first download to check integrity
-    dataset.create_well_grid_gif(mode='fluorescent', verbose=True)
-    dataset.create_well_grid_gif(mode='broadband', verbose=True)
+    dataset.create_well_grid_gif(mode='fluorescent', verbose=True, downscale=5, transform=False)
+    # dataset.create_well_grid_gif(mode='broadband', verbose=True, downscale=5)

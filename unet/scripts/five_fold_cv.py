@@ -46,6 +46,8 @@ parser.add_argument("--optimizer", help = 'Specify optimizer. I.e: "adam"', requ
 parser.add_argument("--lr", help = 'Specify learning rate. I.e: 0.0005', required=True, type=float)
 parser.add_argument("--resize", help = 'Specify dimensions to resize to. I.e: 256 256', nargs='+', required=True, type=int)
 parser.add_argument("--nsplits", help = 'Specify outer n splits. I.e: 5', required=True, type=int)
+parser.add_argument("--modelpath", help = 'Path to save model, leave blank to not save', required=False, type=str, default="")
+
 
 args = parser.parse_args()
 print("Given arguments:")
@@ -94,27 +96,38 @@ def extract_encoder_name(encoder):
             return f"dino_{match.group(1)}_e{match.group(2)}"
     return encoder  # Return original if not a dino path or no match
 
-def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_prefix=""):
+def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_prefix="", model_save_path: str = ""):
     device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
     #device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     global_iou_per_image = {}  # img_path → iou
     # Define transformation pipelines for training and validation.
-    train_base_transform = T.Compose([
-        T.RandomCrop(PARAMETERS["resize"]),
-        # T.RandomResizedCrop(size=PARAMETERS["resize"][0], scale=(0.7, 1.0), ratio=(0.75, 1.33)),
-        T.RandomHorizontalFlip(p=0.5),
-        T.RandomVerticalFlip(p=0.5),
-        T.RandomRotation(degrees=30),
-        T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
-        #T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
-        T.ToTensor(),
+    
+    common_geometric = T.Compose([
+    T.RandomResizedCrop(size=PARAMETERS['resize'], scale=(0.7, 1.0), ratio=(0.75, 1.33)),
+    T.RandomHorizontalFlip(p=0.5),
+    T.RandomVerticalFlip(p=0.5),
+    T.RandomRotation(degrees=30),
     ])
-    train_transform = JointTransform(train_base_transform)
+
+    image_only = T.Compose([
+    common_geometric,
+    T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+    T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
+    T.ToTensor(),
+    ])
+
+    mask_only = T.Compose([
+    common_geometric,
+    T.ToTensor(),
+    ])
+    train_transforms = JointTransform(image_transform=image_only, mask_transform=mask_only)
 
     val_transform = T.Compose([
-        T.CenterCrop(PARAMETERS["resize"]),
+        T.CenterCrop(PARAMETERS['resize']),
         T.ToTensor(),
     ])
+    val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform)
+
     
     # Construct dataset_dir relative to this file.
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -128,8 +141,8 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
         raise FileNotFoundError("Dataset directory not found in any of the expected locations.")
     
     # Create two dataset instances:
-    full_dataset_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transform)
-    full_dataset_val   = NKCellDataset(dataset_dir=dataset_dir, transform=val_transform)
+    full_dataset_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
+    full_dataset_val = NKCellDataset(dataset_dir=dataset_dir, transform=val_transforms)
     
     # Filter labeled samples (where mask_path exists on disk).
     labeled_indices = [
@@ -149,8 +162,11 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
         args = (fold, train_idx, val_idx, labeled_indices, dataset_dir, device, batch_size, num_epochs, patience, figure_prefix)
         all_args.append(args)
 
+    best_fold_iou = 0
+
     # Begin cross-validation.
     for fold, (train_idx, val_idx) in enumerate(kf.split(labeled_indices)):
+        model_save_name = f"best_model_fold{fold+1}.pth"
         # Map from KFold indices to absolute dataset indices.
         train_indices = np.array(labeled_indices)[train_idx].tolist()
         val_indices   = np.array(labeled_indices)[val_idx].tolist()
@@ -277,9 +293,19 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
             if avg_val_loss < best_val_loss:
                 best_val_loss = avg_val_loss
                 patience_counter = 0
+                if model_save_path:
+                    if mean_iou > best_fold_iou:
+                        iou_str = f"{mean_iou:.4f}".replace(".", "_")
+                        savepath = os.path.join(model_save_path, f"{iou_str}-{model_save_name}")
+                        for file in os.listdir(model_save_path):
+                            os.remove(os.path.join(model_save_path, file))
+                        torch.save(model.state_dict(), os.path.abspath(savepath))
+                        # os.remove(os.path.join(model_save_path, f"{best_fold_iou}-best_model_fold{best_fold_iou[0]+1}.pth"))
+                        best_fold_iou = mean_iou
             elif avg_val_loss < best_val_loss + tolerance:
                 # Within tolerance; reset patience.
                 patience_counter = 0
+                # torch.save(model.state_dict(), model_save_path)
             else:
                 patience_counter += 1
             
@@ -324,16 +350,21 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
         print(f"Fold {fold+1} completed with best validation loss: {best_val_loss:.4f}\n")
         # Save per-image IoU for this fold to disk
         np.save(figure_prefix + f"{extract_encoder_name(PARAMETERS["encoder"])}_per_image_iou_fold{fold+1}.npy", np.array(fold_iou_list))
-    
+
     # Summary of cross-validation.
     print("Cross-validation complete. Summary of best validation losses per fold:")
     for metrics in fold_metrics:
         print(f"  Fold {metrics['fold']}: Best Validation Loss = {metrics['best_val_loss']:.4f}," f"Best IoU = {metrics['best_iou']:.4f}")
 
     print(f"Saved global IoU vs Hour plot to {time_folder + '/global_iou_vs_hour.png'}")
+
 if __name__ == '__main__':
     current_time = datetime.now().strftime("%m-%d/%H-%M-%S")  # Month-Day Hour-Minute
+    
     time_folder = "exports/unet/"+current_time
     os.makedirs(time_folder, exist_ok=True)
 
-    run_cross_validation(num_epochs=PARAMETERS['EPOCHS'], batch_size=PARAMETERS['batch_size'], n_splits=PARAMETERS['outer_n_splits'], patience=10, figure_prefix=time_folder+"/")
+    modelpath = os.path.join(args.modelpath, current_time)
+    os.makedirs(modelpath)
+
+    run_cross_validation(num_epochs=PARAMETERS['EPOCHS'], batch_size=PARAMETERS['batch_size'], n_splits=PARAMETERS['outer_n_splits'], patience=10, figure_prefix=time_folder+"/", model_save_path=modelpath)

@@ -132,20 +132,34 @@ def extract_encoder_name(encoder):
     return encoder  # Return original if not a dino path or no match
 
 def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir, num_epochs=100, patience=10):
-    train_transforms = T.Compose([
-        T.RandomCrop((resize, resize)),
-        T.RandomHorizontalFlip(),
-        T.RandomVerticalFlip(),
-        T.RandomRotation(degrees=30),
-        T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
-        T.ToTensor(),
+    common_geometric = T.Compose([
+    T.RandomResizedCrop(size=resize, scale=(0.7, 1.0), ratio=(0.75, 1.33)),
+    T.RandomHorizontalFlip(p=0.5),
+    T.RandomVerticalFlip(p=0.5),
+    T.RandomRotation(degrees=30),
     ])
-    val_transforms = T.Compose([
+
+    image_only = T.Compose([
+    common_geometric,
+    T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+    T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
+    T.ToTensor(),
+    ])
+
+    mask_only = T.Compose([
+    common_geometric,
+    T.ToTensor(),
+    ])
+    train_transforms = JointTransform(image_transform=image_only, mask_transform=mask_only)
+
+    val_transform = T.Compose([
         T.CenterCrop((resize, resize)),
         T.ToTensor(),
     ])
-    full_train = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(train_transforms))
-    full_val = NKCellDataset(dataset_dir=dataset_dir, transform=JointTransform(val_transforms))
+    val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform)
+
+    full_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
+    full_val = NKCellDataset(dataset_dir=dataset_dir, transform=val_transforms)
 
     train_dataset = Subset(full_train, train_indices)
     val_dataset = Subset(full_val, val_indices)
