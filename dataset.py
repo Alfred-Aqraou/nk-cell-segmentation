@@ -30,11 +30,9 @@ class JointTransform:
         self.mask_transform = mask_transform
 
     def __call__(self, img, mask):
-        seed = torch.seed()
+        seed = 42
         torch.manual_seed(seed)
         img = self.image_transform(img)
-
-        torch.manual_seed(seed)
         mask = self.mask_transform(mask)
 
         return img, mask
@@ -43,7 +41,7 @@ class NKCellDataset(Dataset):
     def __init__(self, dataset_dir="dataset", transform=None, metadata_filter=None, mode='fluorescent'):
         self.dataset_dir = dataset_dir
         self._dataset_tar_path = "dataset.tar"
-        self.transform = transform
+        self.transform: JointTransform = transform
         self.is_joint_transform = isinstance(transform, JointTransform)
         self.mode = mode
 
