@@ -283,7 +283,7 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
     # Compute mean validation loss across folds
     avg_scores = {config: np.mean(losses) for config, losses in config_scores.items()}
     best_config = min(avg_scores, key=avg_scores.get)
-    return best_config
+    return best_config, avg_scores[best_config] # best config, loss
 
 def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patience: int = 20):
     print("Started at:", starttime)
@@ -317,7 +317,7 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
         val_indices = np.array(labeled_indices)[val_idx].tolist()
 
         # Run inner CV on training data to select best hyperparams
-        best_config = run_inner_cv(
+        best_config, best_loss = run_inner_cv(
             train_indices=train_indices,
             batch_sizes=batch_sizes,
             loss_types=loss_types,
@@ -332,10 +332,26 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
             inner_folds=inner_folds
         )
 
+        output_names = [
+            "batch_size",
+            "loss_type",
+            "encoder",
+            "freeze_encoder",
+            "optimizer",
+            "lr",
+            "resize",
+            "val_loss"
+        ]
+
+        
+        # Interpret zip as string:
+        best_config_str = ", ".join(f"{name}={value}" for name, value in zip(output_names[:-1], best_config))
+        print(f"Best config with val loss {best_loss}:", best_config_str)
+        
         # Train final model with best config on full training set, evaluate on val set
-        # batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir, num_epochs, patience = args
         final_args = (*best_config, fold, train_indices, val_indices, dataset_dir, num_epochs, patience)
         result = run_single_fold(final_args)
+
         all_results.append(result)
 
     # Process results
