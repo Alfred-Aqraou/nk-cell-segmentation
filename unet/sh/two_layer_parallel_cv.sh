@@ -25,7 +25,7 @@ nvidia-smi
 module load cuda/12.8.1
 
 source /work3/s234843/init_project.sh
-python unet/scripts/two_fold_parallel_cv.py \
+python unet/scripts/two_layer_parallel_cv.py \
 	--workers 8 \
     --epochs 100 \
     --encoders "resnet18" "resnet50" \
