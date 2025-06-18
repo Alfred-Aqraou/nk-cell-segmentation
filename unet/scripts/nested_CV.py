@@ -134,34 +134,31 @@ def extract_encoder_name(encoder):
     return encoder  # Return original if not a dino path or no match
 
 def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset, num_epochs=100, patience=10):
-    # Create transforms inside function to avoid shared state
-    def build_train_transform(resize):
-        common_geometric = T.Compose([
-            T.RandomCrop(size=resize),
-            T.RandomHorizontalFlip(p=0.5),
-            T.RandomVerticalFlip(p=0.5),
-            T.RandomRotation(degrees=30),
-        ])
-        image_only = T.Compose([
-            common_geometric,
-            T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
-            T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
-            T.ToTensor(),
-        ])
-        mask_only = T.Compose([
-            common_geometric,
-            T.ToTensor(),
-        ])
-        return JointTransform(image_transform=image_only, mask_transform=mask_only)
-    def build_val_transform(resize):
-        val_transform = T.Compose([
-            T.CenterCrop((resize, resize)),
-            T.ToTensor(),
-        ])
-        return JointTransform(image_transform=val_transform, mask_transform=val_transform)
+    common_geometric = T.Compose([
+    T.RandomCrop(size=resize),
+    T.RandomHorizontalFlip(p=0.5),
+    T.RandomVerticalFlip(p=0.5),
+    T.RandomRotation(degrees=30),
+    ])
 
-    train_transforms = build_train_transform(resize)
-    val_transforms = build_val_transform(resize)
+    image_only = T.Compose([
+    common_geometric,
+    T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+    T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
+    T.ToTensor(),
+    ])
+
+    mask_only = T.Compose([
+    common_geometric,
+    T.ToTensor(),
+    ])
+    train_transforms = JointTransform(image_transform=image_only, mask_transform=mask_only)
+
+    val_transform = T.Compose([
+        T.CenterCrop((resize, resize)),
+        T.ToTensor(),
+    ])
+    val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform)
 
     # Use Subset of the provided dataset, setting the appropriate transform per split
     # This avoids re-instantiating the dataset and ensures transforms are not shared
