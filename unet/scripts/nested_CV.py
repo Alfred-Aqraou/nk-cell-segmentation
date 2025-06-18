@@ -56,8 +56,6 @@ parser.add_argument("--outer", help = 'Specify outer n splits. I.e: 5', required
 parser.add_argument("--inner", help = 'Specify inner n splits. I.e: 5', required=True, type=int)
 
 args = parser.parse_args()
-print("Given arguments:")
-print(args)
 
 args.freeze = [str(val).strip().lower() in ("true", "1", "yes", "y", "t") for val in args.freeze]
 
@@ -120,7 +118,7 @@ def extract_encoder_name(encoder):
 
 def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir: str, num_epochs=100, patience=10):
     common_geometric = T.Compose([
-    T.RandomCrop(size=resize),
+    T.RandomCrop(size=(resize, resize)),
     T.RandomHorizontalFlip(p=0.5),
     T.RandomVerticalFlip(p=0.5),
     T.RandomRotation(degrees=30),
@@ -312,7 +310,7 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
 
     all_results = []
 
-    for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
+    for fold, (train_idx, val_idx) in tqdm(enumerate(outer_kf.split(labeled_indices)), desc="Outer CV folds"):
         train_indices = np.array(labeled_indices)[train_idx].tolist()
         val_indices = np.array(labeled_indices)[val_idx].tolist()
 
@@ -417,6 +415,9 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
 
 if __name__ == "__main__":
     set_start_method('spawn', force=True)
+
+    print("Given arguments:")
+    print(args)
     
 
     global starttime
@@ -425,22 +426,5 @@ if __name__ == "__main__":
     export_folder = "exports/unet/"+current_time
     os.makedirs(export_folder, exist_ok=True)
 
-#     keys_to_multiply = [
-#     "batch_sizes",
-#     "loss_types",
-#     "encoders",
-#     "freeze_opts",
-#     "optimizers",
-#     "learning_rates",
-#     "resize"
-# ]
-
-#     # Compute total combinations
-#     lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
-#     total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]*PARAMETERS["inner_n_splits"]
-    # global pbar
-    # pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
-
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
     outer_cross_validation(figure_prefix=export_folder+"/", dataset_dir=dataset_dir)
-    # pbar.close()
