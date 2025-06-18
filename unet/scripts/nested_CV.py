@@ -160,16 +160,16 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     ])
     val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform)
 
-    # Use Subset of the provided dataset, setting the appropriate transform per split
-    # This avoids re-instantiating the dataset and ensures transforms are not shared
-    # full_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
-    # full_val = NKCellDataset(dataset_dir=dataset_dir, transform=val_transforms)
+    global dataset_dir
 
-    full_train = dataset
-    full_train.transform = train_transforms
+    full_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
+    full_val = NKCellDataset(dataset_dir=dataset_dir, transform=val_transforms)
 
-    full_val = dataset
-    full_val.transform = val_transforms
+    # full_train = dataset
+    # full_train.transform = train_transforms
+
+    # full_val = dataset
+    # full_val.transform = val_transforms
 
     train_dataset = Subset(full_train, train_indices)
     val_dataset = Subset(full_val, val_indices)
