@@ -3,6 +3,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
 from multiprocessing import Pool, set_start_method
+from multiprocessing import Manager, Process
+import queue as queue_module  # to avoid name clash
 import csv
 import torch
 import tqdm
@@ -42,6 +44,17 @@ torch.cuda.manual_seed_all(SEED)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 torch.use_deterministic_algorithms(True)
+
+# Print worker for safe multiprocessing printing
+def print_worker(print_queue):
+    while True:
+        try:
+            msg = print_queue.get(timeout=10)
+            if msg == "STOP":
+                break
+            print(msg)
+        except queue_module.Empty:
+            continue
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--workers", help = "Amount of CPU workers to run in parallel", type=int, default=8)
@@ -117,7 +130,7 @@ def extract_encoder_name(encoder):
             return f"dino_{match.group(1)}_e{match.group(2)}"
     return encoder  # Return original if not a dino path or no match
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir: str, num_epochs=100, patience=10):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir: str, num_epochs=100, patience=10, is_outer_test=False, print_queue=None):
     common_geometric = T.Compose([
     T.RandomCrop(size=(resize, resize)),
     T.RandomHorizontalFlip(p=0.5),
@@ -241,16 +254,26 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             break
 
     # pbar.update(1)
-    print("Completed one combination")
+    if is_outer_test:
+        if print_queue:
+            print_queue.put(f"✅ Outer test fold completed: Test Loss = {avg_val_loss:.4f}, Test IoU = {avg_val_iou:.4f}")
+        else:
+            print(f"✅ Outer test fold completed: Test Loss = {avg_val_loss:.4f}, Test IoU = {avg_val_iou:.4f}")
+    else:
+        if print_queue:
+            print_queue.put(f"🔁 Inner CV - Completed config: Val Loss = {avg_val_loss:.4f}, Val IoU = {avg_val_iou:.4f}")
+        else:
+            print(f"🔁 Inner CV - Completed config: Val Loss = {avg_val_loss:.4f}, Val IoU = {avg_val_iou:.4f}")
     return avg_val_loss, avg_val_iou
 
-def run_single_fold(args):
+def run_single_fold(args, print_queue=None):
     # Now expects dataset as final argument
-    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir, num_epochs, patience = args
+    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir, num_epochs, patience, is_outer_test = args
     val_loss, val_iou = train_and_evaluate(
         train_indices=train_idx, val_indices=val_idx,
         batch_size=batch_size, encoder_name=encoder, freeze_encoder=freeze_encoder,
-        optimizer_type=opt_type, loss_type=loss_type, fold=fold, lr=lr, resize=resize, dataset_dir=dataset_dir, num_epochs=num_epochs, patience=patience
+        optimizer_type=opt_type, loss_type=loss_type, fold=fold, lr=lr, resize=resize, dataset_dir=dataset_dir, num_epochs=num_epochs, patience=patience,
+        is_outer_test=is_outer_test, print_queue=print_queue
     )
     result = {
         "batch_size": batch_size,
@@ -266,7 +289,7 @@ def run_single_fold(args):
     }
     return result
 
-def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset_dir: str, num_epochs: int, patience: int, inner_folds=3):
+def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset_dir: str, num_epochs: int, patience: int, inner_folds=3, print_queue=None):
     inner_kf = KFold(n_splits=inner_folds, shuffle=True, random_state=SEED)
     all_configs = list(product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize))
     # Collect all tasks for parallel execution
@@ -275,12 +298,19 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
         inner_train = np.array(train_indices)[inner_train_idx].tolist()
         inner_val = np.array(train_indices)[inner_val_idx].tolist()
         for combo in all_configs:
-            task = (*combo, 0, inner_train, inner_val, dataset_dir, num_epochs, patience)
+            task = (*combo, 0, inner_train, inner_val, dataset_dir, num_epochs, patience, False)  # is_outer_test=False for inner
             tasks.append(task)
 
-    # Run in parallel
+    # Run in parallel with tqdm progress bar
+    from functools import partial
+    from tqdm import tqdm
     with Pool(processes=PARAMETERS["cpu_workers"]) as pool:
-        results = pool.map(run_single_fold, tasks)
+        wrapped_fn = partial(run_single_fold, print_queue=print_queue)
+        with tqdm(total=len(tasks), desc="Inner CV progress", position=1, leave=False) as inner_pbar:
+            results = []
+            for r in pool.imap_unordered(wrapped_fn, tasks):
+                results.append(r)
+                inner_pbar.update(1)
 
     # Aggregate results
     config_scores = defaultdict(list)
@@ -328,6 +358,12 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
 
     all_results = []
 
+    # Setup print queue and worker
+    manager = Manager()
+    print_queue = manager.Queue()
+    printer = Process(target=print_worker, args=(print_queue,))
+    printer.start()
+
     for fold, (train_idx, val_idx) in tqdm.tqdm(enumerate(outer_kf.split(labeled_indices)), desc="Outer CV folds", total=outer_n_splits):
         train_indices = np.array(labeled_indices)[train_idx].tolist()
         val_indices = np.array(labeled_indices)[val_idx].tolist()
@@ -345,7 +381,8 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
             dataset_dir=dataset_dir,
             num_epochs=num_epochs,
             patience=patience,
-            inner_folds=inner_folds
+            inner_folds=inner_folds,
+            print_queue=print_queue
         )
 
         output_names = [
@@ -359,16 +396,22 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
             "val_loss"
         ]
 
-        
         # Interpret zip as string:
         best_config_str = ", ".join(f"{name}={value}" for name, value in zip(output_names[:-1], best_config))
-        print(f"Best config with val loss {best_loss}:", best_config_str)
-        
+        if print_queue:
+            print_queue.put(f"Best config with val loss {best_loss}: {best_config_str}")
+        else:
+            print(f"Best config with val loss {best_loss}:", best_config_str)
+
         # Train final model with best config on full training set, evaluate on val set
-        final_args = (*best_config, fold, train_indices, val_indices, dataset_dir, num_epochs, patience)
-        result = run_single_fold(final_args)
+        final_args = (*best_config, fold, train_indices, val_indices, dataset_dir, num_epochs, patience, True)  # is_outer_test=True for final outer test
+        result = run_single_fold(final_args, print_queue=print_queue)
 
         all_results.append(result)
+
+    # Stop the print worker
+    print_queue.put("STOP")
+    printer.join()
 
     # Process results
     combo_results = defaultdict(list)
