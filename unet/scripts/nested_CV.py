@@ -41,6 +41,7 @@ torch.manual_seed(SEED)
 torch.cuda.manual_seed_all(SEED)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
+torch.use_deterministic_algorithms(True)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--workers", help = "Amount of CPU workers to run in parallel", type=int, default=8)
@@ -84,7 +85,7 @@ PARAMETERS = {
 
 # Setup device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
-
+print(f"Using device: {device}")
 # Loss functions
 dice_loss = DiceLoss(mode='binary', from_logits=True)
 bce_loss = nn.BCEWithLogitsLoss()
@@ -118,7 +119,7 @@ def extract_encoder_name(encoder):
             return f"dino_{match.group(1)}_e{match.group(2)}"
     return encoder  # Return original if not a dino path or no match
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset: NKCellDataset, num_epochs=100, patience=10):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset: NKCellDataset, num_epochs=10, patience=10):
     common_geometric = T.Compose([
     T.RandomCrop(size=resize),
     T.RandomHorizontalFlip(p=0.5),
@@ -159,8 +160,22 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     train_dataset = Subset(full_train, train_indices)
     val_dataset = Subset(full_val, val_indices)
 
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=0)
+    #train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0,)
+    #val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=0)
+    
+    def seed_worker(worker_id):
+        worker_seed = SEED + worker_id
+        np.random.seed(worker_seed)
+        random.seed(worker_seed)
+        torch.manual_seed(worker_seed)
+
+    g = torch.Generator()
+    g.manual_seed(SEED)
+
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0,
+                          worker_init_fn=seed_worker, generator=g)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=0,
+                        worker_init_fn=seed_worker, generator=g)
 
     if ".ckpt" in encoder_name:
         model = create_unet_with_dino_resnet18(
@@ -232,7 +247,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             print(f"Early stopping triggered after {epoch} epochs.")
             break
 
-    pbar.update(1)
+    #pbar.update(1)
     print("Completed one combination")
     return avg_val_loss, avg_val_iou
 
@@ -353,7 +368,7 @@ def outer_cross_validation(figure_prefix=""):
         val_losses, val_ious = zip(*fold_results)
         std_val_loss = np.std(val_losses)
         std_val_iou = np.std(val_ious)
-        mean_val_loss = np.mean(val_losses)
+        mean_test_loss = np.mean(val_losses)
         mean_val_iou = np.mean(val_ious)
         final_results.append({
             "batch_size": combo_key[0],
@@ -363,13 +378,13 @@ def outer_cross_validation(figure_prefix=""):
             "optimizer": combo_key[4],
             "lr": combo_key[5],
             "resize": combo_key[6],
-            "mean_val_loss": mean_val_loss,
-            "std_val_loss": std_val_loss,
-            "mean_val_iou": mean_val_iou,
-            "std_val_iou": std_val_iou
+            "mean_test_loss": mean_test_loss,
+            "std_test_loss": std_val_loss,
+            "mean_test_iou": mean_val_iou,
+            "std_test_iou": std_val_iou
         })
         print(f"Config: BS={combo_key[0]}, Loss={combo_key[1]}, Encoder={combo_key[2]}, Freeze={combo_key[3]}, Opt={combo_key[4]}, LR={combo_key[5]}")
-        print(f"Mean Val Loss: {mean_val_loss:.4f} ± {std_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f} ± {std_val_iou:.4f}")
+        print(f"Mean Val Loss: {mean_test_loss:.4f} ± {std_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f} ± {std_val_iou:.4f}")
 
     # Save results to CSV
     print("Writing results.csv")
@@ -385,9 +400,9 @@ def outer_cross_validation(figure_prefix=""):
 
     # Plot top 10 configurations
     print("Plotting top 10 configs")
-    top_results = sorted(final_results, key=lambda r: r["mean_val_loss"])[:10]
+    top_results = sorted(final_results, key=lambda r: r["mean_test_loss"])[:10]
     labels = [f'{r["batch_size"]}-{r["loss_type"]}-{extract_encoder_name(r["encoder"])}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
-    losses = [r["mean_val_loss"] for r in top_results]
+    losses = [r["mean_test_loss"] for r in top_results]
     plt.figure(figsize=(12, 6))
     plt.barh(labels, losses, color="skyblue")
     plt.xlabel("Mean Validation Loss")
@@ -428,8 +443,8 @@ if __name__ == "__main__":
     # Compute total combinations
     lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
     total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]*PARAMETERS["inner_n_splits"]
-    global pbar
-    pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
+    #global pbar
+    #pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
 
     outer_cross_validation(figure_prefix=export_folder+"/")
-    pbar.close()
+    #pbar.close()
