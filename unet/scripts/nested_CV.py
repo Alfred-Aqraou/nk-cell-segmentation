@@ -220,7 +220,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
                             fold_iou_list.append((img_id, sample_iou))
 
         # Save per-image IoU with IDs for this fold
-        np.save(os.path.join(export_dir, f"{extract_encoder_name(PARAMETERS['encoder'])}_{batch_size}_{freeze_encoder}_{optimizer_type}_{loss_type}_{lr}_{resize}_seed{seed}_epoch{num_epochs}_pat{patience}_per_image_iou_fold{fold+1}.npy"), 
+        np.save(os.path.join(export_dir, f"{extract_encoder_name(encoder_name)}_{batch_size}_{freeze_encoder}_{optimizer_type}_{loss_type}_{lr}_{resize}_seed{seed}_epoch{num_epochs}_pat{patience}_per_image_iou_fold{fold+1}.npy"), 
         np.array(fold_iou_list, dtype=object))
 
         avg_val_loss = val_loss / len(val_indices)
