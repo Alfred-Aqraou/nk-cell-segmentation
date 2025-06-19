@@ -33,6 +33,7 @@ class JointTransform:
         seed = 42
         torch.manual_seed(seed)
         img = self.image_transform(img)
+        torch.manual_seed(seed)
         mask = self.mask_transform(mask)
 
         return img, mask
