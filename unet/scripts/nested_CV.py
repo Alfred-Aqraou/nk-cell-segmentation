@@ -229,7 +229,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             print(f"🔁 Inner CV - Completed config: Val Loss = {avg_val_loss:.4f}, Val IoU = {avg_val_iou:.4f}")
     return avg_val_loss, avg_val_iou
 
-def run_single_fold(args, print_queue=None):
+def run_single_inner_fold(args, print_queue=None):
     # Now expects dataset as final argument
     batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir, seed, num_epochs, patience, is_outer_test = args
     val_loss, val_iou = train_and_evaluate(
@@ -266,7 +266,7 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
 
     # Run in parallel with tqdm progress bar
     with Pool(processes=PARAMETERS["cpu_workers"]) as pool:
-        wrapped_fn = partial(run_single_fold, print_queue=print_queue)
+        wrapped_fn = partial(run_single_inner_fold, print_queue=print_queue)
         with tqdm(total=len(tasks), desc="Inner CV progress", position=1, leave=False) as inner_pbar:
             results = []
             for r in pool.imap_unordered(wrapped_fn, tasks):
@@ -285,12 +285,12 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
             result["lr"],
             result["resize"]
         )
-        config_scores[config].append(result["val_loss"])
+        config_scores[config].append(result["val_iou"])
 
-    # Compute mean validation loss across folds
+    # Compute mean validation IoU across folds
     avg_scores = {config: np.mean(losses) for config, losses in config_scores.items()}
-    best_config = min(avg_scores, key=avg_scores.get)
-    return best_config, avg_scores[best_config] # best config, loss
+    best_config = max(avg_scores, key=avg_scores.get)
+    return best_config, avg_scores[best_config] # best config, IoU
 
 def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: int = 10):
     print("Started at:", starttime)
@@ -309,7 +309,6 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
     outer_n_splits = PARAMETERS["outer_n_splits"]
     num_workers = PARAMETERS["cpu_workers"]
 
-    # Instantiate dataset ONCE and pass to all functions
     dataset = NKCellDataset(dataset_dir=dataset_dir, transform=None)
     labeled_indices = [
         i for i, mask_path in enumerate(dataset.mask_paths)
@@ -330,7 +329,7 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
         val_indices = np.array(labeled_indices)[val_idx].tolist()
 
         # Run inner CV on training data to select best hyperparams
-        best_config, best_loss = run_inner_cv(
+        best_config, best_iou = run_inner_cv(
             train_indices=train_indices,
             batch_sizes=batch_sizes,
             loss_types=loss_types,
@@ -361,13 +360,13 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
         # Interpret zip as string:
         best_config_str = ", ".join(f"{name}={value}" for name, value in zip(output_names[:-1], best_config))
         if print_queue:
-            print_queue.put(f"Best config with val loss {best_loss}: {best_config_str}")
+            print_queue.put(f"Best config with val loss {best_iou}: {best_config_str}")
         else:
-            print(f"Best config with val loss {best_loss}:", best_config_str)
+            print(f"Best config with val loss {best_iou}:", best_config_str)
 
         # Train final model with best config on full training set, evaluate on val set
         final_args = (*best_config, fold, train_indices, val_indices, dataset_dir, seed, num_epochs, patience, True)  # is_outer_test=True for final outer test
-        result = run_single_fold(final_args, print_queue=print_queue)
+        result = run_single_inner_fold(final_args, print_queue=print_queue)
 
         all_results.append(result)
 
