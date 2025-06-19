@@ -26,15 +26,15 @@ iou_loss = JaccardLoss(mode='binary', from_logits=True)
 
 import argparse
 
-import random
+# import random
 
 SEED = 42
-random.seed(SEED)
-np.random.seed(SEED)
+# random.seed(SEED)
+# np.random.seed(SEED)
 torch.manual_seed(SEED)
 torch.cuda.manual_seed_all(SEED)
-torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = False
+# torch.backends.cudnn.deterministic = True
+# torch.backends.cudnn.benchmark = False
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--epochs", help = 'Specify epochs. I.e: 100', required=True, type=int)
@@ -134,7 +134,8 @@ def run_cross_validation(num_epochs, batch_size, n_splits, patience=10, figure_p
     possible_paths = [
     "/Users/aliafif/Desktop/Code/Fagprojekt/02466-Project/dataset",
     "/work3/s234843/02466-Project/dataset",
-    os.path.join(os.path.dirname(__file__), "dataset")
+    os.path.join(os.path.dirname(__file__), "dataset"),
+    "dataset"
     ]
     dataset_dir = next((p for p in possible_paths if os.path.exists(p)), None)
     if dataset_dir is None:

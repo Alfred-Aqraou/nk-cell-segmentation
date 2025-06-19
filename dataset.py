@@ -25,16 +25,16 @@ def extract_hour_from_filename(filename):
         return None
 
 class JointTransform:
-    def __init__(self, image_transform, mask_transform):
+    def __init__(self, image_transform, mask_transform, seed):
+        self.seed = seed
         self.image_transform = image_transform
         self.mask_transform = mask_transform
 
     def __call__(self, img, mask):
-        seed = 42
-        torch.manual_seed(seed)
+        torch.manual_seed(self.seed)
         img = self.image_transform(img)
 
-        torch.manual_seed(seed)
+        torch.manual_seed(self.seed)
         mask = self.mask_transform(mask)
 
         return img, mask

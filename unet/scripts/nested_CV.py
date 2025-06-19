@@ -32,16 +32,7 @@ from models.unet import create_unet_with_dino_resnet18
 from segmentation_models_pytorch.losses import DiceLoss, JaccardLoss
 
 import argparse
-import random
-
-SEED = 42
-random.seed(SEED)
-np.random.seed(SEED)
-torch.manual_seed(SEED)
-torch.cuda.manual_seed_all(SEED)
-torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = False
-torch.use_deterministic_algorithms(True)
+# import random
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--workers", help = "Amount of CPU workers to run in parallel", type=int, default=8)
@@ -59,11 +50,6 @@ parser.add_argument("--inner", help = 'Specify inner n splits. I.e: 5', required
 args = parser.parse_args()
 
 args.freeze = [str(val).strip().lower() in ("true", "1", "yes", "y", "t") for val in args.freeze]
-
-# args.resize = tuple(args.resize)
-# for i in args.resize:
-#     assert isinstance(i, int)
-# assert len(args.resize) == 2
 
 global PARAMETERS
 PARAMETERS = {
@@ -83,7 +69,6 @@ PARAMETERS = {
 
 # Setup device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
-print(f"Using device: {device}")
 # Loss functions
 dice_loss = DiceLoss(mode='binary', from_logits=True)
 bce_loss = nn.BCEWithLogitsLoss()
@@ -92,12 +77,12 @@ iou_loss = JaccardLoss(mode='binary', from_logits=True)
 def combined_loss(pred, target):
     return 0.5 * dice_loss(pred, target) + 0.5 * bce_loss(pred, target)
 
-def get_loss_function(loss_type):
-    if loss_type == "dice":
+def get_loss_function(loss_type:str):
+    if loss_type.lower() == "dice":
         return lambda pred, target: dice_loss(pred, target)
-    elif loss_type == "bce":
+    elif loss_type.lower() == "bce":
         return lambda pred, target: bce_loss(pred, target)
-    elif loss_type == 'iou':
+    elif loss_type.lower() == 'iou':
         return lambda pred, target: iou_loss(pred, target)
     else:
         return combined_loss
@@ -117,7 +102,7 @@ def extract_encoder_name(encoder):
             return f"dino_{match.group(1)}_e{match.group(2)}"
     return encoder  # Return original if not a dino path or no match
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir: str, num_epochs=100, patience=10):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir: str, seed, num_epochs=100, patience=10, ):
     common_geometric = T.Compose([
     T.RandomCrop(size=(resize, resize)),
     T.RandomHorizontalFlip(p=0.5),
@@ -136,13 +121,13 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     common_geometric,
     T.ToTensor(),
     ])
-    train_transforms = JointTransform(image_transform=image_only, mask_transform=mask_only)
+    train_transforms = JointTransform(image_transform=image_only, mask_transform=mask_only, seed=seed)
 
     val_transform = T.Compose([
         T.CenterCrop((resize, resize)),
         T.ToTensor(),
     ])
-    val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform)
+    val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform, seed=seed)
 
     full_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
     full_val = NKCellDataset(dataset_dir=dataset_dir, transform=val_transforms)
@@ -150,22 +135,8 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     train_dataset = Subset(full_train, train_indices)
     val_dataset = Subset(full_val, val_indices)
 
-    #train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0,)
-    #val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=0)
-    
-    def seed_worker(worker_id):
-        worker_seed = SEED + worker_id
-        np.random.seed(worker_seed)
-        random.seed(worker_seed)
-        torch.manual_seed(worker_seed)
-
-    g = torch.Generator()
-    g.manual_seed(SEED)
-
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0,
-                          worker_init_fn=seed_worker, generator=g)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=0,
-                        worker_init_fn=seed_worker, generator=g)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=0)
 
     if ".ckpt" in encoder_name:
         model = create_unet_with_dino_resnet18(
@@ -241,16 +212,16 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             break
 
     # pbar.update(1)
-    print("Completed one combination")
+    # print("Completed one combination")
     return avg_val_loss, avg_val_iou
 
 def run_single_fold(args):
     # Now expects dataset as final argument
-    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir, num_epochs, patience = args
+    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir, seed, num_epochs, patience = args
     val_loss, val_iou = train_and_evaluate(
         train_indices=train_idx, val_indices=val_idx,
         batch_size=batch_size, encoder_name=encoder, freeze_encoder=freeze_encoder,
-        optimizer_type=opt_type, loss_type=loss_type, fold=fold, lr=lr, resize=resize, dataset_dir=dataset_dir, num_epochs=num_epochs, patience=patience
+        optimizer_type=opt_type, loss_type=loss_type, fold=fold, lr=lr, resize=resize, dataset_dir=dataset_dir, seed=seed, num_epochs=num_epochs, patience=patience
     )
     result = {
         "batch_size": batch_size,
@@ -266,8 +237,8 @@ def run_single_fold(args):
     }
     return result
 
-def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset_dir: str, num_epochs: int, patience: int, inner_folds=3):
-    inner_kf = KFold(n_splits=inner_folds, shuffle=True, random_state=SEED)
+def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset_dir: str, seed, num_epochs: int, patience: int, inner_folds=3):
+    inner_kf = KFold(n_splits=inner_folds, shuffle=True, random_state=seed)
     all_configs = list(product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize))
     # Collect all tasks for parallel execution
     tasks = []
@@ -275,7 +246,7 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
         inner_train = np.array(train_indices)[inner_train_idx].tolist()
         inner_val = np.array(train_indices)[inner_val_idx].tolist()
         for combo in all_configs:
-            task = (*combo, 0, inner_train, inner_val, dataset_dir, num_epochs, patience)
+            task = (*combo, 0, inner_train, inner_val, dataset_dir, seed, num_epochs, patience)
             tasks.append(task)
 
     # Run in parallel
@@ -301,7 +272,7 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
     best_config = min(avg_scores, key=avg_scores.get)
     return best_config, avg_scores[best_config] # best config, loss
 
-def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patience: int = 20):
+def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: int = 20):
     print("Started at:", starttime)
 
     # Hyperparameters
@@ -324,7 +295,7 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
         i for i, mask_path in enumerate(dataset.mask_paths)
         if mask_path is not None and os.path.exists(mask_path)
     ]
-    outer_kf = KFold(n_splits=outer_n_splits, shuffle=True, random_state=SEED)
+    outer_kf = KFold(n_splits=outer_n_splits, shuffle=True, random_state=seed)
 
     all_results = []
 
@@ -343,6 +314,7 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
             learning_rates=learning_rates,
             resize=resize,
             dataset_dir=dataset_dir,
+            seed=seed,
             num_epochs=num_epochs,
             patience=patience,
             inner_folds=inner_folds
@@ -365,7 +337,7 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
         print(f"Best config with val loss {best_loss}:", best_config_str)
         
         # Train final model with best config on full training set, evaluate on val set
-        final_args = (*best_config, fold, train_indices, val_indices, dataset_dir, num_epochs, patience)
+        final_args = (*best_config, fold, train_indices, val_indices, dataset_dir, seed, num_epochs, patience)
         result = run_single_fold(final_args)
 
         all_results.append(result)
@@ -400,7 +372,7 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
         print(f"Mean Val Loss: {mean_test_loss:.4f} ± {std_test_loss:.4f}, Mean Val IoU: {mean_test_iou:.4f} ± {std_test_iou:.4f}")
 
     # Save results to CSV
-    print("Writing results.csv")
+    # print("Writing results.csv")
     try:
         with open(figure_prefix + "results.csv", "w", newline='') as f:
             writer = csv.DictWriter(f, fieldnames=final_results[0].keys())
@@ -409,10 +381,10 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
     except:
         print("Couldn't write results.csv")
     else:
-        print("Finished writing results.csv")
+        print("Wrote results.csv")
 
     # Plot top 10 configurations
-    print("Plotting top 10 configs")
+    # print("Plotting top 10 configs")
     top_results = sorted(final_results, key=lambda r: r["mean_test_loss"])[:10]
     labels = [f'{r["batch_size"]}-{r["loss_type"]}-{extract_encoder_name(r["encoder"])}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
     losses = [r["mean_test_loss"] for r in top_results]
@@ -424,7 +396,7 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
     plt.tight_layout()
     plt.savefig(figure_prefix + "top_10_configs.png")
     plt.close()
-    print("Finished plotting")
+    # print("Finished plotting")
 
     endtime = datetime.now()
     print("Started at:", starttime)
@@ -434,8 +406,10 @@ def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patie
 if __name__ == "__main__":
     set_start_method('spawn', force=True)
 
-    print("Given arguments:")
+    # print("Given arguments:")
     print(args)
+
+    print(f"Using device: {device}")
     
 
     global starttime
@@ -460,5 +434,13 @@ if __name__ == "__main__":
     #global pbar
     #pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
 
-    outer_cross_validation(figure_prefix=export_folder+"/")
+    dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
+
+    SEED = 42
+    # random.seed(SEED)
+    # np.random.seed(SEED)
+    torch.manual_seed(SEED)
+    torch.cuda.manual_seed_all(SEED)
+
+    outer_cross_validation(figure_prefix=export_folder+"/", seed=SEED, dataset_dir=dataset_dir)
     #pbar.close()
