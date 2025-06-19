@@ -99,7 +99,7 @@ def compute_iou(preds, targets):
     intersection = (preds * targets).sum(dim=(1, 2, 3))
     union = preds.sum(dim=(1, 2, 3)) + targets.sum(dim=(1, 2, 3)) - intersection
     iou = intersection / (union + 1e-8)
-    return iou.item() if union > 0 else 0.0
+    return iou if union > 0 else 0.0
 
 def extract_encoder_name(encoder):
     if not isinstance(encoder, str):
@@ -204,12 +204,10 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
                     labeled_masks = masks[labeled_idx]
                     loss = loss_fn(labeled_outputs, labeled_masks)
                     val_loss += loss.item() * len(labeled_idx)
-                    val_iou += compute_iou(labeled_outputs, labeled_masks) * len(labeled_idx)
+                    ious = compute_iou(labeled_outputs, labeled_masks) * len(labeled_idx)
+                    iou_scores.extend(ious.cpu().numpy())
 
                     if npy:
-                        ious = val_iou.cpu().numpy()
-                        iou_scores.extend(ious)
-
                         # For each labeled sample, map IOU to its hour:
                         for idx_in_batch, sample_iou in zip(labeled_idx.cpu().numpy(), ious):
                             img_path = img_paths[idx_in_batch]
@@ -226,7 +224,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         np.array(fold_iou_list, dtype=object))
 
         avg_val_loss = val_loss / len(val_indices)
-        avg_val_iou = val_iou / len(val_indices)
+        avg_val_iou = np.mean(iou_scores)
 
         print(f"Epoch {epoch+1}/{num_epochs}, Train Loss: {train_loss / len(train_indices):.4f}, Val Loss: {avg_val_loss:.4f}, Val IoU: {avg_val_iou:.4f}", end="\r")
 
