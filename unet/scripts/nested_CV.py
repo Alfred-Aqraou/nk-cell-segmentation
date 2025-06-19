@@ -292,7 +292,7 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
     best_config = min(avg_scores, key=avg_scores.get)
     return best_config, avg_scores[best_config] # best config, loss
 
-def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: int = 20):
+def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: int = 10):
     print("Started at:", starttime)
 
     # Hyperparameters
