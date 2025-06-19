@@ -463,7 +463,8 @@ if __name__ == "__main__":
 
     # Compute total combinations
     lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
-    total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]*PARAMETERS["inner_n_splits"]
+    total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]*PARAMETERS["inner_n_splits"]+PARAMETERS["outer_n_splits"]
+    print(f"Total combinations: {total_combinations}")
 
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
