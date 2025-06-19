@@ -204,7 +204,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
                     labeled_masks = masks[labeled_idx]
                     loss = loss_fn(labeled_outputs, labeled_masks)
                     val_loss += loss.item() * len(labeled_idx)
-                    ious = compute_iou(labeled_outputs, labeled_masks) * len(labeled_idx)
+                    ious = compute_iou(labeled_outputs, labeled_masks)
                     iou_scores.extend(ious.cpu().numpy())
 
                     if npy:
