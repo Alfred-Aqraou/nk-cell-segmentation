@@ -57,8 +57,6 @@ parser.add_argument("--outer", help = 'Specify outer n splits. I.e: 5', required
 parser.add_argument("--inner", help = 'Specify inner n splits. I.e: 5', required=True, type=int)
 
 args = parser.parse_args()
-print("Given arguments:")
-print(args)
 
 args.freeze = [str(val).strip().lower() in ("true", "1", "yes", "y", "t") for val in args.freeze]
 
@@ -119,9 +117,9 @@ def extract_encoder_name(encoder):
             return f"dino_{match.group(1)}_e{match.group(2)}"
     return encoder  # Return original if not a dino path or no match
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset: NKCellDataset, num_epochs=10, patience=10):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir: str, num_epochs=100, patience=10):
     common_geometric = T.Compose([
-    T.RandomCrop(size=resize),
+    T.RandomCrop(size=(resize, resize)),
     T.RandomHorizontalFlip(p=0.5),
     T.RandomVerticalFlip(p=0.5),
     T.RandomRotation(degrees=30),
@@ -146,16 +144,8 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     ])
     val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform)
 
-    dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
-
     full_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
     full_val = NKCellDataset(dataset_dir=dataset_dir, transform=val_transforms)
-
-    # full_train = dataset
-    # full_train.transform = train_transforms
-
-    # full_val = dataset
-    # full_val.transform = val_transforms
 
     train_dataset = Subset(full_train, train_indices)
     val_dataset = Subset(full_val, val_indices)
@@ -212,6 +202,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             images, masks = images.to(device), masks.to(device)
             outputs = model(images)
             labeled_idx = (label_flags == 1).nonzero(as_tuple=True)[0]
+            print("Labeled samples:", len(labeled_idx), end="\r")
             if len(labeled_idx) > 0:
                 loss = loss_fn(outputs[labeled_idx], masks[labeled_idx])
                 optimizer.zero_grad()
@@ -247,17 +238,17 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             print(f"Early stopping triggered after {epoch} epochs.")
             break
 
-    #pbar.update(1)
+    # pbar.update(1)
     print("Completed one combination")
     return avg_val_loss, avg_val_iou
 
 def run_single_fold(args):
     # Now expects dataset as final argument
-    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset = args
+    batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir, num_epochs, patience = args
     val_loss, val_iou = train_and_evaluate(
-        train_idx, val_idx,
-        batch_size, encoder, freeze_encoder,
-        opt_type, loss_type, fold, lr, resize, dataset
+        train_indices=train_idx, val_indices=val_idx,
+        batch_size=batch_size, encoder_name=encoder, freeze_encoder=freeze_encoder,
+        optimizer_type=opt_type, loss_type=loss_type, fold=fold, lr=lr, resize=resize, dataset_dir=dataset_dir, num_epochs=num_epochs, patience=patience
     )
     result = {
         "batch_size": batch_size,
@@ -273,7 +264,7 @@ def run_single_fold(args):
     }
     return result
 
-def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset, inner_folds=3):
+def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset_dir: str, num_epochs: int, patience: int, inner_folds=3):
     inner_kf = KFold(n_splits=inner_folds, shuffle=True, random_state=SEED)
     all_configs = list(product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize))
     # Collect all tasks for parallel execution
@@ -282,7 +273,7 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
         inner_train = np.array(train_indices)[inner_train_idx].tolist()
         inner_val = np.array(train_indices)[inner_val_idx].tolist()
         for combo in all_configs:
-            task = (*combo, 0, inner_train, inner_val, dataset)
+            task = (*combo, 0, inner_train, inner_val, dataset_dir, num_epochs, patience)
             tasks.append(task)
 
     # Run in parallel
@@ -306,12 +297,13 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
     # Compute mean validation loss across folds
     avg_scores = {config: np.mean(losses) for config, losses in config_scores.items()}
     best_config = min(avg_scores, key=avg_scores.get)
-    return best_config
+    return best_config, avg_scores[best_config] # best config, loss
 
-def outer_cross_validation(figure_prefix=""):
+def outer_cross_validation(figure_prefix="", dataset_dir: str = "dataset", patience: int = 20):
     print("Started at:", starttime)
 
     # Hyperparameters
+    num_epochs = PARAMETERS["EPOCHS"]
     batch_sizes = PARAMETERS["batch_sizes"]
     loss_types = PARAMETERS["loss_types"]
     encoders = PARAMETERS["encoders"]
@@ -334,12 +326,12 @@ def outer_cross_validation(figure_prefix=""):
 
     all_results = []
 
-    for fold, (train_idx, val_idx) in enumerate(outer_kf.split(labeled_indices)):
+    for fold, (train_idx, val_idx) in tqdm.tqdm(enumerate(outer_kf.split(labeled_indices)), desc="Outer CV folds", total=outer_n_splits):
         train_indices = np.array(labeled_indices)[train_idx].tolist()
         val_indices = np.array(labeled_indices)[val_idx].tolist()
 
         # Run inner CV on training data to select best hyperparams
-        best_config = run_inner_cv(
+        best_config, best_loss = run_inner_cv(
             train_indices=train_indices,
             batch_sizes=batch_sizes,
             loss_types=loss_types,
@@ -348,13 +340,32 @@ def outer_cross_validation(figure_prefix=""):
             optimizers=optimizers,
             learning_rates=learning_rates,
             resize=resize,
-            dataset=dataset,
+            dataset_dir=dataset_dir,
+            num_epochs=num_epochs,
+            patience=patience,
             inner_folds=inner_folds
         )
 
+        output_names = [
+            "batch_size",
+            "loss_type",
+            "encoder",
+            "freeze_encoder",
+            "optimizer",
+            "lr",
+            "resize",
+            "val_loss"
+        ]
+
+        
+        # Interpret zip as string:
+        best_config_str = ", ".join(f"{name}={value}" for name, value in zip(output_names[:-1], best_config))
+        print(f"Best config with val loss {best_loss}:", best_config_str)
+        
         # Train final model with best config on full training set, evaluate on val set
-        final_args = (*best_config, fold, train_indices, val_indices, dataset)
+        final_args = (*best_config, fold, train_indices, val_indices, dataset_dir, num_epochs, patience)
         result = run_single_fold(final_args)
+
         all_results.append(result)
 
     # Process results
@@ -366,10 +377,10 @@ def outer_cross_validation(figure_prefix=""):
     final_results = []
     for combo_key, fold_results in combo_results.items():
         val_losses, val_ious = zip(*fold_results)
-        std_val_loss = np.std(val_losses)
-        std_val_iou = np.std(val_ious)
+        std_test_loss = np.std(val_losses)
+        std_test_iou = np.std(val_ious)
         mean_test_loss = np.mean(val_losses)
-        mean_val_iou = np.mean(val_ious)
+        mean_test_iou = np.mean(val_ious)
         final_results.append({
             "batch_size": combo_key[0],
             "loss_type": combo_key[1],
@@ -379,12 +390,12 @@ def outer_cross_validation(figure_prefix=""):
             "lr": combo_key[5],
             "resize": combo_key[6],
             "mean_test_loss": mean_test_loss,
-            "std_test_loss": std_val_loss,
-            "mean_test_iou": mean_val_iou,
-            "std_test_iou": std_val_iou
+            "std_test_loss": std_test_loss,
+            "mean_test_iou": mean_test_iou,
+            "std_test_iou": std_test_iou
         })
         print(f"Config: BS={combo_key[0]}, Loss={combo_key[1]}, Encoder={combo_key[2]}, Freeze={combo_key[3]}, Opt={combo_key[4]}, LR={combo_key[5]}")
-        print(f"Mean Val Loss: {mean_test_loss:.4f} ± {std_val_loss:.4f}, Mean Val IoU: {mean_val_iou:.4f} ± {std_val_iou:.4f}")
+        print(f"Mean Val Loss: {mean_test_loss:.4f} ± {std_test_loss:.4f}, Mean Val IoU: {mean_test_iou:.4f} ± {std_test_iou:.4f}")
 
     # Save results to CSV
     print("Writing results.csv")
@@ -421,8 +432,9 @@ def outer_cross_validation(figure_prefix=""):
 if __name__ == "__main__":
     set_start_method('spawn', force=True)
 
-    global dataset_dir
-    dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
+    print("Given arguments:")
+    print(args)
+    
 
     global starttime
     starttime = datetime.now()

@@ -41,7 +41,7 @@ class NKCellDataset(Dataset):
     def __init__(self, dataset_dir="dataset", transform=None, metadata_filter=None, mode='fluorescent'):
         self.dataset_dir = dataset_dir
         self._dataset_tar_path = "dataset.tar"
-        self.transform = transform
+        self.transform: JointTransform = transform
         self.is_joint_transform = isinstance(transform, JointTransform)
         self.mode = mode
 
