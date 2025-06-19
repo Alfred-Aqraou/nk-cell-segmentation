@@ -22,7 +22,7 @@ from datetime import datetime
 from functools import reduce
 import operator
 import re
-from dataset import NKCellDataset, JointTransform
+from dataset import NKCellDataset, JointTransform, extract_hour_from_filename
 from models.unet import create_unet
 from models.unet import create_unet_with_dino_resnet18
 from segmentation_models_pytorch.losses import DiceLoss, JaccardLoss
@@ -92,11 +92,14 @@ def get_loss_function(loss_type:str):
     else:
         return combined_loss
 
-def compute_iou(pred, target):
-    pred = (pred > 0).float()
-    intersection = (pred * target).sum()
-    union = pred.sum() + target.sum() - intersection
-    return (intersection / union).item() if union > 0 else 0.0
+def compute_iou(preds, targets):
+    preds = (torch.sigmoid(preds) > 0.5).float()
+    if preds.dim() == 3:
+        preds = preds.unsqueeze(1)
+    intersection = (preds * targets).sum(dim=(1, 2, 3))
+    union = preds.sum(dim=(1, 2, 3)) + targets.sum(dim=(1, 2, 3)) - intersection
+    iou = intersection / (union + 1e-8)
+    return iou.item() if union > 0 else 0.0
 
 def extract_encoder_name(encoder):
     if not isinstance(encoder, str):
@@ -107,7 +110,7 @@ def extract_encoder_name(encoder):
             return f"dino_{match.group(1)}_e{match.group(2)}"
     return encoder  # Return original if not a dino path or no match
 
-def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir: str, seed, num_epochs=100, patience=10, is_outer_test=False, print_queue=None):
+def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir: str, seed, num_epochs=100, patience=10, is_outer_test=False, print_queue=None, npy:bool=False, export_dir=""):
     common_geometric = T.Compose([
     T.RandomCrop(size=(resize, resize)),
     T.RandomHorizontalFlip(p=0.5),
@@ -189,15 +192,38 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         model.eval()
         val_loss = 0.0
         val_iou = 0.0
+        iou_scores = []
+        fold_iou_list = []
         with torch.no_grad():
-            for images, masks, label_flags, _ in val_loader:
+            for images, masks, label_flags, img_paths in val_loader:
                 images, masks = images.to(device), masks.to(device)
                 outputs = model(images)
                 labeled_idx = (label_flags == 1).nonzero(as_tuple=True)[0]
                 if len(labeled_idx) > 0:
-                    loss = loss_fn(outputs[labeled_idx], masks[labeled_idx])
+                    labeled_outputs = outputs[labeled_idx]
+                    labeled_masks = masks[labeled_idx]
+                    loss = loss_fn(labeled_outputs, labeled_masks)
                     val_loss += loss.item() * len(labeled_idx)
-                    val_iou += compute_iou(outputs[labeled_idx], masks[labeled_idx]) * len(labeled_idx)
+                    val_iou += compute_iou(labeled_outputs, labeled_masks) * len(labeled_idx)
+
+                    if npy:
+                        ious = val_iou.cpu().numpy()
+                        iou_scores.extend(ious)
+
+                        # For each labeled sample, map IOU to its hour:
+                        for idx_in_batch, sample_iou in zip(labeled_idx.cpu().numpy(), ious):
+                            img_path = img_paths[idx_in_batch]
+                            hour = extract_hour_from_filename(img_path)
+                            if hour is not None:
+                                global_hours.append(hour)
+                                global_ious.append(sample_iou)
+                            
+                            img_id = os.path.basename(img_path)  # Unique identifier
+                            fold_iou_list.append((img_id, sample_iou))
+
+        # Save per-image IoU with IDs for this fold
+        np.save(os.path.join(export_dir, f"{extract_encoder_name(PARAMETERS['encoder'])}_{batch_size}_{freeze_encoder}_{optimizer_type}_{loss_type}_{lr}_{resize}_seed{seed}_epoch{num_epochs}_pat{patience}_per_image_iou_fold{fold+1}.npy"), 
+        np.array(fold_iou_list, dtype=object))
 
         avg_val_loss = val_loss / len(val_indices)
         avg_val_iou = val_iou / len(val_indices)
@@ -229,14 +255,14 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             print(f"🔁 Inner CV - Completed config: Val Loss = {avg_val_loss:.4f}, Val IoU = {avg_val_iou:.4f}")
     return avg_val_loss, avg_val_iou
 
-def run_single_inner_fold(args, print_queue=None):
+def run_single_inner_fold(args, print_queue=None, npy:bool=False, export_dir=""):
     # Now expects dataset as final argument
     batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir, seed, num_epochs, patience, is_outer_test = args
     val_loss, val_iou = train_and_evaluate(
         train_indices=train_idx, val_indices=val_idx,
         batch_size=batch_size, encoder_name=encoder, freeze_encoder=freeze_encoder,
         optimizer_type=opt_type, loss_type=loss_type, fold=fold, lr=lr, resize=resize, dataset_dir=dataset_dir, seed=seed, num_epochs=num_epochs, patience=patience,
-        is_outer_test=is_outer_test, print_queue=print_queue
+        is_outer_test=is_outer_test, print_queue=print_queue, npy=npy, export_dir=export_dir
     )
     result = {
         "batch_size": batch_size,
@@ -324,9 +350,14 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
     printer = Process(target=print_worker, args=(print_queue,))
     printer.start()
 
-    for fold, (train_idx, val_idx) in tqdm(enumerate(outer_kf.split(labeled_indices)), desc="Outer CV folds", total=outer_n_splits):
+    global global_hours
+    global global_ious
+    global_hours = []
+    global_ious = []
+
+    for fold, (train_idx, test_idx) in tqdm(enumerate(outer_kf.split(labeled_indices)), desc="Outer CV folds", total=outer_n_splits):
         train_indices = np.array(labeled_indices)[train_idx].tolist()
-        val_indices = np.array(labeled_indices)[val_idx].tolist()
+        test_indices = np.array(labeled_indices)[test_idx].tolist()
 
         # Run inner CV on training data to select best hyperparams
         best_config, best_iou = run_inner_cv(
@@ -354,7 +385,7 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
             "optimizer",
             "lr",
             "resize",
-            "val_loss"
+            "test_loss"
         ]
 
         # Interpret zip as string:
@@ -364,9 +395,11 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
         else:
             print(f"Best config with iou score {best_iou}:", best_config_str)
 
-        # Train final model with best config on full training set, evaluate on val set
-        final_args = (*best_config, fold, train_indices, val_indices, dataset_dir, seed, num_epochs, patience, True)  # is_outer_test=True for final outer test
-        result = run_single_inner_fold(final_args, print_queue=print_queue)
+        # Train final model with best config on full training set, evaluate on test set
+        final_args = (*best_config, fold, train_indices, test_indices, dataset_dir, seed, num_epochs, patience, True)  # is_outer_test=True for final outer test
+        result = run_single_inner_fold(final_args, print_queue=print_queue, npy=True, export_dir=figure_prefix)
+
+
 
         all_results.append(result)
 
