@@ -4,10 +4,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
 from multiprocessing import Pool, set_start_method
 from multiprocessing import Manager, Process
+from functools import partial
+from tqdm import tqdm
 import queue as queue_module  # to avoid name clash
 import csv
 import torch
-import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
 from torch import nn, optim
@@ -20,32 +21,13 @@ from datetime import datetime
 
 from functools import reduce
 import operator
-
 import re
-from typing import List
-# import pandas as pd
-
-
-# import wandb
-
 from dataset import NKCellDataset, JointTransform
 from models.unet import create_unet
 from models.unet import create_unet_with_dino_resnet18
 from segmentation_models_pytorch.losses import DiceLoss, JaccardLoss
 
 import argparse
-# import random
-
-# Print worker for safe multiprocessing printing
-def print_worker(print_queue):
-    while True:
-        try:
-            msg = print_queue.get(timeout=10)
-            if msg == "STOP":
-                break
-            print(msg)
-        except queue_module.Empty:
-            continue
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--workers", help = "Amount of CPU workers to run in parallel", type=int, default=8)
@@ -64,7 +46,6 @@ args = parser.parse_args()
 
 args.freeze = [str(val).strip().lower() in ("true", "1", "yes", "y", "t") for val in args.freeze]
 
-global PARAMETERS
 PARAMETERS = {
     "cpu_workers": args.workers,
     "EPOCHS": args.epochs,
@@ -86,6 +67,17 @@ device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if 
 dice_loss = DiceLoss(mode='binary', from_logits=True)
 bce_loss = nn.BCEWithLogitsLoss()
 iou_loss = JaccardLoss(mode='binary', from_logits=True)
+
+# Print worker for safe multiprocessing printing
+def print_worker(print_queue):
+    while True:
+        try:
+            msg = print_queue.get(timeout=10)
+            if msg == "STOP":
+                break
+            print(msg)
+        except queue_module.Empty:
+            continue
 
 def combined_loss(pred, target):
     return 0.5 * dice_loss(pred, target) + 0.5 * bce_loss(pred, target)
@@ -273,8 +265,6 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
             tasks.append(task)
 
     # Run in parallel with tqdm progress bar
-    from functools import partial
-    from tqdm import tqdm
     with Pool(processes=PARAMETERS["cpu_workers"]) as pool:
         wrapped_fn = partial(run_single_fold, print_queue=print_queue)
         with tqdm(total=len(tasks), desc="Inner CV progress", position=1, leave=False) as inner_pbar:
@@ -335,7 +325,7 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
     printer = Process(target=print_worker, args=(print_queue,))
     printer.start()
 
-    for fold, (train_idx, val_idx) in tqdm.tqdm(enumerate(outer_kf.split(labeled_indices)), desc="Outer CV folds", total=outer_n_splits):
+    for fold, (train_idx, val_idx) in tqdm(enumerate(outer_kf.split(labeled_indices)), desc="Outer CV folds", total=outer_n_splits):
         train_indices = np.array(labeled_indices)[train_idx].tolist()
         val_indices = np.array(labeled_indices)[val_idx].tolist()
 
@@ -474,8 +464,6 @@ if __name__ == "__main__":
     # Compute total combinations
     lengths = [len(PARAMETERS[k]) for k in keys_to_multiply]
     total_combinations = reduce(operator.mul, lengths)*PARAMETERS["outer_n_splits"]*PARAMETERS["inner_n_splits"]
-    #global pbar
-    #pbar = tqdm.tqdm(total=total_combinations, leave=True, desc="Combinations finished")
 
     dataset_dir = "dataset" if not os.path.exists(dataset_dir:="/work3/s234843/02466-Project/dataset") else dataset_dir
 
