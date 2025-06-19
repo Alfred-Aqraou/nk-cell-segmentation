@@ -401,7 +401,7 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
             "std_test_iou": std_test_iou
         })
         print(f"Config: BS={combo_key[0]}, Loss={combo_key[1]}, Encoder={combo_key[2]}, Freeze={combo_key[3]}, Opt={combo_key[4]}, LR={combo_key[5]}")
-        print(f"Mean Val Loss: {mean_test_loss:.4f} ± {std_test_loss:.4f}, Mean Val IoU: {mean_test_iou:.4f} ± {std_test_iou:.4f}")
+        print(f"Mean Test Loss: {mean_test_loss:.4f} ± {std_test_loss:.4f}, Mean Test IoU: {mean_test_iou:.4f} ± {std_test_iou:.4f}")
 
     # Save results to CSV
     # print("Writing results.csv")
