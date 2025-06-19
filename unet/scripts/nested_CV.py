@@ -360,9 +360,9 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
         # Interpret zip as string:
         best_config_str = ", ".join(f"{name}={value}" for name, value in zip(output_names[:-1], best_config))
         if print_queue:
-            print_queue.put(f"Best config with val loss {best_iou}: {best_config_str}")
+            print_queue.put(f"Best config with iou score {best_iou}: {best_config_str}")
         else:
-            print(f"Best config with val loss {best_iou}:", best_config_str)
+            print(f"Best config with iou score {best_iou}:", best_config_str)
 
         # Train final model with best config on full training set, evaluate on val set
         final_args = (*best_config, fold, train_indices, val_indices, dataset_dir, seed, num_epochs, patience, True)  # is_outer_test=True for final outer test
