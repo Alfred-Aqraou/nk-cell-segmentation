@@ -202,7 +202,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             images, masks = images.to(device), masks.to(device)
             outputs = model(images)
             labeled_idx = (label_flags == 1).nonzero(as_tuple=True)[0]
-            print("Labeled samples:", len(labeled_idx), end="\r")
+
             if len(labeled_idx) > 0:
                 loss = loss_fn(outputs[labeled_idx], masks[labeled_idx])
                 optimizer.zero_grad()
@@ -225,6 +225,8 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
         avg_val_loss = val_loss / len(val_indices)
         avg_val_iou = val_iou / len(val_indices)
+
+        print(f"Epoch {epoch+1}/{num_epochs}, Train Loss: {train_loss / len(train_indices):.4f}, Val Loss: {avg_val_loss:.4f}, Val IoU: {avg_val_iou:.4f}", end="\r")
 
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
