@@ -99,7 +99,7 @@ def compute_iou(preds, targets):
     intersection = (preds * targets).sum(dim=(1, 2, 3))
     union = preds.sum(dim=(1, 2, 3)) + targets.sum(dim=(1, 2, 3)) - intersection
     iou = intersection / (union + 1e-8)
-    return iou if union > 0 else 0.0
+    return iou
 
 def extract_encoder_name(encoder):
     if not isinstance(encoder, str):
