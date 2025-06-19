@@ -205,7 +205,8 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
                     loss = loss_fn(labeled_outputs, labeled_masks)
                     val_loss += loss.item() * len(labeled_idx)
                     ious = compute_iou(labeled_outputs, labeled_masks)
-                    iou_scores.extend(ious.cpu().numpy())
+                    ious = ious.cpu().numpy()
+                    iou_scores.extend(ious)
 
                     if npy:
                         # For each labeled sample, map IOU to its hour:
