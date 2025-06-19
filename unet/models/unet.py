@@ -87,7 +87,7 @@ def create_unet_with_dino_resnet18(ckpt_path,
 
     # Now load into resnet18
     missing_keys, unexpected_keys = dino_resnet.load_state_dict(new_state_dict, strict=False)
-    print(f"[INFO] Loaded DINO weights into ResNet18. Missing keys: {missing_keys}, Unexpected keys: {unexpected_keys}")
+    # print(f"[INFO] Loaded DINO weights into ResNet18. Missing keys: {missing_keys}, Unexpected keys: {unexpected_keys}")
 
     # Step 3: Load ResNet18 weights into Unet encoder
     model.encoder.load_state_dict(dino_resnet.state_dict(), strict=False)
