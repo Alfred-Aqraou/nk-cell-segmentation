@@ -115,7 +115,16 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
                 value = re.sub(pattern, rf'{match.group(1)} {match.group(2)}', value)
 
             value = value.replace('"', '').replace("'", "").replace(",", "").strip()
-            values = ", ".join(value.split(" "))
+            values = value.split(" ")
+            
+            # Get unique values and remove empty strings
+            values = list(set(values))
+            values = [v for v in values if v]  # Remove empty strings
+
+            # /work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt
+            if flag == "encoder" or flag == "encoders":
+                values = [match.group(1) if (match := re.search(r".*(dino-.*)-.*\.ckpt", v)) else v for v in values]
+            values = ", ".join()
             return values
 
         if flag=="outer" and "nsplits" in text:
