@@ -247,8 +247,9 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         if avg_val_iou > best_val_iou:
             best_val_iou = avg_val_iou
             patience_counter = 0
-            best_model_path = os.path.join(export_dir, f"best_model_fold{fold}.pth")
-            torch.save(model.state_dict(), best_model_path)
+            #best_model_path = os.path.join(export_dir, f"best_model_fold{fold}.pth")
+            #torch.save(model.state_dict(), best_model_path)
+            
         elif avg_val_iou >= best_val_iou * 1.01:
             patience_counter = 0
         else:
@@ -259,9 +260,9 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             break
 
     # Load best checkpoint before final return
-    best_model_path = os.path.join(export_dir, f"best_model_fold{fold}.pth")
-    if os.path.exists(best_model_path):
-        model.load_state_dict(torch.load(best_model_path))
+    #best_model_path = os.path.join(export_dir, f"best_model_fold{fold}.pth")
+    #if os.path.exists(best_model_path):
+    #    model.load_state_dict(torch.load(best_model_path))
 
         # Visual comparison of predicted vs actual masks using best model
         import matplotlib.pyplot as plt
