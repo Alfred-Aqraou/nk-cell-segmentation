@@ -54,17 +54,13 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
         fields["Type"] = match.group(1)
 
     # Determine status and fail reason
-    if "Done successfully" in text or "Completed <exit>" in text:
+    if "job killed by owner" in text.lower():
+        fields["Status"] = "Cancelled"
+        fields["Fail Reason"] = "Killed by user/admin"
+    elif "Done successfully." in text:
         fields["Status"] = "Done"
-    elif "Started on" in text:
-        fields["Status"] = "Running"
-    elif "PENDING TIME DETAILS" in text:
-        fields["Status"] = "Pending"
-    elif "Exited" in text:
+    elif "Exited with exit code" in text:
         fields["Status"] = "Failed"
-        if "TERM_OWNER" in text:
-            fields["Status"] = "Cancelled"
-            fields["Fail Reason"] = "Killed by user/admin"
 
     time_pattern = r"\w{3} (\w{3}) (\d{1,2}) (\d{2}):(\d{2}):(\d{2}) (\d{4})"
     # Month, Day, Hour, Minute, Second, Year
