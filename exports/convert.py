@@ -79,7 +79,6 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
     if match := re.search(rf"{time_pattern}:.*Submitted from host", text):
         try:
             time = f"{month_idx[match.group(1)]}/{match.group(2)}/{match.group(6)} {match.group(3)}:{match.group(4)}:{match.group(5)}"
-            print(time)
             fields["Submitted Time"] = time
         except ValueError:
             pass
@@ -88,7 +87,6 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
     if match := re.search(rf"{time_pattern}:.*Starting \(Pid ", text):
         try:
             time = f"{month_idx[match.group(1)]}/{match.group(2)}/{match.group(6)} {match.group(3)}:{match.group(4)}:{match.group(5)}"
-            print(time)
             fields["Start Time"] = time
         except ValueError:
             pass
@@ -99,7 +97,6 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
             # dt = datetime.strptime(match.group(1), "%a %b %d %H:%M:%S %Y")
             # fields["Finish Time"] = dt.strftime("%m/%d/%Y %H:%M:%S")
             time = f"{month_idx[match.group(1)]}/{match.group(2)}/{match.group(6)} {match.group(3)}:{match.group(4)}:{match.group(5)}"
-            print(time)
             fields["Finish Time"] = time
         except ValueError:
             pass
@@ -119,7 +116,6 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
 
             value = value.replace('"', '').replace("'", "").replace(",", "").strip()
             values = ", ".join(value.split(" "))
-            # print(values)
             return values
 
         if flag=="outer" and "nsplits" in text:
@@ -166,13 +162,15 @@ def get_bhist_output(job_id: int) -> str:
         return ""
 
 if __name__ == "__main__":
+    from tqdm import tqdm
+    
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("ids", help = "Input one or more bjob ids", type=int, nargs='+')
     args = parser.parse_args()
 
     all_rows = []
-    for job_id in args.ids:
+    for job_id in tqdm(args.ids, desc="Processing jobs", unit="job"):
         log_text = get_bhist_output(job_id)
         if "No matching job found" in log_text.strip():
             continue
