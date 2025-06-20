@@ -31,13 +31,22 @@ class JointTransform:
         self.mask_transform = mask_transform
 
     def __call__(self, img, mask):
-        torch.manual_seed(self.seed)
+        seed = torch.initial_seed() % (2**32)  # per-sample, per-worker, reproducible
+        torch.manual_seed(seed)
         img = self.image_transform(img)
 
-        torch.manual_seed(self.seed)
+        torch.manual_seed(seed)
         mask = self.mask_transform(mask)
 
         return img, mask
+        
+        # torch.manual_seed(self.seed)
+        # img = self.image_transform(img)
+
+        # torch.manual_seed(self.seed)
+        # mask = self.mask_transform(mask)
+
+        # return img, mask
 
 class NKCellDataset(Dataset):
     def __init__(self, dataset_dir="dataset", transform=None, metadata_filter=None, mode='fluorescent'):
