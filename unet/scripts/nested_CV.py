@@ -244,27 +244,11 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
         print(f"Epoch {epoch+1}/{num_epochs}, Train Loss: {train_loss / len(train_indices):.4f}, Val Loss: {avg_val_loss:.4f}, Val IoU: {avg_val_iou:.4f}", end="\r")
 
-        # if avg_val_loss < best_val_loss:
-        #     best_val_loss = avg_val_loss
-        #     patience_counter = 0
-        # elif avg_val_loss <= best_val_loss * 1.01:
-        #     patience_counter = 0
-        # else:
-        #     patience_counter += 1
-
         if avg_val_iou > best_val_iou:
             best_val_iou = avg_val_iou
             patience_counter = 0
             best_model_path = os.path.join(export_dir, f"best_model_fold{fold}.pth")
             torch.save(model.state_dict(), best_model_path)
-            # Save visual comparison of predicted vs actual masks after training
-            import matplotlib.pyplot as plt
-            model.eval()
-            with torch.no_grad():
-                for i, (images, masks, _, paths) in enumerate(val_loader):
-                    images, masks = images.to(device), masks.to(device)
-                    outputs = model(images)
-                    preds = (torch.sigmoid(outputs) > 0.5).float()
         elif avg_val_iou >= best_val_iou * 1.01:
             patience_counter = 0
         else:
@@ -272,41 +256,44 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
         if patience_counter >= patience:
             print(f"Early stopping triggered after {epoch} epochs.")
-            best_model_path = os.path.join(export_dir, f"best_model_fold{fold}.pth")
-            if os.path.exists(best_model_path):
-                model.load_state_dict(torch.load(best_model_path))
-                # Save visual comparison of predicted vs actual masks after loading best model
-                import matplotlib.pyplot as plt
-                model.eval()
-                with torch.no_grad():
-                    for i, (images, masks, _, paths) in enumerate(val_loader):
-                        images, masks = images.to(device), masks.to(device)
-                        outputs = model(images)
-                        preds = (torch.sigmoid(outputs) > 0.5).float()
-
-                        num_to_save = min(1, images.size(0))  # save 3 examples
-                        for j in range(num_to_save):
-                            img = images[j].cpu().permute(1, 2, 0)
-                            gt_mask = masks[j].cpu().squeeze()
-                            pred_mask = preds[j].cpu().squeeze()
-
-                            fig, axes = plt.subplots(1, 3, figsize=(12, 4))
-                            axes[0].imshow(img)
-                            axes[0].set_title("Input Image")
-                            axes[1].imshow(gt_mask, cmap='gray')
-                            axes[1].set_title("Ground Truth Mask")
-                            axes[2].imshow(pred_mask, cmap='gray')
-                            axes[2].set_title("Predicted Mask")
-                            for ax in axes:
-                                ax.axis("off")
-                            plt.tight_layout()
-
-                            img_id = os.path.basename(paths[j]) if paths[j] else f"sample{j}"
-                            fig_path = os.path.join(export_dir, f"fold{fold}_pred_vs_gt_{img_id}.png")
-                            plt.savefig(fig_path)
-                            plt.close()
-                        break  # Only save the first batch
             break
+
+    # Load best checkpoint before final return
+    best_model_path = os.path.join(export_dir, f"best_model_fold{fold}.pth")
+    if os.path.exists(best_model_path):
+        model.load_state_dict(torch.load(best_model_path))
+
+        # Visual comparison of predicted vs actual masks using best model
+        import matplotlib.pyplot as plt
+        model.eval()
+        with torch.no_grad():
+            for i, (images, masks, _, paths) in enumerate(val_loader):
+                images, masks = images.to(device), masks.to(device)
+                outputs = model(images)
+                preds = (torch.sigmoid(outputs) > 0.5).float()
+
+                num_to_save = min(1, images.size(0))  # save 1 example
+                for j in range(num_to_save):
+                    img = images[j].cpu().permute(1, 2, 0)
+                    gt_mask = masks[j].cpu().squeeze()
+                    pred_mask = preds[j].cpu().squeeze()
+
+                    fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+                    axes[0].imshow(img)
+                    axes[0].set_title("Input Image")
+                    axes[1].imshow(gt_mask, cmap='gray')
+                    axes[1].set_title("Ground Truth Mask")
+                    axes[2].imshow(pred_mask, cmap='gray')
+                    axes[2].set_title("Predicted Mask")
+                    for ax in axes:
+                        ax.axis("off")
+                    plt.tight_layout()
+
+                    img_id = os.path.basename(paths[j]) if paths[j] else f"sample{j}"
+                    fig_path = os.path.join(export_dir, f"fold{fold}_pred_vs_gt_{img_id}.png")
+                    plt.savefig(fig_path)
+                    plt.close()
+                break  # Only save the first batch
 
     # pbar.update(1)
     if is_outer_test:
