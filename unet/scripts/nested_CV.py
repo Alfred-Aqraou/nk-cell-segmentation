@@ -122,7 +122,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
     image_only = T.Compose([
     common_geometric,
-    T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+    #T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
     #T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
     T.ToTensor(),
     ])
