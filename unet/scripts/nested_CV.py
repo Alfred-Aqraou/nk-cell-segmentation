@@ -112,7 +112,9 @@ def extract_encoder_name(encoder):
 
 def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir: str, seed, num_epochs=100, patience=10, is_outer_test=False, print_queue=None, export_dir=""):
     common_geometric = T.Compose([
-    T.RandomCrop(size=(resize, resize)),
+    T.Resize(size=(resize,resize)),
+    #T.CenterCrop(size=(resize,resize)),
+    #T.RandomCrop(size=(resize, resize)),
     T.RandomHorizontalFlip(p=0.5),
     T.RandomVerticalFlip(p=0.5),
     T.RandomRotation(degrees=30),
@@ -120,8 +122,8 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
     image_only = T.Compose([
     common_geometric,
-    T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
-    T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
+    #T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+    #T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
     T.ToTensor(),
     ])
 
@@ -132,7 +134,8 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     train_transforms = JointTransform(image_transform=image_only, mask_transform=mask_only, seed=seed)
 
     val_transform = T.Compose([
-        T.CenterCrop((resize, resize)),
+        #T.CenterCrop((resize, resize)),
+        T.Resize((resize,resize)),
         T.ToTensor(),
     ])
     val_transforms = JointTransform(image_transform=val_transform, mask_transform=val_transform, seed=seed)
@@ -143,7 +146,17 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     train_dataset = Subset(full_train, train_indices)
     val_dataset = Subset(full_val, val_indices)
 
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0)
+        # --- Per-worker reproducibility for DataLoader ---
+    def seed_worker(worker_id):
+        worker_seed = torch.initial_seed() % (2**32)
+        np.random.seed(worker_seed)
+        import random
+        random.seed(worker_seed)
+
+    g = torch.Generator()
+    g.manual_seed(seed)
+
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0, worker_init_fn=seed_worker, generator=g)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=0)
 
     if ".ckpt" in encoder_name:
@@ -172,6 +185,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     loss_fn = get_loss_function(loss_type)
 
     best_val_loss = float('inf')
+    best_val_iou = 0
     patience_counter = 0
 
     for epoch in range(num_epochs):
@@ -230,16 +244,66 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
         print(f"Epoch {epoch+1}/{num_epochs}, Train Loss: {train_loss / len(train_indices):.4f}, Val Loss: {avg_val_loss:.4f}, Val IoU: {avg_val_iou:.4f}", end="\r")
 
-        if avg_val_loss < best_val_loss:
-            best_val_loss = avg_val_loss
+        # if avg_val_loss < best_val_loss:
+        #     best_val_loss = avg_val_loss
+        #     patience_counter = 0
+        # elif avg_val_loss <= best_val_loss * 1.01:
+        #     patience_counter = 0
+        # else:
+        #     patience_counter += 1
+
+        if avg_val_iou > best_val_iou:
+            best_val_iou = avg_val_iou
             patience_counter = 0
-        elif avg_val_loss <= best_val_loss * 1.01:
+            torch.save(model.state_dict(), "best_model.pth")
+            # Save visual comparison of predicted vs actual masks after training
+            import matplotlib.pyplot as plt
+            model.eval()
+            with torch.no_grad():
+                for i, (images, masks, _, paths) in enumerate(val_loader):
+                    images, masks = images.to(device), masks.to(device)
+                    outputs = model(images)
+                    preds = (torch.sigmoid(outputs) > 0.5).float()
+        elif avg_val_iou >= best_val_iou * 1.01:
             patience_counter = 0
         else:
             patience_counter += 1
 
         if patience_counter >= patience:
             print(f"Early stopping triggered after {epoch} epochs.")
+            if os.path.exists("best_model.pth"):
+                model.load_state_dict(torch.load("best_model.pth"))
+                # Save visual comparison of predicted vs actual masks after loading best model
+                import matplotlib.pyplot as plt
+                model.eval()
+                with torch.no_grad():
+                    for i, (images, masks, _, paths) in enumerate(val_loader):
+                        images, masks = images.to(device), masks.to(device)
+                        outputs = model(images)
+                        preds = (torch.sigmoid(outputs) > 0.5).float()
+
+                        num_to_save = min(1, images.size(0))  # save 3 examples
+                        for j in range(num_to_save):
+                            img = images[j].cpu().permute(1, 2, 0)
+                            gt_mask = masks[j].cpu().squeeze()
+                            pred_mask = preds[j].cpu().squeeze()
+
+                            fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+                            axes[0].imshow(img)
+                            axes[0].set_title("Input Image")
+                            axes[1].imshow(gt_mask, cmap='gray')
+                            axes[1].set_title("Ground Truth Mask")
+                            axes[2].imshow(pred_mask, cmap='gray')
+                            axes[2].set_title("Predicted Mask")
+                            for ax in axes:
+                                ax.axis("off")
+                            plt.tight_layout()
+
+                            img_id = os.path.basename(paths[j]) if paths[j] else f"sample{j}"
+                            fig_path = os.path.join(export_dir, f"fold{fold}_pred_vs_gt_{img_id}.png")
+                            plt.savefig(fig_path)
+                            plt.close()
+                        break  # Only save the first batch
             break
 
     # pbar.update(1)
@@ -250,9 +314,9 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
             print(f"✅ Outer test fold completed: Test Loss = {avg_val_loss:.4f}, Test IoU = {avg_val_iou:.4f}")
     else:
         if print_queue:
-            print_queue.put(f"🔁 Inner CV - Completed config: Val Loss = {avg_val_loss:.4f}, Val IoU = {avg_val_iou:.4f}")
+            print_queue.put(f"🔁 Inner CV - Completed config: Val Loss = {avg_val_loss:.4f}, Val IoU = {avg_val_iou:.4f}.     ")
         else:
-            print(f"🔁 Inner CV - Completed config: Val Loss = {avg_val_loss:.4f}, Val IoU = {avg_val_iou:.4f}")
+            print(f"🔁 Inner CV - Completed config: Val Loss = {avg_val_loss:.4f}, Val IoU = {avg_val_iou:.4f}       ")
     return avg_val_loss, avg_val_iou
 
 def run_single_inner_fold(args, print_queue=None, export_dir=""):
@@ -312,13 +376,18 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
             result["resize"]
         )
         config_scores[config].append(result["val_iou"])
+        #config_scores[config].append(result["val_loss"])
+
 
     # Compute mean validation IoU across folds
     avg_scores = {config: np.mean(losses) for config, losses in config_scores.items()}
+    if not avg_scores:
+        raise ValueError("No valid configurations found during inner CV. Check for NaN IoU values or training issues.")
+    #best_config = min(avg_scores, key=avg_scores.get)
     best_config = max(avg_scores, key=avg_scores.get)
     return best_config, avg_scores[best_config] # best config, IoU
 
-def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: int = 10):
+def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: int = 20):
     print("Started at:", starttime)
 
     # Hyperparameters
