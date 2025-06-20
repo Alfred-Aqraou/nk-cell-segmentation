@@ -122,7 +122,7 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
     image_only = T.Compose([
     common_geometric,
-    #T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+    T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
     #T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0)),
     T.ToTensor(),
     ])
@@ -255,7 +255,8 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
         if avg_val_iou > best_val_iou:
             best_val_iou = avg_val_iou
             patience_counter = 0
-            torch.save(model.state_dict(), "best_model.pth")
+            best_model_path = os.path.join(export_dir, f"best_model_fold{fold}.pth")
+            torch.save(model.state_dict(), best_model_path)
             # Save visual comparison of predicted vs actual masks after training
             import matplotlib.pyplot as plt
             model.eval()
@@ -271,8 +272,9 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
 
         if patience_counter >= patience:
             print(f"Early stopping triggered after {epoch} epochs.")
-            if os.path.exists("best_model.pth"):
-                model.load_state_dict(torch.load("best_model.pth"))
+            best_model_path = os.path.join(export_dir, f"best_model_fold{fold}.pth")
+            if os.path.exists(best_model_path):
+                model.load_state_dict(torch.load(best_model_path))
                 # Save visual comparison of predicted vs actual masks after loading best model
                 import matplotlib.pyplot as plt
                 model.eval()
