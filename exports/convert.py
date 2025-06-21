@@ -168,19 +168,30 @@ def get_bhist_output(job_id: int) -> str:
 
 if __name__ == "__main__":
     from tqdm import tqdm
+    import os
     
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("ids", help = "Input one or more bjob ids", type=int, nargs='+')
+    parser.add_argument("ids", help = "Input one or more bjob ids", nargs='+')
     args = parser.parse_args()
 
     all_rows = []
-    for job_id in tqdm(args.ids, desc="Processing jobs", unit="job"):
-        log_text = get_bhist_output(job_id)
-        if "No matching job found" in log_text.strip():
-            continue
-        parsed = parse_bsub_log(log_text)
-        all_rows.append(parsed)
+    try:
+        int(args.ids)
+        for job_id in tqdm(args.ids, desc="Processing jobs", unit="job"):
+            log_text = get_bhist_output(job_id)
+            if "No matching job found" in log_text.strip():
+                continue
+            parsed = parse_bsub_log(log_text)
+            all_rows.append(parsed)
+
+    except TypeError:
+        for id in args.ids:
+            if isinstance(id, str) and os.path.exists(id):
+                with open(id, 'r') as f:
+                    log_text = f.read()
+                    parsed = parse_bsub_log(log_text)
+                    all_rows.append(parsed)
 
     if not all_rows:
         print("No valid job data parsed. Exiting.")
