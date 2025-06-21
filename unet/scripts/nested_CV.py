@@ -507,18 +507,17 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
     else:
         print("Wrote results.csv")
 
-    # Plot top 10 configurations
-    # print("Plotting top 10 configs")
+    # print("Plotting top 3 hyperparameter configurations")
     top_results = sorted(final_results, key=lambda r: r["mean_test_loss"])[:10]
     labels = [f'{r["batch_size"]}-{r["loss_type"]}-{extract_encoder_name(r["encoder"])}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
     losses = [r["mean_test_loss"] for r in top_results]
     plt.figure(figsize=(12, 6))
     plt.barh(labels, losses, color="skyblue")
     plt.xlabel("Mean Validation Loss")
-    plt.title("Top 10 Hyperparameter Configurations")
+    plt.title("Top 3 Hyperparameter Configurations")
     plt.gca().invert_yaxis()
     plt.tight_layout()
-    plt.savefig(figure_prefix + "top_10_configs.png")
+    plt.savefig(figure_prefix + "top_3_configs.png")
     plt.close()
     # print("Finished plotting")
 
