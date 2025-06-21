@@ -168,9 +168,12 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
         fields[field] = extract_param(flag)
 
     # Extract CPU cores
-    if match := re.search(r"#BSUB\s+-n\s+(\d+)", text):
-        if int(match.group(1)) != int(fields["CPU Cores"]):
-            fields["CPU Cores"] = f"{fields["CPU Cores"]} ({match.group(1)})"
+    try:
+        if match := re.search(r"#BSUB\s+-n\s+(\d+)", text):
+            if int(match.group(1)) != int(fields["CPU Cores"]):
+                fields["CPU Cores"] = f"{fields["CPU Cores"]} ({match.group(1)})"
+    except:
+        pass
 
     return fields
 
