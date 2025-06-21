@@ -2,6 +2,7 @@ import re
 from typing import Dict, Optional
 import pandas as pd
 import subprocess
+from datetime import datetime
 
 def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
     """Parse a BSUB log file and extract relevant job information."""
@@ -28,6 +29,7 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
         "Submitted Time": None,
         "Start Time": None,
         "Finish Time": None,
+        "Elapsed Time": None,
         "Description": None,
     }
 
@@ -92,6 +94,18 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
             fields["Finish Time"] = time
         except ValueError:
             pass
+
+    # Extract elapsed time
+    try:
+        time_format = "%m/%d/%Y %H:%M:%S"
+        dt1 = datetime.strptime(fields["Start Time"], time_format)
+        dt2 = datetime.strptime(fields["Finish Time"], time_format)
+
+        # Calculate the difference
+        time_diff = dt2 - dt1
+        fields["Elapsed Time"] = datetime.strftime(time_diff, time_format)
+    except TypeError:
+        pass
 
 
     def extract_param(flag: str):
@@ -209,7 +223,7 @@ if __name__ == "__main__":
     sheet_columns = [
         "Status", "Job ID", "GPU", "Category", "Batch sizes", "Loss types", "Encoders",
         "Freeze", "Optimizers", "Learning rates", "Resize", "Outer folds", "Inner folds",
-        "Combinations", "Epochs", "CPU Cores", "Type", "Fail Reason", "Submitted Time", "Start Time", "Finish Time",
+        "Combinations", "Epochs", "CPU Cores", "Type", "Fail Reason", "Submitted Time", "Start Time", "Finish Time", "Elapsed Time",
         "Description"
     ]
     
