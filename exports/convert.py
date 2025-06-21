@@ -177,8 +177,8 @@ if __name__ == "__main__":
 
     all_rows = []
     try:
-        int(args.ids)
         for job_id in tqdm(args.ids, desc="Processing jobs", unit="job"):
+            job_id = int(job_id)
             log_text = get_bhist_output(job_id)
             if "No matching job found" in log_text.strip():
                 continue
