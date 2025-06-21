@@ -42,10 +42,6 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
     if match := re.search(r"Job Name\s+<([^>]+)>", text):
         fields["Category"] = match.group(1)
 
-    # Extract CPU cores
-    if match := re.search(r"#BSUB\s+-n\s+(\d+)", text):
-        fields["CPU Cores"] = match.group(1)
-
     # Extract GPU from queue in "Submitted from host ... to Queue <gpua100>"
     if match := re.search(r"Submitted from host.+to Queue <gpu(\w+)>", text):
         fields["GPU"] = match.group(1)
@@ -120,8 +116,6 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
             # /work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt
             if flag == "encoder" or flag == "encoders":
                 values = [match.group(1) if (match := re.search(r".*(dino-.*)-.*\.ckpt", v)) else v for v in values]
-            if flag == "workers":
-                values = [f"{v} ({fields[flag]})" for v in values]
             values = ", ".join(values)
             
             return values
@@ -158,6 +152,10 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
     # Extract all parameters
     for flag, field in param_flags.items():
         fields[field] = extract_param(flag)
+
+    # Extract CPU cores
+    if match := re.search(r"#BSUB\s+-n\s+(\d+)", text) and match.group(1) != fields["CPU Cores"]:
+        fields["CPU Cores"] = f"{fields["CPU Cores"]} ({match.group(1)})"
 
     return fields
 
