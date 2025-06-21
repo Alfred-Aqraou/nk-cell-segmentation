@@ -154,8 +154,9 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
         fields[field] = extract_param(flag)
 
     # Extract CPU cores
-    if match := re.search(r"#BSUB\s+-n\s+(\d+)", text) and match.group(1) != fields["CPU Cores"]:
-        fields["CPU Cores"] = f"{fields["CPU Cores"]} ({match.group(1)})"
+    if match := re.search(r"#BSUB\s+-n\s+(\d+)", text):
+        if int(match.group(1)) != int(fields["CPU Cores"]):
+            fields["CPU Cores"] = f"{fields["CPU Cores"]} ({match.group(1)})"
 
     return fields
 
@@ -187,7 +188,7 @@ if __name__ == "__main__":
             parsed = parse_bsub_log(log_text)
             all_rows.append(parsed)
 
-    except TypeError:
+    except ValueError:
         for id in args.ids:
             if isinstance(id, str) and os.path.exists(id):
                 with open(id, 'r') as f:
@@ -196,7 +197,7 @@ if __name__ == "__main__":
                     all_rows.append(parsed)
     
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"A {type(e)} occurred: {e}")
         exit(1)
 
 
