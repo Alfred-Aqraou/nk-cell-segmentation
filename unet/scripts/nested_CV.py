@@ -544,7 +544,7 @@ def outer_cross_validation(dataset_dir: str, seed, export_dir="", patience: int 
     plt.title("Top 3 Hyperparameter Configurations")
     plt.gca().invert_yaxis()
     plt.tight_layout()
-    plt.savefig(figure_prefix + "top_3_configs.png")
+    plt.savefig(os.path.join(export_dir, "top_3_configs.png"))
     plt.close()
     # print("Finished plotting")
 
