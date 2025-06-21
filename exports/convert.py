@@ -120,7 +120,10 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
             # /work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt
             if flag == "encoder" or flag == "encoders":
                 values = [match.group(1) if (match := re.search(r".*(dino-.*)-.*\.ckpt", v)) else v for v in values]
+            if flag == "workers":
+                values = [f"{v} ({fields[flag]})" for v in values]
             values = ", ".join(values)
+            
             return values
 
         if flag=="outer" and "nsplits" in text:
@@ -149,6 +152,7 @@ def parse_bsub_log(text: str) -> Dict[str, Optional[str]]:
         "resize": "Resize",
         "outer": "Outer folds",
         "inner": "Inner folds",
+        "workers": "CPU Cores"
     }
 
     # Extract all parameters
