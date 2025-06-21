@@ -192,6 +192,11 @@ if __name__ == "__main__":
                     log_text = f.read()
                     parsed = parse_bsub_log(log_text)
                     all_rows.append(parsed)
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        exit(1)
+
 
     if not all_rows:
         print("No valid job data parsed. Exiting.")
