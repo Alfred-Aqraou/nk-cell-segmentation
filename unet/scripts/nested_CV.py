@@ -111,6 +111,9 @@ def extract_encoder_name(encoder):
     return encoder  # Return original if not a dino path or no match
 
 def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, freeze_encoder, optimizer_type, loss_type, fold, lr, resize, dataset_dir: str, seed, num_epochs=100, patience=10, is_outer_test=False, print_queue=None, export_dir=""):
+    """
+    Train and evaluate the model on the given indices.
+    """
     common_geometric = T.Compose([
     T.Resize(size=(resize,resize)),
     #T.CenterCrop(size=(resize,resize)),
@@ -310,6 +313,10 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     return avg_val_loss, avg_val_iou
 
 def run_single_inner_fold(args, print_queue=None, export_dir=""):
+    """
+    Run a single inner fold with the given hyperparameters.
+    This function is designed to be run in parallel.
+    """
     # Now expects dataset as final argument
     batch_size, loss_type, encoder, freeze_encoder, opt_type, lr, resize, fold, train_idx, val_idx, dataset_dir, seed, num_epochs, patience, is_outer_test = args
     val_loss, val_iou = train_and_evaluate(
@@ -332,21 +339,29 @@ def run_single_inner_fold(args, print_queue=None, export_dir=""):
     }
     return result
 
-def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset_dir: str, seed, num_epochs: int, patience: int, inner_folds=3, print_queue=None):
+def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize, dataset_dir: str, seed, num_epochs: int, patience: int, inner_folds=3, print_queue=None, export_dir=""):
+    """
+    Run inner cross-validation to find the best hyperparameters on the training set.
+    """
     inner_kf = KFold(n_splits=inner_folds, shuffle=True, random_state=seed)
     all_configs = list(product(batch_sizes, loss_types, encoders, freeze_opts, optimizers, learning_rates, resize))
     # Collect all tasks for parallel execution
     tasks = []
-    for inner_train_idx, inner_val_idx in inner_kf.split(train_indices):
+    for inner_fold, (inner_train_idx, inner_val_idx) in enumerate(inner_kf.split(train_indices)):
         inner_train = np.array(train_indices)[inner_train_idx].tolist()
         inner_val = np.array(train_indices)[inner_val_idx].tolist()
+        
+        with open(os.path.join(export_dir, "runtime.log"), "a") as f:
+            f.write(f"    I{inner_fold+1} - Train samples: {len(inner_train)}\n")
+            f.write(f"    I{inner_fold+1} - Val samples: {len(inner_val)}\n")
+
         for combo in all_configs:
             task = (*combo, 0, inner_train, inner_val, dataset_dir, seed, num_epochs, patience, False)  # is_outer_test=False for inner
             tasks.append(task)
 
     # Run in parallel with tqdm progress bar
     with Pool(processes=PARAMETERS["cpu_workers"]) as pool:
-        wrapped_fn = partial(run_single_inner_fold, print_queue=print_queue)
+        wrapped_fn = partial(run_single_inner_fold, print_queue=print_queue, export_dir=export_dir)
         with tqdm(total=len(tasks), desc="Inner CV progress", position=1, leave=False) as inner_pbar:
             results = []
             for r in pool.imap_unordered(wrapped_fn, tasks):
@@ -377,7 +392,10 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
     best_config = max(avg_scores, key=avg_scores.get)
     return best_config, avg_scores[best_config] # best config, IoU
 
-def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: int = 20):
+def outer_cross_validation(dataset_dir: str, seed, export_dir="", patience: int = 20):
+    """
+    Run outer cross-validation to evaluate the model on the test set.
+    """
     print("Started at:", starttime)
 
     # Hyperparameters
@@ -418,6 +436,10 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
         train_indices = np.array(labeled_indices)[train_idx].tolist()
         test_indices = np.array(labeled_indices)[test_idx].tolist()
 
+        with open(os.path.join(export_dir, "runtime.log"), "a") as f:
+            f.write(f"O{fold+1} - Train samples: {len(train_indices)}\n")
+            f.write(f"O{fold+1} - Test samples: {len(test_indices)}\n")
+
         # Run inner CV on training data to select best hyperparams
         best_config, best_iou = run_inner_cv(
             train_indices=train_indices,
@@ -433,7 +455,8 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
             num_epochs=num_epochs,
             patience=patience,
             inner_folds=inner_folds,
-            print_queue=print_queue
+            print_queue=print_queue,
+            export_dir=export_dir
         )
 
         output_names = [
@@ -456,7 +479,7 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
 
         # Train final model with best config on full training set, evaluate on test set
         final_args = (*best_config, fold, train_indices, test_indices, dataset_dir, seed, num_epochs, patience, True)  # is_outer_test=True for final outer test
-        result = run_single_inner_fold(final_args, print_queue=print_queue, export_dir=figure_prefix)
+        result = run_single_inner_fold(final_args, print_queue=print_queue, export_dir=export_dir)
 
 
 
@@ -498,7 +521,7 @@ def outer_cross_validation(dataset_dir: str, seed, figure_prefix="", patience: i
     # Save results to CSV
     # print("Writing results.csv")
     try:
-        with open(figure_prefix + "results.csv", "w", newline='') as f:
+        with open(export_dir + "results.csv", "w", newline='') as f:
             writer = csv.DictWriter(f, fieldnames=final_results[0].keys())
             writer.writeheader()
             writer.writerows(final_results)
@@ -564,5 +587,5 @@ if __name__ == "__main__":
     torch.manual_seed(SEED)
     torch.cuda.manual_seed_all(SEED)
 
-    outer_cross_validation(figure_prefix=export_folder+"/", seed=SEED, dataset_dir=dataset_dir)
+    outer_cross_validation(export_dir=export_folder, seed=SEED, dataset_dir=dataset_dir)
     #pbar.close()
