@@ -1,0 +1,4 @@
+batch_size,loss_type,encoder,freeze_encoder,optimizer,lr,resize,mean_test_loss,std_test_loss,mean_test_iou,std_test_iou
+4,iou,resnet50,True,adam,0.001,512,0.16912384544100081,0.0,0.7829973,0.0
+4,dice,resnet50,False,adam,0.001,512,0.07552601609911237,0.0,0.80498636,0.0
+8,combined,resnet50,False,adam,0.001,512,0.1330103690807636,0.0,0.82411134,0.0
