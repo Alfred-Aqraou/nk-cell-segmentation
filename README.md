@@ -1,6 +1,65 @@
-<img src="illustrations/gifs/transformed_fluorescent_grid_612x445.gif"  />
+# NK Cell Image Segmentation
 
-# HPC
+<img src="illustrations/gifs/transformed_fluorescent_grid_612x445.gif" alt="Fluorescent NK Cell Animation" />
+
+This repository contains the implementation of a deep learning project for segmenting Natural Killer (NK) cells in fluorescence microscopy images, developed as part of the *02466: Project Work - Bachelor of Artificial Intelligence and Data* course at the Technical University of Denmark (DTU) in Spring 2025. The project compares three segmentation approaches: a traditional OpenCV-based baseline, a supervised U-Net model pretrained on ImageNet, and a self-supervised U-Net model pretrained using the DINO framework. The codebase leverages PyTorch, solo-learn, and DTU’s High Performance Computing (HPC) cluster for reproducible experiments, hyperparameter tuning, and performance evaluation.
+
+## Project Overview
+
+The project addresses automated segmentation of NK cells in a dataset of 16,038 microscopy images (8,019 broadband, 8,019 fluorescent) of human prostate cancer cells (DU145) exposed to NK cells and antibody treatments to study Antibody-Dependent Cellular Cytotoxicity (ADCC). With only 41 labeled fluorescent images, transfer learning and data augmentation mitigate data scarcity. The supervised U-Net (ResNet50 encoder, ImageNet pretrained) achieved a mean Intersection over Union (IoU) of 80.35%, the self-supervised U-Net (ResNet18 encoder, DINO pretrained) achieved 78.85%, and the OpenCV baseline achieved 62.49%. The codebase supports nested cross-validation, visualization, and statistical analysis, contributing to SDG 8 (Decent Work and Economic Growth) by automating biomedical image analysis.
+
+### Code Summary
+
+The main script (`unet/scripts/nested_CV.py`) implements a nested cross-validation pipeline for training and evaluating U-Net models. Key features include:
+
+- **Dataset Handling**: `NKCellDataset` class loads images and masks, with joint transformations (resizing, flipping, rotation) for augmentation.
+- **Model Architecture**: U-Net models with ResNet18/34/50 encoders (ImageNet pretrained) or ResNet18 (DINO pretrained via solo-learn), configurable via command-line arguments.
+- **Hyperparameter Tuning**: Nested cross-validation optimizes batch size, loss function (Dice, IoU, Combined), optimizer (Adam, SGD), learning rate, encoder type, encoder freezing, and resolution.
+- **Training and Evaluation**: Training with early stopping, per-image IoU computation, and visualization of predicted vs. ground truth masks.
+- **Parallel Processing**: Multiprocessing for hyperparameter searches, with `tqdm` for progress tracking.
+- **Output**: Results saved as CSV files, per-image IoU scores as NumPy arrays, and visualizations of top configurations.
+
+The code ensures reproducibility with fixed seeds (`SEED=42`), detailed logging, and timestamped exports.
+
+## Usage
+
+Example run of the training script with configurable hyperparameters:
+```bash
+python train.py \
+  --epochs 100 \
+  --encoders resnet18 resnet50 dino/path/to/ckpt.ckpt \
+  --loss dice iou combined \
+  --batchsizes 4 8 \
+  --freeze True False \
+  --optimizers adam \
+  --lr 0.0001 0.0005 \
+  --resize 256 512 \
+  --outer 3 \
+  --inner 3 \
+  --workers 8
+```
+
+### Arguments
+- `--workers`: CPU workers for parallel processing (default: 8).
+- `--epochs`: Training epochs.
+- `--encoders`: Encoders (e.g., `resnet18`, DINO checkpoint path).
+- `--loss`: Loss functions (`dice`, `iou`, `combined`, `bce`).
+- `--batchsizes`: Batch sizes (e.g., `4 8`).
+- `--freeze`: Freeze encoder (`True`/`False`).
+- `--optimizers`: Optimizers (`adam`, `sgd`).
+- `--lr`: Learning rates (e.g., `0.0001 0.0005`).
+- `--resize`: Resolutions (e.g., `256 512`).
+- `--outer`: Outer cross-validation folds.
+- `--inner`: Inner cross-validation folds.
+
+### Outputs
+Results are saved to `exports/unet/mm-dd/HH-MM-SS`:
+- `results.csv`: Mean/std of test loss and IoU per configuration.
+- `*.npy`: Per-image IoU scores.
+- `*.png`: Predicted vs. ground truth masks, top configurations.
+- `runtime.log`: Fold indices and runtime logs.
+
+## HPC
 ## Accessing the HPC
 The first time accessing the HPC cluster can be tricky for inexperienced users, this guide will aim to simplify this.
 
@@ -110,6 +169,7 @@ These can also be run as an argument when submitting a job, ie. `bsub -J <job_na
 - View job history: `bhist -u <username>`
 - Viewing job queue: `bjobs`
 - Viewing detailed job info: `bjobs -l <JOBID>`
+- Viewing HPC gpu status: `bqueues`
 
 
 
@@ -120,8 +180,8 @@ It is instructed to use their transfer nodes instead of login nodes for faster a
 scp -i ~/.ssh/dtuhpc <local file> <userid>@transfer.gbar.dtu.dk:<hpc location>
 ```
 
-# Working with Git
-## Setting git user config
+## Working with Git
+### Setting git user config
 Initially, you must give git some information about yourself:
 ```bash
 git config --global user.name "Your Name"
@@ -129,7 +189,7 @@ git config --global user.email "your_email@example.com"
 ```
 Continue to [Setting up ssh](#setting-up-ssh).
 
-## Setting up ssh
+### Setting up ssh
 Using git for the first time on hpc requires that you set up an ssh key that is recognized by your personal GitHub profile. Here is a step by step guide for doing this:
 1. Create a github key on your HPC user and copy the output from `cat github.pub` command:
 ```bash
@@ -157,7 +217,7 @@ Close and save with `CTRL + X`, then `y`, then `Enter`.
 
 You should be done now and can begin working with git!
 
-## solo-learn
+### solo-learn
 In this project, we will be using a fork of solo-learn with our configuration changes. The fork works by acting as a "sub-repository" (aka submodule). You can download the submodule initially using:
 ```bash
 git submodule update --init --recursive
@@ -169,13 +229,9 @@ After you have downloaded and other contributors have made changes, you can upda
 git submodule update --recursive
 ```
 
-# Setting up environment
-DISCLAIMER: Do not do this on the HPC, it is already set up!
-## solo-learn
-The submodule works with our conda environments described in [Our Project](#our-project).
-
-
-## Our Project
+## Setting up environment
+DISCLAIMER FOR MEMBERS OF THE GROUP: Do not do this on the HPC, it is already set up!
+### Our Project
 The normal environment can be setup with the `cpu.yaml` or `cuda.yaml` located in the root directory: `02466-Project`:
 ```bash
 conda env create -f cuda.yaml
@@ -192,10 +248,12 @@ If the yaml file was updated since you installed it, you can update it using:
 conda env update --file <file>.yaml --prune
 ```
 
+### solo-learn
+The submodule works with our conda environments described in [Our Project](#our-project).
 
-# Dataset
-## Setting environment variables
-### macOS
+## Dataset
+### Setting environment variables
+#### macOS
 1. Edit the `~/.zshrc` file
 ```bash
 nano ~/.zshrc
@@ -206,7 +264,7 @@ export USER02466="<Username>"
 export PASS02466="<Password>"
 ```
 
-### Linux
+#### Linux
 1. Edit the `~/.bashrc` file
 ```bash
 nano ~/.bashrc
@@ -219,21 +277,41 @@ export PASS02466="<Password>"
 
 NOTE: If you are planning to use the HPC, you should also do this for yourself with the same `~/.bashrc` file as above. This file is personal for your own user on the HPC cluster.
 
-### Windows
+#### Windows
 ```cmd
 setx USER02466 "<Username>"
 setx PASS02466 "<Password>"
 ```
 
-## Installing dataset
+### Installing dataset
 1. Complete instructions above
 2. Run download_dataset.py
 
-# Useful commands
-## Giving access to directory (for Mathias):
+## Useful commands
+### Giving access to directory (for Mathias):
 ```bash
 chgrp -R 10196 /work3/s234843/02466-Project &
 chgrp -R 10196 /work3/s234843/bin &
 chmod -R g+rwxs /work3/s234843/02466-Project &
 chmod -R g+rwxs /work3/s234843/bin &
 ```
+
+## Reproducibility
+- Use `SEED=42` for consistent results.
+- Ensure dataset access at `/work3/s234843/02466-Project/dataset`.
+- Replicate the environment with `requirements.txt` or `cuda.yaml`.
+- Run on DTU HPC for large hyperparameter searches.
+
+## Limitations
+- Optimized for DTU’s dataset and HPC, requiring adaptation for other datasets.
+- Memory constraints limit large batch sizes/high resolutions.
+- DINO pretraining requires checkpoint files or solo-learn re-implementation.
+
+## Future Work
+- Support additional datasets.
+- Explore Vision Transformers.
+- Implement Bayesian hyperparameter optimization.
+- Optimize for non-HPC environments.
+
+## Acknowledgments
+We express our deepest gratitude to our supervisors for their invaluable guidance and support throughout this project. Their expertise in machine learning and biomedical imaging was instrumental in shaping our approach and achieving our objectives. We also thank DTU’s Department of Biotechnology and Biomedicine for providing the NK cell dataset, the HPC cluster team for computational resources, and the DigitSTEM project for baseline insights. Finally, we acknowledge the open-source community for tools like PyTorch and solo-learn, which were critical to our success.
