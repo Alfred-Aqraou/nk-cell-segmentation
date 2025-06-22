@@ -1,0 +1,24 @@
+O1 - Train samples: 27
+O1 - Test samples: 14
+    I1 - Train samples: 18
+    I1 - Val samples: 9
+    I2 - Train samples: 18
+    I2 - Val samples: 9
+    I3 - Train samples: 18
+    I3 - Val samples: 9
+O2 - Train samples: 27
+O2 - Test samples: 14
+    I1 - Train samples: 18
+    I1 - Val samples: 9
+    I2 - Train samples: 18
+    I2 - Val samples: 9
+    I3 - Train samples: 18
+    I3 - Val samples: 9
+O3 - Train samples: 28
+O3 - Test samples: 13
+    I1 - Train samples: 18
+    I1 - Val samples: 10
+    I2 - Train samples: 19
+    I2 - Val samples: 9
+    I3 - Train samples: 19
+    I3 - Val samples: 9
