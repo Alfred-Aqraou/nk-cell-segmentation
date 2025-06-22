@@ -268,7 +268,6 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
     #    model.load_state_dict(torch.load(best_model_path))
 
         # Visual comparison of predicted vs actual masks using best model
-        import matplotlib.pyplot as plt
         model.eval()
         with torch.no_grad():
             for i, (images, masks, _, paths) in enumerate(val_loader):
@@ -299,7 +298,6 @@ def train_and_evaluate(train_indices, val_indices, batch_size, encoder_name, fre
                     plt.close()
                 break  # Only save the first batch
 
-    # pbar.update(1)
     if is_outer_test:
         if print_queue:
             print_queue.put(f"✅ Outer test fold completed: Test Loss = {avg_val_loss:.4f}, Test IoU = {avg_val_iou:.4f}")
@@ -352,8 +350,9 @@ def run_inner_cv(train_indices, batch_sizes, loss_types, encoders, freeze_opts, 
         inner_val = np.array(train_indices)[inner_val_idx].tolist()
         
         with open(os.path.join(export_dir, "runtime.log"), "a") as f:
-            f.write(f"    I{inner_fold+1} - Train samples: {len(inner_train)}\n")
-            f.write(f"    I{inner_fold+1} - Val samples: {len(inner_val)}\n")
+            f.write(f"    I{inner_fold+1} - Train: {len(inner_train)}, Val: {len(inner_val)}\n")
+            f.write(f"    I{inner_fold+1} - Train indices: {inner_train}\n")
+            f.write(f"    I{inner_fold+1} - Val indices: {inner_val}\n")
 
         for combo in all_configs:
             task = (*combo, 0, inner_train, inner_val, dataset_dir, seed, num_epochs, patience, False)  # is_outer_test=False for inner
@@ -419,6 +418,10 @@ def outer_cross_validation(dataset_dir: str, seed, export_dir="", patience: int 
     ]
     outer_kf = KFold(n_splits=outer_n_splits, shuffle=True, random_state=seed)
 
+    with open(os.path.join(export_dir, "runtime.log"), "a") as f:
+        f.write(f"Labeled indices length: {len(labeled_indices)}\n")
+        f.write(f"Labeled indices: {labeled_indices}\n")
+
     all_results = []
 
     # Setup print queue and worker
@@ -437,8 +440,9 @@ def outer_cross_validation(dataset_dir: str, seed, export_dir="", patience: int 
         test_indices = np.array(labeled_indices)[test_idx].tolist()
 
         with open(os.path.join(export_dir, "runtime.log"), "a") as f:
-            f.write(f"O{fold+1} - Train samples: {len(train_indices)}\n")
-            f.write(f"O{fold+1} - Test samples: {len(test_indices)}\n")
+            f.write(f"O{fold+1} - Train: {len(train_indices)}, Test: {len(test_indices)}\n")
+            f.write(f"O{fold+1} - Train indices: {train_indices}\n")
+            f.write(f"O{fold+1} - Test indices: {test_indices}\n")
 
         # Run inner CV on training data to select best hyperparams
         best_config, best_iou = run_inner_cv(
@@ -530,18 +534,17 @@ def outer_cross_validation(dataset_dir: str, seed, export_dir="", patience: int 
     else:
         print("Wrote results.csv")
 
-    # Plot top 10 configurations
-    # print("Plotting top 10 configs")
+    # print("Plotting top 3 hyperparameter configurations")
     top_results = sorted(final_results, key=lambda r: r["mean_test_loss"])[:10]
     labels = [f'{r["batch_size"]}-{r["loss_type"]}-{extract_encoder_name(r["encoder"])}-{"T" if r["freeze_encoder"] else "F"}-{r["optimizer"]}-LR{r["lr"]}' for r in top_results]
     losses = [r["mean_test_loss"] for r in top_results]
     plt.figure(figsize=(12, 6))
     plt.barh(labels, losses, color="skyblue")
     plt.xlabel("Mean Validation Loss")
-    plt.title("Top 10 Hyperparameter Configurations")
+    plt.title("Top 3 Hyperparameter Configurations")
     plt.gca().invert_yaxis()
     plt.tight_layout()
-    plt.savefig(export_dir + "top_10_configs.png")
+    plt.savefig(os.path.join(export_dir, "top_3_configs.png"))
     plt.close()
     # print("Finished plotting")
 
