@@ -2,12 +2,12 @@ import os
 import numpy as np
 import cv2
 import csv
-from cell_tools import find_NKcell_cluster_centers
+from cell_tools import find_NKcell_cluster_centers #fluorescent segmentation function form Digitstem report
 
 # ----------- Paths -------------
-labels_folder = "/Users/aliafif/Desktop/Code/Fagprojekt/02466-Project/dataset/fluorescent/with_masks/masks"
-image_folder = "/Users/aliafif/Desktop/Code/Fagprojekt/02466-Project/dataset/fluorescent/with_masks/images"
-export_dir = "exports/baseline/"
+labels_folder = "path to masks"
+image_folder = "path to images"
+export_dir = "export path"
 os.makedirs(export_dir, exist_ok=True)
 
 # ----------- Load labeled image filenames -------------
@@ -47,6 +47,11 @@ for filename in label_files:
         _, _, cell_coordinates, _, _, _, _ = find_NKcell_cluster_centers(image, plot_steps=False)
         pred_binary = (cell_coordinates > 0).astype(np.uint8)
 
+        #if "specify image name" in filename: # for  plottig and saving predicted mask
+        #    pred_path = os.path.join(export_dir, f"{raw_filename}_predicted_mask.png")
+        #    cv2.imwrite(pred_path, pred_binary * 255)
+        #    print(f"Saved predicted mask for {filename} to {pred_path}")
+
         intersection = np.logical_and(gt_binary, pred_binary).sum()
         union = gt_binary.sum() + pred_binary.sum() - intersection
         iou = intersection / (union + 1e-8)
@@ -54,12 +59,12 @@ for filename in label_files:
         img_id = os.path.basename(image_path)
         iou_list.append((img_id, iou))
     except Exception as e:
-        print(f"❗ Error processing {filename}: {e}")
+        print(f"Error processing {filename}: {e}")
         skipped_files.append(filename)
 
 print(f"\nProcessed {len(iou_list)} images, Skipped {len(skipped_files)} files.")
 if skipped_files:
-    print(f"⚠️ Skipped files:\n{skipped_files}")
+    print(f"Skipped files:\n{skipped_files}")
 
 # ----------- Compute and save results -------------
 ious = [iou for _, iou in iou_list]
