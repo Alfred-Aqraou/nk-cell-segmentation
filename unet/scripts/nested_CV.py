@@ -525,7 +525,7 @@ def outer_cross_validation(dataset_dir: str, seed, export_dir="", patience: int 
     # Save results to CSV
     # print("Writing results.csv")
     try:
-        with open(export_dir + "results.csv", "w", newline='') as f:
+        with open(os.path.join(export_dir, "results.csv"), "w", newline='') as f:
             writer = csv.DictWriter(f, fieldnames=final_results[0].keys())
             writer.writeheader()
             writer.writerows(final_results)
