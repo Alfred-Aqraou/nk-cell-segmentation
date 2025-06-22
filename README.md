@@ -25,7 +25,7 @@ The code ensures reproducibility with fixed seeds (`SEED=42`), detailed logging,
 
 Example run of the training script with configurable hyperparameters:
 ```bash
-python train.py \
+python unet/scripts/nested_CV.py \
   --epochs 100 \
   --encoders resnet18 resnet50 dino/path/to/ckpt.ckpt \
   --loss dice iou combined \
