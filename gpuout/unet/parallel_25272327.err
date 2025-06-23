@@ -1,0 +1,37 @@
+Loaded module: cuda/12.8.1
+Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   7%|▋         | 1/15 [01:04<14:59, 64.28s/it]Combinations finished:   7%|▋         | 1/15 [01:22<19:20, 82.86s/it]Combinations finished:   7%|▋         | 1/15 [01:26<20:04, 86.01s/it]Combinations finished:   7%|▋         | 1/15 [03:53<54:23, 233.14s/it]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   7%|▋         | 1/15 [01:22<19:12, 82.31s/it]Combinations finished:   7%|▋         | 1/15 [01:39<23:14, 99.57s/it]Combinations finished:   7%|▋         | 1/15 [02:15<31:42, 135.89s/it]Combinations finished:  13%|█▎        | 2/15 [07:48<50:48, 234.48s/it]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   7%|▋         | 1/15 [01:14<17:16, 74.04s/it]Combinations finished:   7%|▋         | 1/15 [01:42<23:48, 102.03s/it]Combinations finished:   7%|▋         | 1/15 [02:12<30:53, 132.40s/it]Combinations finished:  20%|██        | 3/15 [11:27<45:28, 227.34s/it]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   7%|▋         | 1/15 [00:58<13:32, 58.05s/it]Combinations finished:   7%|▋         | 1/15 [01:37<22:39, 97.13s/it]Combinations finished:   7%|▋         | 1/15 [02:10<30:26, 130.47s/it]Combinations finished:  27%|██▋       | 4/15 [15:34<43:07, 235.25s/it]multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+           ^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 242, in run_single_fold
+    val_loss, val_iou = train_and_evaluate(
+                        ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 235, in train_and_evaluate
+    pbar.update(1)
+    ^^^^
+NameError: name 'pbar' is not defined
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 436, in <module>
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 345, in outer_cross_validation
+    # Process results
+                     
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 289, in run_inner_cv
+    config_scores[config].append(result["val_loss"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 367, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 774, in get
+    raise self._value
+NameError: name 'pbar' is not defined
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 4 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

@@ -1,0 +1,3 @@
+batch_size,loss_type,encoder,freeze_encoder,optimizer,lr,resize,mean_test_loss,std_test_loss,mean_test_iou,std_test_iou
+16,dice,/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt,True,adam,0.001,256,0.28328680992126465,0.0,0.5632283091545105,0.0
+16,dice,/work3/s234843/02466-Project/trained_models/dino/fdnzv5c2/dino-fdnzv5c2-ep=399.ckpt,False,adam,0.001,256,0.18283528089523315,0.04531049728393555,0.7097601294517517,0.06656879186630249

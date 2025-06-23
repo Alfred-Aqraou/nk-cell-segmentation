@@ -1,0 +1,85 @@
+Loaded module: cuda/12.8.1
+Outer CV folds:   0%|          | 0/3 [00:00<?, ?it/s]
+Inner CV progress:   0%|          | 0/216 [00:00<?, ?it/s][A
+                                                          [AOuter CV folds:   0%|          | 0/3 [00:25<?, ?it/s]
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 315, in run_single_inner_fold
+    val_loss, val_iou = train_and_evaluate(
+                        ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 196, in train_and_evaluate
+    outputs = model(images)
+              ^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/segmentation_models_pytorch/base/model.py", line 67, in forward
+    decoder_output = self.decoder(features)
+                     ^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/segmentation_models_pytorch/decoders/unet/decoder.py", line 168, in forward
+    x = decoder_block(x, height, width, skip_connection=skip_connection)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/segmentation_models_pytorch/decoders/unet/decoder.py", line 50, in forward
+    feature_map = F.interpolate(
+                  ^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/functional.py", line 4649, in interpolate
+    return torch._C._nn.upsample_nearest2d(input, output_size, scale_factors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 128.00 MiB. GPU 0 has a total capacity of 39.49 GiB of which 20.25 MiB is free. Process 785530 has 13.03 GiB memory in use. Process 785531 has 13.03 GiB memory in use. Process 820831 has 1.34 GiB memory in use. Process 820833 has 1.66 GiB memory in use. Process 820830 has 1.66 GiB memory in use. Including non-PyTorch memory, this process has 1.44 GiB memory in use. Process 820836 has 1.84 GiB memory in use. Process 820835 has 1.97 GiB memory in use. Process 820829 has 1.80 GiB memory in use. Process 820837 has 1.66 GiB memory in use. Of the allocated memory 954.72 MiB is allocated by PyTorch, and 21.28 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 568, in <module>
+    outer_cross_validation(figure_prefix=export_folder+"/", seed=SEED, dataset_dir=dataset_dir)
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 422, in outer_cross_validation
+    best_config, best_iou = run_inner_cv(
+                            ^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 352, in run_inner_cv
+    for r in pool.imap_unordered(wrapped_fn, tasks):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 873, in next
+    raise value
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 128.00 MiB. GPU 0 has a total capacity of 39.49 GiB of which 20.25 MiB is free. Process 785530 has 13.03 GiB memory in use. Process 785531 has 13.03 GiB memory in use. Process 820831 has 1.34 GiB memory in use. Process 820833 has 1.66 GiB memory in use. Process 820830 has 1.66 GiB memory in use. Including non-PyTorch memory, this process has 1.44 GiB memory in use. Process 820836 has 1.84 GiB memory in use. Process 820835 has 1.97 GiB memory in use. Process 820829 has 1.80 GiB memory in use. Process 820837 has 1.66 GiB memory in use. Of the allocated memory 954.72 MiB is allocated by PyTorch, and 21.28 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Process Process-2:
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 75, in print_worker
+    msg = print_queue.get(timeout=10)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in get
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/managers.py", line 828, in _callmethod
+    kind, result = conn.recv()
+                   ^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+          ^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/connection.py", line 430, in _recv_bytes
+    buf = self._recv(4)
+          ^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/connection.py", line 399, in _recv
+    raise EOFError
+EOFError

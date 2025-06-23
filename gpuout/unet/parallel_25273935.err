@@ -1,0 +1,400 @@
+Loaded module: cuda/12.8.1
+Outer CV folds:   0%|          | 0/3 [00:00<?, ?it/s]
+Inner CV progress:   0%|          | 0/216 [00:00<?, ?it/s][A
+Inner CV progress:   0%|          | 1/216 [00:49<2:59:03, 49.97s/it][A
+Inner CV progress:   1%|          | 2/216 [01:01<1:37:42, 27.40s/it][A
+Inner CV progress:   1%|▏         | 3/216 [01:08<1:03:47, 17.97s/it][A
+Inner CV progress:   2%|▏         | 4/216 [01:31<1:11:24, 20.21s/it][A
+Inner CV progress:   2%|▏         | 5/216 [01:39<54:28, 15.49s/it]  [A
+Inner CV progress:   3%|▎         | 6/216 [01:40<37:42, 10.77s/it][A
+Inner CV progress:   3%|▎         | 7/216 [01:47<33:11,  9.53s/it][A
+Inner CV progress:   4%|▎         | 8/216 [02:11<48:54, 14.11s/it][A
+Inner CV progress:   4%|▍         | 9/216 [02:12<34:05,  9.88s/it][A
+Inner CV progress:   5%|▍         | 10/216 [02:13<24:27,  7.12s/it][A
+Inner CV progress:   5%|▌         | 11/216 [02:40<45:32, 13.33s/it][A
+Inner CV progress:   6%|▌         | 12/216 [02:41<32:26,  9.54s/it][A
+Inner CV progress:   6%|▌         | 13/216 [02:42<23:07,  6.84s/it][A
+Inner CV progress:   6%|▋         | 14/216 [02:47<21:35,  6.41s/it][A
+Inner CV progress:   7%|▋         | 15/216 [02:53<21:34,  6.44s/it][A
+Inner CV progress:   7%|▋         | 16/216 [03:10<31:44,  9.52s/it][A
+Inner CV progress:   8%|▊         | 17/216 [03:12<24:01,  7.25s/it][A
+Inner CV progress:   8%|▊         | 18/216 [03:20<24:21,  7.38s/it][A
+Inner CV progress:   9%|▉         | 19/216 [03:21<17:48,  5.43s/it][A
+Inner CV progress:   9%|▉         | 20/216 [03:22<14:10,  4.34s/it][A
+Inner CV progress:  10%|▉         | 21/216 [03:38<24:46,  7.62s/it][A
+Inner CV progress:  10%|█         | 22/216 [03:45<23:54,  7.39s/it][A
+Inner CV progress:  11%|█         | 23/216 [03:56<27:35,  8.58s/it][A
+Inner CV progress:  11%|█         | 24/216 [03:58<21:02,  6.57s/it][A
+Inner CV progress:  12%|█▏        | 25/216 [03:59<16:01,  5.03s/it][A
+Inner CV progress:  12%|█▏        | 26/216 [04:01<13:04,  4.13s/it][A
+Inner CV progress:  12%|█▎        | 27/216 [04:18<24:34,  7.80s/it][A
+Inner CV progress:  13%|█▎        | 29/216 [04:32<23:28,  7.53s/it][A
+Inner CV progress:  14%|█▍        | 30/216 [04:40<23:53,  7.71s/it][A
+Inner CV progress:  14%|█▍        | 31/216 [04:50<25:08,  8.16s/it][A
+Inner CV progress:  15%|█▍        | 32/216 [05:00<26:25,  8.62s/it][A
+Inner CV progress:  15%|█▌        | 33/216 [05:17<33:21, 10.94s/it][A
+Inner CV progress:  16%|█▌        | 34/216 [05:19<25:50,  8.52s/it][A
+Inner CV progress:  16%|█▌        | 35/216 [05:24<22:46,  7.55s/it][A
+Inner CV progress:  17%|█▋        | 36/216 [05:31<21:47,  7.27s/it][A
+Inner CV progress:  17%|█▋        | 37/216 [05:32<16:37,  5.57s/it][A
+Inner CV progress:  18%|█▊        | 38/216 [06:00<35:45, 12.05s/it][A
+Inner CV progress:  18%|█▊        | 39/216 [06:00<25:04,  8.50s/it][A
+Inner CV progress:  19%|█▊        | 40/216 [06:01<18:41,  6.37s/it][A
+Inner CV progress:  19%|█▉        | 41/216 [06:06<17:11,  5.90s/it][A
+Inner CV progress:  19%|█▉        | 42/216 [06:07<13:01,  4.49s/it][A
+Inner CV progress:  20%|█▉        | 43/216 [06:11<12:33,  4.36s/it][A
+Inner CV progress:  20%|██        | 44/216 [06:13<10:00,  3.49s/it][A
+Inner CV progress:  21%|██        | 45/216 [06:29<21:14,  7.46s/it][A
+Inner CV progress:  21%|██▏       | 46/216 [06:43<26:13,  9.26s/it][A
+Inner CV progress:  22%|██▏       | 47/216 [06:55<28:39, 10.17s/it][A
+Inner CV progress:  22%|██▏       | 48/216 [07:10<32:26, 11.59s/it][A
+Inner CV progress:  23%|██▎       | 49/216 [07:11<23:45,  8.54s/it][A
+Inner CV progress:  23%|██▎       | 50/216 [07:12<17:18,  6.26s/it][A
+Inner CV progress:  24%|██▎       | 51/216 [07:30<26:37,  9.68s/it][A
+Inner CV progress:  24%|██▍       | 52/216 [07:33<21:12,  7.76s/it][A
+Inner CV progress:  25%|██▍       | 53/216 [07:39<19:02,  7.01s/it][A
+Inner CV progress:  25%|██▌       | 54/216 [07:56<27:20, 10.13s/it][A
+Inner CV progress:  25%|██▌       | 55/216 [07:58<21:00,  7.83s/it][A
+Inner CV progress:  26%|██▌       | 56/216 [08:08<22:24,  8.41s/it][A
+Inner CV progress:  26%|██▋       | 57/216 [08:08<15:48,  5.97s/it][A
+Inner CV progress:  27%|██▋       | 58/216 [08:11<13:15,  5.03s/it][A
+Inner CV progress:  27%|██▋       | 59/216 [08:18<14:48,  5.66s/it][A
+Inner CV progress:  28%|██▊       | 60/216 [08:20<11:43,  4.51s/it][A
+Inner CV progress:  28%|██▊       | 61/216 [08:37<20:55,  8.10s/it][A
+Inner CV progress:  29%|██▊       | 62/216 [08:39<16:27,  6.41s/it][A
+Inner CV progress:  29%|██▉       | 63/216 [08:40<11:56,  4.68s/it][A
+Inner CV progress:  30%|██▉       | 64/216 [09:02<25:15,  9.97s/it][A
+Inner CV progress:  30%|███       | 65/216 [09:02<17:44,  7.05s/it][A
+Inner CV progress:  31%|███       | 66/216 [09:03<12:42,  5.08s/it][A
+Inner CV progress:  31%|███       | 67/216 [09:08<12:44,  5.13s/it][A
+Inner CV progress:  31%|███▏      | 68/216 [09:09<09:41,  3.93s/it][A
+Inner CV progress:  32%|███▏      | 69/216 [09:13<09:34,  3.91s/it][A
+Inner CV progress:  32%|███▏      | 70/216 [09:25<15:23,  6.33s/it][A
+Inner CV progress:  33%|███▎      | 71/216 [09:29<13:51,  5.74s/it][A
+Inner CV progress:  33%|███▎      | 72/216 [09:33<12:01,  5.01s/it][A
+Inner CV progress:  34%|███▍      | 73/216 [09:37<11:26,  4.80s/it][A
+Inner CV progress:  34%|███▍      | 74/216 [09:43<12:16,  5.19s/it][A
+Inner CV progress:  35%|███▍      | 75/216 [09:46<10:34,  4.50s/it][A
+Inner CV progress:  35%|███▌      | 76/216 [09:47<08:18,  3.56s/it][A
+Inner CV progress:  36%|███▌      | 77/216 [10:04<17:10,  7.41s/it][A
+Inner CV progress:  36%|███▌      | 78/216 [10:18<21:23,  9.30s/it][A
+Inner CV progress:  37%|███▋      | 79/216 [10:18<15:02,  6.59s/it][A
+Inner CV progress:  37%|███▋      | 80/216 [10:24<14:34,  6.43s/it][A
+Inner CV progress:  38%|███▊      | 81/216 [10:31<15:05,  6.71s/it][A
+Inner CV progress:  38%|███▊      | 82/216 [10:35<13:00,  5.82s/it][A
+Inner CV progress:  38%|███▊      | 83/216 [10:42<13:47,  6.22s/it][A
+Inner CV progress:  39%|███▉      | 85/216 [10:43<07:39,  3.51s/it][A
+Inner CV progress:  40%|███▉      | 86/216 [10:49<08:46,  4.05s/it][A
+Inner CV progress:  40%|████      | 87/216 [10:54<09:16,  4.31s/it][A
+Inner CV progress:  41%|████      | 88/216 [10:55<07:26,  3.49s/it][A
+Inner CV progress:  41%|████      | 89/216 [11:06<11:42,  5.53s/it][A
+Inner CV progress:  42%|████▏     | 90/216 [11:17<14:53,  7.09s/it][A
+Inner CV progress:  42%|████▏     | 91/216 [11:17<10:49,  5.19s/it][A
+Inner CV progress:  43%|████▎     | 92/216 [11:22<10:43,  5.19s/it][A
+Inner CV progress:  43%|████▎     | 93/216 [11:24<08:45,  4.27s/it][A
+Inner CV progress:  44%|████▎     | 94/216 [11:28<08:10,  4.02s/it][A
+Inner CV progress:  44%|████▍     | 95/216 [11:50<18:53,  9.37s/it][A
+Inner CV progress:  44%|████▍     | 96/216 [11:54<15:23,  7.70s/it][A
+Inner CV progress:  45%|████▍     | 97/216 [11:56<12:06,  6.10s/it][A
+Inner CV progress:  45%|████▌     | 98/216 [12:02<11:46,  5.99s/it][A
+Inner CV progress:  46%|████▌     | 99/216 [12:06<10:43,  5.50s/it][A
+Inner CV progress:  46%|████▋     | 100/216 [12:10<09:47,  5.06s/it][A
+Inner CV progress:  47%|████▋     | 101/216 [12:15<09:23,  4.90s/it][A
+Inner CV progress:  47%|████▋     | 102/216 [12:22<10:50,  5.71s/it][A
+Inner CV progress:  48%|████▊     | 103/216 [12:32<12:59,  6.90s/it][A
+Inner CV progress:  49%|████▊     | 105/216 [12:35<08:02,  4.34s/it][A
+Inner CV progress:  49%|████▉     | 106/216 [12:39<07:59,  4.36s/it][A
+Inner CV progress:  50%|████▉     | 107/216 [12:42<07:15,  3.99s/it][A
+Inner CV progress:  50%|█████     | 108/216 [12:43<05:56,  3.30s/it][A
+Inner CV progress:  50%|█████     | 109/216 [12:52<08:37,  4.83s/it][A
+Inner CV progress:  51%|█████     | 110/216 [12:57<08:31,  4.83s/it][A
+Inner CV progress:  51%|█████▏    | 111/216 [13:00<07:30,  4.29s/it][A
+Inner CV progress:  52%|█████▏    | 112/216 [13:10<10:09,  5.86s/it][A
+Inner CV progress:  52%|█████▏    | 113/216 [13:11<07:58,  4.65s/it][A
+Inner CV progress:  53%|█████▎    | 114/216 [13:24<11:42,  6.89s/it][A
+Inner CV progress:  53%|█████▎    | 115/216 [13:34<13:34,  8.07s/it][A
+Inner CV progress:  54%|█████▎    | 116/216 [13:38<11:21,  6.81s/it][A
+Inner CV progress:  54%|█████▍    | 117/216 [13:41<09:01,  5.46s/it][A
+Inner CV progress:  55%|█████▍    | 118/216 [13:43<07:16,  4.45s/it][A
+Inner CV progress:  55%|█████▌    | 119/216 [13:53<10:00,  6.19s/it][A
+Inner CV progress:  56%|█████▌    | 120/216 [14:01<10:49,  6.77s/it][A
+Inner CV progress:  56%|█████▌    | 121/216 [14:06<09:50,  6.22s/it][A
+Inner CV progress:  56%|█████▋    | 122/216 [14:12<09:26,  6.02s/it][A
+Inner CV progress:  57%|█████▋    | 123/216 [14:16<08:25,  5.43s/it][A
+Inner CV progress:  57%|█████▋    | 124/216 [14:26<10:34,  6.90s/it][A
+Inner CV progress:  58%|█████▊    | 125/216 [14:31<09:42,  6.40s/it][A
+Inner CV progress:  58%|█████▊    | 126/216 [14:32<07:03,  4.71s/it][A
+Inner CV progress:  59%|█████▉    | 127/216 [14:45<10:31,  7.09s/it][A
+Inner CV progress:  59%|█████▉    | 128/216 [14:48<08:58,  6.12s/it][A
+Inner CV progress:  60%|█████▉    | 129/216 [14:49<06:22,  4.39s/it][A
+Inner CV progress:  60%|██████    | 130/216 [14:51<05:24,  3.77s/it][A
+Inner CV progress:  61%|██████    | 131/216 [15:01<07:51,  5.54s/it][A
+Inner CV progress:  61%|██████    | 132/216 [15:05<07:03,  5.04s/it][A
+Inner CV progress:  62%|██████▏   | 133/216 [15:13<08:15,  5.97s/it][A
+Inner CV progress:  62%|██████▏   | 134/216 [15:15<06:29,  4.75s/it][A
+Inner CV progress:  62%|██████▎   | 135/216 [15:21<06:57,  5.16s/it][A
+Inner CV progress:  63%|██████▎   | 136/216 [15:21<05:01,  3.77s/it][A
+Inner CV progress:  63%|██████▎   | 137/216 [15:22<03:45,  2.85s/it][A
+Inner CV progress:  64%|██████▍   | 138/216 [15:27<04:39,  3.58s/it][A
+Inner CV progress:  64%|██████▍   | 139/216 [15:37<06:55,  5.40s/it][A
+Inner CV progress:  65%|██████▍   | 140/216 [15:48<08:47,  6.94s/it][A
+Inner CV progress:  65%|██████▌   | 141/216 [15:50<07:05,  5.68s/it][A
+Inner CV progress:  66%|██████▌   | 142/216 [15:54<06:06,  4.95s/it][A
+Inner CV progress:  66%|██████▌   | 143/216 [15:56<04:59,  4.10s/it][A
+Inner CV progress:  67%|██████▋   | 144/216 [15:59<04:35,  3.83s/it][A
+Inner CV progress:  67%|██████▋   | 145/216 [16:05<05:13,  4.42s/it][A
+Inner CV progress:  68%|██████▊   | 146/216 [16:12<06:08,  5.27s/it][A
+Inner CV progress:  68%|██████▊   | 147/216 [16:15<05:14,  4.56s/it][A
+Inner CV progress:  69%|██████▊   | 148/216 [16:23<06:32,  5.77s/it][A
+Inner CV progress:  69%|██████▉   | 149/216 [16:27<05:51,  5.24s/it][A
+Inner CV progress:  69%|██████▉   | 150/216 [16:37<07:20,  6.67s/it][A
+Inner CV progress:  70%|██████▉   | 151/216 [16:40<05:57,  5.50s/it][A
+Inner CV progress:  70%|███████   | 152/216 [16:45<05:47,  5.43s/it][A
+Inner CV progress:  71%|███████   | 153/216 [16:49<04:58,  4.73s/it][A
+Inner CV progress:  71%|███████▏  | 154/216 [17:03<07:48,  7.56s/it][A
+Inner CV progress:  72%|███████▏  | 155/216 [17:03<05:35,  5.49s/it][A
+Inner CV progress:  72%|███████▏  | 156/216 [17:11<06:13,  6.22s/it][A
+Inner CV progress:  73%|███████▎  | 157/216 [17:16<05:33,  5.66s/it][A
+Inner CV progress:  73%|███████▎  | 158/216 [17:24<06:18,  6.52s/it][A
+Inner CV progress:  74%|███████▎  | 159/216 [17:32<06:29,  6.83s/it][A
+Inner CV progress:  74%|███████▍  | 160/216 [17:44<07:56,  8.51s/it][A
+Inner CV progress:  75%|███████▍  | 161/216 [17:47<06:13,  6.79s/it][A
+Inner CV progress:  75%|███████▌  | 162/216 [17:49<04:43,  5.24s/it][A
+Inner CV progress:  75%|███████▌  | 163/216 [17:50<03:42,  4.20s/it][A
+Inner CV progress:  76%|███████▌  | 164/216 [18:03<05:47,  6.68s/it][A
+Inner CV progress:  76%|███████▋  | 165/216 [18:04<04:19,  5.09s/it][A
+Inner CV progress:  77%|███████▋  | 166/216 [18:18<06:19,  7.59s/it][A
+Inner CV progress:  77%|███████▋  | 167/216 [18:18<04:32,  5.57s/it][A
+Inner CV progress:  78%|███████▊  | 168/216 [18:26<04:46,  5.97s/it][A
+Inner CV progress:  78%|███████▊  | 169/216 [18:26<03:28,  4.43s/it][A
+Inner CV progress:  79%|███████▊  | 170/216 [18:41<05:52,  7.66s/it][A
+Inner CV progress:  79%|███████▉  | 171/216 [18:44<04:33,  6.09s/it][A
+Inner CV progress:  80%|███████▉  | 172/216 [18:50<04:25,  6.03s/it][A
+Inner CV progress:  80%|████████  | 173/216 [18:56<04:21,  6.08s/it][A
+Inner CV progress:  81%|████████  | 174/216 [18:58<03:30,  5.01s/it][A
+Inner CV progress:  81%|████████  | 175/216 [19:00<02:41,  3.94s/it][A
+Inner CV progress:  81%|████████▏ | 176/216 [19:04<02:44,  4.11s/it][A
+Inner CV progress:  82%|████████▏ | 177/216 [19:21<05:03,  7.78s/it][A
+Inner CV progress:  82%|████████▏ | 178/216 [19:41<07:19, 11.57s/it][A
+Inner CV progress:  83%|████████▎ | 179/216 [19:42<05:05,  8.26s/it][A
+Inner CV progress:  83%|████████▎ | 180/216 [19:43<03:47,  6.31s/it][A
+Inner CV progress:  84%|████████▍ | 181/216 [19:47<03:07,  5.36s/it][A
+Inner CV progress:  84%|████████▍ | 182/216 [19:48<02:24,  4.25s/it][A
+Inner CV progress:  85%|████████▍ | 183/216 [19:53<02:25,  4.40s/it][A
+Inner CV progress:  85%|████████▌ | 184/216 [19:55<01:53,  3.55s/it][A
+Inner CV progress:  86%|████████▌ | 185/216 [19:58<01:45,  3.41s/it][A
+Inner CV progress:  86%|████████▌ | 186/216 [20:04<02:08,  4.29s/it][A
+Inner CV progress:  87%|████████▋ | 187/216 [20:25<04:29,  9.29s/it][A
+Inner CV progress:  87%|████████▋ | 188/216 [20:26<03:14,  6.94s/it][A
+Inner CV progress:  88%|████████▊ | 189/216 [20:32<02:59,  6.64s/it][A
+Inner CV progress:  88%|████████▊ | 190/216 [20:33<02:04,  4.79s/it][A
+Inner CV progress:  88%|████████▊ | 191/216 [20:40<02:15,  5.41s/it][A
+Inner CV progress:  89%|████████▉ | 192/216 [20:48<02:27,  6.16s/it][A
+Inner CV progress:  89%|████████▉ | 193/216 [20:59<03:01,  7.88s/it][A
+Inner CV progress:  90%|████████▉ | 194/216 [21:04<02:30,  6.85s/it][A
+Inner CV progress:  90%|█████████ | 195/216 [21:04<01:43,  4.92s/it][A
+Inner CV progress:  91%|█████████ | 196/216 [21:05<01:11,  3.57s/it][A
+Inner CV progress:  91%|█████████ | 197/216 [21:08<01:06,  3.50s/it][A
+Inner CV progress:  92%|█████████▏| 198/216 [21:13<01:09,  3.87s/it][A
+Inner CV progress:  92%|█████████▏| 199/216 [21:23<01:35,  5.64s/it][A
+Inner CV progress:  93%|█████████▎| 200/216 [21:30<01:40,  6.28s/it][A
+Inner CV progress:  93%|█████████▎| 201/216 [21:33<01:19,  5.31s/it][A
+Inner CV progress:  94%|█████████▎| 202/216 [21:34<00:55,  4.00s/it][A
+Inner CV progress:  94%|█████████▍| 203/216 [21:38<00:51,  3.94s/it][A
+Inner CV progress:  95%|█████████▍| 205/216 [21:43<00:34,  3.15s/it][A
+Inner CV progress:  95%|█████████▌| 206/216 [21:44<00:26,  2.69s/it][A
+Inner CV progress:  96%|█████████▌| 207/216 [21:55<00:44,  4.95s/it][A
+Inner CV progress:  96%|█████████▋| 208/216 [22:03<00:45,  5.67s/it][A
+Inner CV progress:  97%|█████████▋| 209/216 [22:07<00:35,  5.12s/it][A
+Inner CV progress:  97%|█████████▋| 210/216 [22:08<00:23,  3.99s/it][A
+Inner CV progress:  98%|█████████▊| 211/216 [22:08<00:15,  3.04s/it][A
+Inner CV progress:  98%|█████████▊| 212/216 [22:26<00:29,  7.26s/it][A
+Inner CV progress:  99%|█████████▊| 213/216 [22:30<00:18,  6.25s/it][A
+Inner CV progress:  99%|█████████▉| 214/216 [22:37<00:13,  6.51s/it][A
+Inner CV progress: 100%|█████████▉| 215/216 [22:43<00:06,  6.46s/it][A
+Inner CV progress: 100%|██████████| 216/216 [22:45<00:00,  4.95s/it][A
+                                                                    [AOuter CV folds:  33%|███▎      | 1/3 [23:23<46:46, 1403.29s/it]
+Inner CV progress:   0%|          | 0/216 [00:00<?, ?it/s][A
+Inner CV progress:   0%|          | 1/216 [01:07<4:01:25, 67.38s/it][A
+Inner CV progress:   1%|          | 2/216 [01:18<2:01:20, 34.02s/it][A
+Inner CV progress:   2%|▏         | 4/216 [01:26<54:13, 15.35s/it]  [A
+Inner CV progress:   2%|▏         | 5/216 [01:31<42:22, 12.05s/it][A
+Inner CV progress:   3%|▎         | 6/216 [01:40<38:48, 11.09s/it][A
+Inner CV progress:   3%|▎         | 7/216 [01:58<46:38, 13.39s/it][A
+Inner CV progress:   4%|▎         | 8/216 [02:03<37:32, 10.83s/it][A
+Inner CV progress:   4%|▍         | 9/216 [02:08<30:58,  8.98s/it][A
+Inner CV progress:   5%|▍         | 10/216 [02:31<45:47, 13.34s/it][A
+Inner CV progress:   5%|▌         | 11/216 [02:48<48:31, 14.20s/it][A
+Inner CV progress:   6%|▌         | 12/216 [02:49<35:24, 10.42s/it][A
+Inner CV progress:   6%|▌         | 13/216 [02:52<27:06,  8.01s/it][A
+Inner CV progress:   6%|▋         | 14/216 [02:54<21:20,  6.34s/it][A
+Inner CV progress:   7%|▋         | 15/216 [02:54<15:19,  4.58s/it][A
+Inner CV progress:   7%|▋         | 16/216 [03:03<19:29,  5.85s/it][A
+Inner CV progress:   8%|▊         | 17/216 [03:17<27:13,  8.21s/it][A
+Inner CV progress:   8%|▊         | 18/216 [03:38<39:21, 11.92s/it][A
+Inner CV progress:   9%|▉         | 19/216 [03:43<32:20,  9.85s/it][A
+Inner CV progress:   9%|▉         | 20/216 [03:50<30:13,  9.25s/it][A
+Inner CV progress:  10%|▉         | 21/216 [04:10<39:55, 12.28s/it][A
+Inner CV progress:  10%|█         | 22/216 [04:14<31:59,  9.89s/it][A
+Inner CV progress:  11%|█         | 23/216 [04:19<26:52,  8.36s/it][A
+Inner CV progress:  11%|█         | 24/216 [04:24<23:48,  7.44s/it][A
+Inner CV progress:  12%|█▏        | 25/216 [04:26<18:06,  5.69s/it][A
+Inner CV progress:  12%|█▏        | 26/216 [04:36<22:29,  7.10s/it][A
+Inner CV progress:  12%|█▎        | 27/216 [04:36<15:50,  5.03s/it][A
+Inner CV progress:  13%|█▎        | 28/216 [04:46<20:26,  6.52s/it][A
+Inner CV progress:  13%|█▎        | 29/216 [05:02<28:53,  9.27s/it][A
+Inner CV progress:  14%|█▍        | 30/216 [05:06<23:37,  7.62s/it][A
+Inner CV progress:  14%|█▍        | 31/216 [05:23<31:56, 10.36s/it][A
+Inner CV progress:  15%|█▍        | 32/216 [05:30<29:19,  9.56s/it][A
+Inner CV progress:  15%|█▌        | 33/216 [05:38<27:47,  9.11s/it][A
+Inner CV progress:  16%|█▌        | 34/216 [05:40<20:58,  6.91s/it][A
+Inner CV progress:  16%|█▌        | 35/216 [05:46<20:07,  6.67s/it][A
+Inner CV progress:  17%|█▋        | 36/216 [05:51<17:52,  5.96s/it][A
+Inner CV progress:  17%|█▋        | 37/216 [05:51<12:52,  4.31s/it][A
+Inner CV progress:  18%|█▊        | 38/216 [05:55<12:51,  4.34s/it][A
+Inner CV progress:  18%|█▊        | 39/216 [06:22<32:23, 10.98s/it][A
+Inner CV progress:  19%|█▊        | 40/216 [06:30<30:00, 10.23s/it][A
+Inner CV progress:  19%|█▉        | 41/216 [06:34<23:41,  8.12s/it][A
+Inner CV progress:  19%|█▉        | 42/216 [06:39<20:45,  7.16s/it][A
+Inner CV progress:  20%|█▉        | 43/216 [06:39<14:43,  5.10s/it][A
+Inner CV progress:  20%|██        | 44/216 [06:43<13:24,  4.68s/it][A
+Inner CV progress:  21%|██        | 45/216 [07:01<24:54,  8.74s/it][A
+Inner CV progress:  21%|██▏       | 46/216 [07:09<24:37,  8.69s/it][A
+Inner CV progress:  22%|██▏       | 47/216 [07:13<19:53,  7.06s/it][A
+Inner CV progress:  22%|██▏       | 48/216 [07:16<17:01,  6.08s/it][A
+Inner CV progress:  23%|██▎       | 49/216 [07:37<28:48, 10.35s/it][A
+Inner CV progress:  23%|██▎       | 50/216 [07:44<25:56,  9.38s/it][A
+Inner CV progress:  24%|██▎       | 51/216 [07:45<18:38,  6.78s/it][A
+Inner CV progress:  25%|██▍       | 53/216 [07:46<10:52,  4.00s/it][A
+Inner CV progress:  25%|██▌       | 54/216 [07:58<16:01,  5.93s/it][A
+Inner CV progress:  25%|██▌       | 55/216 [08:07<18:30,  6.89s/it][A
+Inner CV progress:  26%|██▌       | 56/216 [08:22<24:10,  9.07s/it][A
+Inner CV progress:  26%|██▋       | 57/216 [08:24<18:31,  6.99s/it][A
+Inner CV progress:  27%|██▋       | 58/216 [08:26<15:00,  5.70s/it][A
+Inner CV progress:  27%|██▋       | 59/216 [08:32<15:08,  5.78s/it][A
+Inner CV progress:  28%|██▊       | 60/216 [08:42<17:37,  6.78s/it][A
+Inner CV progress:  28%|██▊       | 61/216 [08:47<16:16,  6.30s/it][A
+Inner CV progress:  29%|██▊       | 62/216 [08:57<19:03,  7.43s/it][A
+Inner CV progress:  29%|██▉       | 63/216 [08:58<14:20,  5.63s/it][A
+Inner CV progress:  30%|██▉       | 64/216 [09:07<16:20,  6.45s/it][A
+Inner CV progress:  30%|███       | 65/216 [09:14<16:49,  6.68s/it][A
+Inner CV progress:  31%|███       | 66/216 [09:26<21:06,  8.44s/it][A
+Inner CV progress:  31%|███       | 67/216 [09:31<18:15,  7.35s/it][A
+Inner CV progress:  31%|███▏      | 68/216 [09:38<18:02,  7.31s/it][A
+Inner CV progress:  32%|███▏      | 69/216 [09:42<14:51,  6.07s/it][A
+Inner CV progress:  32%|███▏      | 70/216 [09:47<14:23,  5.92s/it][A
+Inner CV progress:  33%|███▎      | 71/216 [09:48<10:30,  4.35s/it][A
+Inner CV progress:  33%|███▎      | 72/216 [09:58<14:30,  6.05s/it][A
+Inner CV progress:  34%|███▍      | 73/216 [10:02<13:19,  5.59s/it][A
+Inner CV progress:  34%|███▍      | 74/216 [10:11<15:28,  6.54s/it][A
+Inner CV progress:  35%|███▍      | 75/216 [10:22<18:23,  7.83s/it][A
+Inner CV progress:  35%|███▌      | 76/216 [10:25<14:44,  6.32s/it][A
+Inner CV progress:  36%|███▌      | 77/216 [10:34<16:47,  7.25s/it][A
+Inner CV progress:  36%|███▌      | 78/216 [10:36<12:49,  5.58s/it][A
+Inner CV progress:  37%|███▋      | 79/216 [10:40<11:30,  5.04s/it][A
+Inner CV progress:  37%|███▋      | 80/216 [10:43<09:56,  4.39s/it][A
+Inner CV progress:  38%|███▊      | 81/216 [10:56<16:18,  7.25s/it][A
+Inner CV progress:  38%|███▊      | 83/216 [10:58<09:41,  4.37s/it][A
+Inner CV progress:  39%|███▉      | 84/216 [11:03<09:26,  4.29s/it][A
+Inner CV progress:  39%|███▉      | 85/216 [11:10<11:18,  5.18s/it][A
+Inner CV progress:  40%|████      | 87/216 [11:17<09:25,  4.38s/it][A
+Inner CV progress:  41%|████      | 88/216 [11:18<07:43,  3.62s/it][A
+Inner CV progress:  41%|████      | 89/216 [11:33<13:53,  6.57s/it][A
+Inner CV progress:  42%|████▏     | 90/216 [11:38<12:29,  5.95s/it][A
+Inner CV progress:  42%|████▏     | 91/216 [11:40<10:37,  5.10s/it][A
+Inner CV progress:  43%|████▎     | 92/216 [11:50<13:08,  6.36s/it][A
+Inner CV progress:  43%|████▎     | 93/216 [11:51<09:39,  4.71s/it][A
+Inner CV progress:  44%|████▎     | 94/216 [11:53<08:27,  4.16s/it][A
+Inner CV progress:  44%|████▍     | 95/216 [11:54<06:10,  3.06s/it][A
+Inner CV progress:  44%|████▍     | 96/216 [12:07<12:08,  6.07s/it][A
+Inner CV progress:  45%|████▍     | 97/216 [12:10<10:20,  5.21s/it][A
+Inner CV progress:  45%|████▌     | 98/216 [12:20<12:37,  6.42s/it][A
+Inner CV progress:  46%|████▌     | 99/216 [12:20<08:52,  4.55s/it][A
+Inner CV progress:  46%|████▋     | 100/216 [12:23<07:59,  4.14s/it][A
+Inner CV progress:  47%|████▋     | 101/216 [12:26<07:36,  3.97s/it][A
+Inner CV progress:  47%|████▋     | 102/216 [12:33<08:51,  4.67s/it][A
+Inner CV progress:  48%|████▊     | 103/216 [12:47<13:59,  7.43s/it][A
+Inner CV progress:  48%|████▊     | 104/216 [12:52<12:48,  6.87s/it][A
+Inner CV progress:  49%|████▊     | 105/216 [12:53<09:13,  4.99s/it][A
+Inner CV progress:  49%|████▉     | 106/216 [12:54<07:14,  3.95s/it][A
+Inner CV progress:  50%|████▉     | 107/216 [13:19<05:06,  2.81s/it][A
+Inner CV progress:  50%|█████     | 108/216 [13:19<16:35,  9.22s/it][A
+Inner CV progress:  51%|█████     | 110/216 [13:26<11:53,  6.73s/it][A
+Inner CV progress:  51%|█████▏    | 111/216 [13:30<10:33,  6.03s/it][A
+Inner CV progress:  52%|█████▏    | 112/216 [13:31<08:08,  4.69s/it][A
+Inner CV progress:  52%|█████▏    | 113/216 [13:44<11:57,  6.97s/it][A
+Inner CV progress:  53%|█████▎    | 114/216 [13:48<10:16,  6.04s/it][A
+Inner CV progress:  53%|█████▎    | 115/216 [13:51<08:45,  5.20s/it][A
+Inner CV progress:  54%|█████▎    | 116/216 [14:03<12:05,  7.26s/it][A
+Inner CV progress:  54%|█████▍    | 117/216 [14:09<11:29,  6.96s/it][A
+Inner CV progress:  55%|█████▍    | 118/216 [14:14<10:23,  6.36s/it][A
+Inner CV progress:  55%|█████▌    | 119/216 [14:22<11:06,  6.87s/it][A
+Inner CV progress:  56%|█████▌    | 120/216 [14:33<12:46,  7.99s/it][A
+Inner CV progress:  56%|█████▌    | 121/216 [14:37<10:39,  6.74s/it][A
+Inner CV progress:  56%|█████▋    | 122/216 [14:39<08:32,  5.46s/it][A
+Inner CV progress:  57%|█████▋    | 123/216 [14:48<10:05,  6.51s/it][A
+Inner CV progress:  57%|█████▋    | 124/216 [14:57<10:54,  7.11s/it][A
+Inner CV progress:  58%|█████▊    | 125/216 [15:05<11:14,  7.42s/it][A
+Inner CV progress:  58%|█████▊    | 126/216 [15:06<08:29,  5.66s/it][A
+Inner CV progress:  59%|█████▉    | 127/216 [15:19<11:15,  7.59s/it][A
+Inner CV progress:  59%|█████▉    | 128/216 [15:19<08:10,  5.57s/it][A
+Inner CV progress:  60%|█████▉    | 129/216 [15:21<06:26,  4.44s/it][A
+Inner CV progress:  60%|██████    | 130/216 [15:25<06:10,  4.31s/it][A
+                                                                    [AOuter CV folds:  33%|███▎      | 1/3 [38:53<1:17:46, 2333.47s/it]
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 235, in run_single_fold
+    val_loss, val_iou = train_and_evaluate(
+                        ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 185, in train_and_evaluate
+    loss.backward()
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/_tensor.py", line 648, in backward
+    torch.autograd.backward(
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/autograd/__init__.py", line 353, in backward
+    _engine_run_backward(
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/autograd/graph.py", line 824, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 64.00 MiB. GPU 0 has a total capacity of 79.25 GiB of which 4.38 MiB is free. Process 39850 has 2.45 GiB memory in use. Process 39856 has 1.78 GiB memory in use. Process 48790 has 2.32 GiB memory in use. Process 48783 has 2.45 GiB memory in use. Process 48791 has 2.05 GiB memory in use. Process 48788 has 2.46 GiB memory in use. Process 48780 has 2.46 GiB memory in use. Process 48782 has 2.46 GiB memory in use. Process 48789 has 2.48 GiB memory in use. Process 48781 has 2.48 GiB memory in use. Process 48787 has 2.48 GiB memory in use. Process 48785 has 2.46 GiB memory in use. Process 48784 has 2.46 GiB memory in use. Process 48786 has 2.48 GiB memory in use. Process 49982 has 4.05 GiB memory in use. Process 49978 has 3.00 GiB memory in use. Process 50022 has 4.05 GiB memory in use. Process 50021 has 4.04 GiB memory in use. Process 49979 has 4.03 GiB memory in use. Process 49997 has 4.06 GiB memory in use. Process 49980 has 4.05 GiB memory in use. Process 49977 has 4.04 GiB memory in use. Process 49983 has 4.05 GiB memory in use. Including non-PyTorch memory, this process has 3.31 GiB memory in use. Process 50014 has 4.05 GiB memory in use. Process 49984 has 3.09 GiB memory in use. Of the allocated memory 2.79 GiB is allocated by PyTorch, and 31.59 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 477, in <module>
+    outer_cross_validation(figure_prefix=export_folder+"/", seed=SEED, dataset_dir=dataset_dir)
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 333, in outer_cross_validation
+    best_config, best_loss = run_inner_cv(
+                             ^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 272, in run_inner_cv
+    for r in pool.imap_unordered(wrapped_fn, tasks):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 873, in next
+    raise value
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 64.00 MiB. GPU 0 has a total capacity of 79.25 GiB of which 4.38 MiB is free. Process 39850 has 2.45 GiB memory in use. Process 39856 has 1.78 GiB memory in use. Process 48790 has 2.32 GiB memory in use. Process 48783 has 2.45 GiB memory in use. Process 48791 has 2.05 GiB memory in use. Process 48788 has 2.46 GiB memory in use. Process 48780 has 2.46 GiB memory in use. Process 48782 has 2.46 GiB memory in use. Process 48789 has 2.48 GiB memory in use. Process 48781 has 2.48 GiB memory in use. Process 48787 has 2.48 GiB memory in use. Process 48785 has 2.46 GiB memory in use. Process 48784 has 2.46 GiB memory in use. Process 48786 has 2.48 GiB memory in use. Process 49982 has 4.05 GiB memory in use. Process 49978 has 3.00 GiB memory in use. Process 50022 has 4.05 GiB memory in use. Process 50021 has 4.04 GiB memory in use. Process 49979 has 4.03 GiB memory in use. Process 49997 has 4.06 GiB memory in use. Process 49980 has 4.05 GiB memory in use. Process 49977 has 4.04 GiB memory in use. Process 49983 has 4.05 GiB memory in use. Including non-PyTorch memory, this process has 3.31 GiB memory in use. Process 50014 has 4.05 GiB memory in use. Process 49984 has 3.09 GiB memory in use. Of the allocated memory 2.79 GiB is allocated by PyTorch, and 31.59 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Process Process-2:
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 75, in print_worker
+    msg = print_queue.get(timeout=10)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in get
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/managers.py", line 828, in _callmethod
+    kind, result = conn.recv()
+                   ^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+          ^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/connection.py", line 430, in _recv_bytes
+    buf = self._recv(4)
+          ^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/connection.py", line 399, in _recv
+    raise EOFError
+EOFError

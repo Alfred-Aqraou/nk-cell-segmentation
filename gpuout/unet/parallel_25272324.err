@@ -1,0 +1,38 @@
+Loaded module: cuda/12.8.1
+Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]Combinations finished:   0%|          | 0/15 [00:00<?, ?it/s]multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+           ^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 256, in run_single_fold
+    val_loss, val_iou = train_and_evaluate(
+                        ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 165, in train_and_evaluate
+    full_train = NKCellDataset(dataset_dir=dataset_dir, transform=train_transforms)
+                                           ^^^^^^^^^^^
+NameError: name 'dataset_dir' is not defined
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 436, in <module>
+    outer_cross_validation(figure_prefix=export_folder+"/")
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 345, in outer_cross_validation
+    best_config = run_inner_cv(
+                  ^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 289, in run_inner_cv
+    results = pool.map(run_single_fold, tasks)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 367, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 774, in get
+    raise self._value
+NameError: name 'dataset_dir' is not defined
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 7 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

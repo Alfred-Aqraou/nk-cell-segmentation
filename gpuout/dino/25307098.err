@@ -1,0 +1,44 @@
+Loaded module: cuda/12.8.1
+Traceback (most recent call last):
+  File "/zhome/96/d/205311/02466-Project/solo-learn/main_pretrain.py", line 25, in <module>
+    from lightning.pytorch import Trainer, seed_everything
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/__init__.py", line 20, in <module>
+    from lightning.pytorch.callbacks import Callback  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/__init__.py", line 27, in <module>
+    from lightning.pytorch.callbacks import Callback  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/callbacks/__init__.py", line 14, in <module>
+    from lightning.pytorch.callbacks.batch_size_finder import BatchSizeFinder
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/callbacks/batch_size_finder.py", line 24, in <module>
+    from lightning.pytorch.callbacks.callback import Callback
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/callbacks/callback.py", line 22, in <module>
+    from lightning.pytorch.utilities.types import STEP_OUTPUT
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/utilities/types.py", line 40, in <module>
+    from torchmetrics import Metric
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torchmetrics/__init__.py", line 14, in <module>
+    from torchmetrics import functional  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torchmetrics/functional/__init__.py", line 82, in <module>
+    from torchmetrics.functional.text.bleu import bleu_score
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torchmetrics/functional/text/__init__.py", line 30, in <module>
+    from torchmetrics.functional.text.bert import bert_score  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torchmetrics/functional/text/bert.py", line 24, in <module>
+    from torchmetrics.functional.text.helper_embedding_metric import (
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torchmetrics/functional/text/helper_embedding_metric.py", line 26, in <module>
+    from transformers import AutoModelForMaskedLM, AutoTokenizer, PreTrainedModel, PreTrainedTokenizerBase
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/transformers/__init__.py", line 1018, in <module>
+    import_structure = define_import_structure(Path(__file__).parent / "models", prefix="models")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 2594, in define_import_structure
+    import_structure = create_import_structure_from_path(module_path)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 2307, in create_import_structure_from_path
+    import_structure[f] = create_import_structure_from_path(os.path.join(module_path, f))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 2331, in create_import_structure_from_path
+    with open(os.path.join(directory, module_name), encoding="utf-8") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen codecs>", line 309, in __init__
+KeyboardInterrupt

@@ -1,0 +1,161 @@
+Loaded module: cuda/12.8.1
+Outer CV folds:   0%|          | 0/3 [00:00<?, ?it/s]
+Inner CV progress:   0%|          | 0/324 [00:00<?, ?it/s][A
+Inner CV progress:   0%|          | 1/324 [02:23<12:52:51, 143.56s/it][A
+Inner CV progress:   1%|          | 2/324 [02:26<5:26:49, 60.90s/it]  [A
+Inner CV progress:   1%|          | 3/324 [02:42<3:35:00, 40.19s/it][A
+Inner CV progress:   1%|          | 4/324 [02:44<2:13:39, 25.06s/it][A
+Inner CV progress:   2%|▏         | 5/324 [03:04<2:04:56, 23.50s/it][A
+Inner CV progress:   2%|▏         | 6/324 [04:03<3:07:46, 35.43s/it][A
+Inner CV progress:   2%|▏         | 7/324 [04:08<2:14:20, 25.43s/it][A
+Inner CV progress:   2%|▏         | 8/324 [04:10<1:35:18, 18.10s/it][A
+Inner CV progress:   3%|▎         | 9/324 [04:40<1:55:05, 21.92s/it][A
+Inner CV progress:   3%|▎         | 10/324 [05:06<2:00:26, 23.01s/it][A
+Inner CV progress:   3%|▎         | 11/324 [05:35<2:09:10, 24.76s/it][A
+Inner CV progress:   4%|▎         | 12/324 [05:49<1:52:09, 21.57s/it][A
+Inner CV progress:   4%|▍         | 13/324 [05:49<1:18:40, 15.18s/it][A
+Inner CV progress:   4%|▍         | 14/324 [05:57<1:06:43, 12.91s/it][A
+Inner CV progress:   5%|▍         | 15/324 [06:10<1:06:42, 12.95s/it][A
+Inner CV progress:   5%|▍         | 16/324 [06:28<1:13:31, 14.32s/it][A
+Inner CV progress:   5%|▌         | 17/324 [07:13<2:01:02, 23.66s/it][A
+Inner CV progress:   6%|▌         | 18/324 [07:44<2:12:09, 25.91s/it][A
+Inner CV progress:   6%|▌         | 19/324 [08:01<1:58:14, 23.26s/it][A
+Inner CV progress:   6%|▌         | 20/324 [08:12<1:39:07, 19.56s/it][A
+Inner CV progress:   6%|▋         | 21/324 [08:17<1:16:49, 15.21s/it][A
+Inner CV progress:   7%|▋         | 22/324 [08:26<1:06:34, 13.23s/it][A
+Inner CV progress:   7%|▋         | 23/324 [09:28<2:20:28, 28.00s/it][A
+Inner CV progress:   7%|▋         | 24/324 [09:47<2:06:09, 25.23s/it][A
+Inner CV progress:   8%|▊         | 25/324 [09:51<1:33:20, 18.73s/it][A
+Inner CV progress:   8%|▊         | 26/324 [09:57<1:15:07, 15.13s/it][A
+Inner CV progress:   8%|▊         | 27/324 [10:08<1:08:55, 13.92s/it][A
+Inner CV progress:   9%|▊         | 28/324 [10:17<1:00:17, 12.22s/it][A
+Inner CV progress:   9%|▉         | 29/324 [11:13<2:05:38, 25.55s/it][A
+Inner CV progress:   9%|▉         | 30/324 [11:21<1:38:58, 20.20s/it][A
+Inner CV progress:  10%|▉         | 31/324 [11:28<1:19:55, 16.37s/it][A
+Inner CV progress:  10%|▉         | 32/324 [12:14<2:02:40, 25.21s/it][A
+Inner CV progress:  10%|█         | 33/324 [12:33<1:52:36, 23.22s/it][A
+Inner CV progress:  10%|█         | 34/324 [12:41<1:29:49, 18.59s/it][A
+Inner CV progress:  11%|█         | 35/324 [13:15<1:51:55, 23.24s/it][A
+Inner CV progress:  11%|█         | 36/324 [13:20<1:26:05, 17.94s/it][A
+Inner CV progress:  11%|█▏        | 37/324 [13:21<1:01:09, 12.79s/it][A
+Inner CV progress:  12%|█▏        | 38/324 [14:11<1:54:06, 23.94s/it][A
+Inner CV progress:  12%|█▏        | 39/324 [14:33<1:51:24, 23.45s/it][A
+Inner CV progress:  12%|█▏        | 40/324 [14:48<1:37:51, 20.67s/it][A
+Inner CV progress:  13%|█▎        | 41/324 [15:18<1:51:36, 23.66s/it][A
+Inner CV progress:  13%|█▎        | 42/324 [15:28<1:32:07, 19.60s/it][A
+Inner CV progress:  13%|█▎        | 43/324 [15:50<1:34:43, 20.23s/it][A
+Inner CV progress:  14%|█▎        | 44/324 [15:51<1:06:50, 14.32s/it][A
+Inner CV progress:  14%|█▍        | 45/324 [16:27<1:37:37, 20.99s/it][A
+Inner CV progress:  14%|█▍        | 46/324 [17:23<2:25:14, 31.35s/it][A
+Inner CV progress:  15%|█▍        | 47/324 [17:40<2:05:25, 27.17s/it][A
+Inner CV progress:  15%|█▍        | 48/324 [17:42<1:30:32, 19.68s/it][A
+Inner CV progress:  15%|█▌        | 49/324 [17:49<1:12:57, 15.92s/it][A
+Inner CV progress:  15%|█▌        | 50/324 [18:31<1:48:17, 23.71s/it][A
+Inner CV progress:  16%|█▌        | 51/324 [18:48<1:38:34, 21.67s/it][A
+Inner CV progress:  16%|█▌        | 52/324 [19:08<1:35:09, 20.99s/it][A
+Inner CV progress:  16%|█▋        | 53/324 [20:23<2:48:21, 37.27s/it][A
+Inner CV progress:  17%|█▋        | 54/324 [20:34<2:12:53, 29.53s/it][A
+Inner CV progress:  17%|█▋        | 55/324 [20:38<1:37:59, 21.86s/it][A
+Inner CV progress:  17%|█▋        | 56/324 [20:48<1:21:17, 18.20s/it][A
+Inner CV progress:  18%|█▊        | 57/324 [21:26<1:47:10, 24.08s/it][A
+Inner CV progress:  18%|█▊        | 58/324 [21:32<1:22:49, 18.68s/it][A
+Inner CV progress:  18%|█▊        | 59/324 [22:22<2:03:59, 28.07s/it][A
+Inner CV progress:  19%|█▊        | 60/324 [22:27<1:33:52, 21.34s/it][A
+Inner CV progress:  19%|█▉        | 61/324 [22:37<1:18:31, 17.92s/it][A
+Inner CV progress:  19%|█▉        | 62/324 [23:03<1:28:48, 20.34s/it][A
+Inner CV progress:  19%|█▉        | 63/324 [23:09<1:09:16, 15.93s/it][A
+Inner CV progress:  20%|█▉        | 64/324 [23:56<1:50:03, 25.40s/it][A
+Inner CV progress:  20%|██        | 65/324 [24:39<2:11:46, 30.53s/it][A
+Inner CV progress:  20%|██        | 66/324 [25:18<2:21:48, 32.98s/it][A
+Inner CV progress:  21%|██        | 67/324 [25:29<1:53:27, 26.49s/it][A
+Inner CV progress:  21%|██        | 68/324 [25:45<1:40:11, 23.48s/it][A
+Inner CV progress:  21%|██▏       | 69/324 [25:48<1:12:36, 17.08s/it][A
+Inner CV progress:  22%|██▏       | 70/324 [25:54<58:57, 13.93s/it]  [A
+Inner CV progress:  22%|██▏       | 71/324 [26:17<1:10:20, 16.68s/it][A
+Inner CV progress:  22%|██▏       | 72/324 [26:46<1:24:57, 20.23s/it][A
+Inner CV progress:  23%|██▎       | 73/324 [27:25<1:48:33, 25.95s/it][A
+Inner CV progress:  23%|██▎       | 74/324 [27:36<1:28:58, 21.35s/it][A
+Inner CV progress:  23%|██▎       | 75/324 [28:08<1:42:33, 24.71s/it][A
+Inner CV progress:  23%|██▎       | 76/324 [28:30<1:38:56, 23.94s/it][A
+                                                                     [AOuter CV folds:   0%|          | 0/3 [28:33<?, ?it/s]
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 315, in run_single_inner_fold
+    val_loss, val_iou = train_and_evaluate(
+                        ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 196, in train_and_evaluate
+    outputs = model(images)
+              ^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/segmentation_models_pytorch/base/model.py", line 67, in forward
+    decoder_output = self.decoder(features)
+                     ^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/segmentation_models_pytorch/decoders/unet/decoder.py", line 168, in forward
+    x = decoder_block(x, height, width, skip_connection=skip_connection)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/segmentation_models_pytorch/decoders/unet/decoder.py", line 50, in forward
+    feature_map = F.interpolate(
+                  ^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/functional.py", line 4649, in interpolate
+    return torch._C._nn.upsample_nearest2d(input, output_size, scale_factors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 512.00 MiB. GPU 0 has a total capacity of 79.25 GiB of which 508.81 MiB is free. Including non-PyTorch memory, this process has 9.90 GiB memory in use. Process 568079 has 13.01 GiB memory in use. Process 568080 has 13.05 GiB memory in use. Process 568078 has 9.44 GiB memory in use. Process 568083 has 7.77 GiB memory in use. Process 568081 has 9.44 GiB memory in use. Process 568082 has 6.43 GiB memory in use. Process 568085 has 9.65 GiB memory in use. Of the allocated memory 9.02 GiB is allocated by PyTorch, and 410.59 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 568, in <module>
+    outer_cross_validation(figure_prefix=export_folder+"/", seed=SEED, dataset_dir=dataset_dir)
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 422, in outer_cross_validation
+    best_config, best_iou = run_inner_cv(
+                            ^^^^^^^^^^^^^
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 352, in run_inner_cv
+    for r in pool.imap_unordered(wrapped_fn, tasks):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/pool.py", line 873, in next
+    raise value
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 512.00 MiB. GPU 0 has a total capacity of 79.25 GiB of which 508.81 MiB is free. Including non-PyTorch memory, this process has 9.90 GiB memory in use. Process 568079 has 13.01 GiB memory in use. Process 568080 has 13.05 GiB memory in use. Process 568078 has 9.44 GiB memory in use. Process 568083 has 7.77 GiB memory in use. Process 568081 has 9.44 GiB memory in use. Process 568082 has 6.43 GiB memory in use. Process 568085 has 9.65 GiB memory in use. Of the allocated memory 9.02 GiB is allocated by PyTorch, and 410.59 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Process Process-2:
+Traceback (most recent call last):
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/zhome/96/d/205311/02466-Project/unet/scripts/nested_CV.py", line 75, in print_worker
+    msg = print_queue.get(timeout=10)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in get
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/managers.py", line 828, in _callmethod
+    kind, result = conn.recv()
+                   ^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+          ^^^^^^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/connection.py", line 430, in _recv_bytes
+    buf = self._recv(4)
+          ^^^^^^^^^^^^^
+  File "/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/multiprocessing/connection.py", line 399, in _recv
+    raise EOFError
+EOFError

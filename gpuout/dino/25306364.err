@@ -1,0 +1,81 @@
+Loaded module: cuda/12.8.1
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/timm/optim/optim_factory.py:7: FutureWarning: Importing from timm.optim.optim_factory is deprecated, please import via timm.optim
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.optim", FutureWarning)
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/convnext/convnext.py:26: UserWarning: Overwriting convnext_tiny in registry with solo.backbones.convnext.convnext.convnext_tiny. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/convnext/convnext.py:33: UserWarning: Overwriting convnext_small in registry with solo.backbones.convnext.convnext.convnext_small. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/convnext/convnext.py:40: UserWarning: Overwriting convnext_base in registry with solo.backbones.convnext.convnext.convnext_base. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/convnext/convnext.py:47: UserWarning: Overwriting convnext_large in registry with solo.backbones.convnext.convnext.convnext_large. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/poolformer/poolformer.py:421: UserWarning: Overwriting poolformer_s12 in registry with solo.backbones.poolformer.poolformer.poolformer_s12. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/poolformer/poolformer.py:446: UserWarning: Overwriting poolformer_s24 in registry with solo.backbones.poolformer.poolformer.poolformer_s24. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/poolformer/poolformer.py:467: UserWarning: Overwriting poolformer_s36 in registry with solo.backbones.poolformer.poolformer.poolformer_s36. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/poolformer/poolformer.py:489: UserWarning: Overwriting poolformer_m36 in registry with solo.backbones.poolformer.poolformer.poolformer_m36. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/poolformer/poolformer.py:511: UserWarning: Overwriting poolformer_m48 in registry with solo.backbones.poolformer.poolformer.poolformer_m48. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/utils/whitening.py:43: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @custom_fwd(cast_inputs=torch.float32)
+/zhome/96/d/205311/02466-Project/solo-learn/solo/utils/whitening.py:220: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @custom_fwd(cast_inputs=torch.float32)
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+wandb: Currently logged in as: aqraou13 (aqraou13-danmarks-tekniske-universitet-dtu) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.20.1
+wandb: Run data is saved locally in ./wandb/run-20250622_161645-8zctg0tq
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run dino
+wandb: ⭐️ View project at https://wandb.ai/aqraou13-danmarks-tekniske-universitet-dtu/solo-learn
+wandb: 🚀 View run at https://wandb.ai/aqraou13-danmarks-tekniske-universitet-dtu/solo-learn/runs/8zctg0tq
+wandb: logging graph, to disable use `wandb.watch(log_graph=False)`
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/plugins/precision/amp.py:54: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/trainer/configuration_validator.py:74: You defined a `validation_step` but have no `val_dataloader`. Skipping val loop.
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/timm/optim/optim_factory.py:7: FutureWarning: Importing from timm.optim.optim_factory is deprecated, please import via timm.optim
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.optim", FutureWarning)
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/convnext/convnext.py:26: UserWarning: Overwriting convnext_tiny in registry with solo.backbones.convnext.convnext.convnext_tiny. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/convnext/convnext.py:33: UserWarning: Overwriting convnext_small in registry with solo.backbones.convnext.convnext.convnext_small. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/convnext/convnext.py:40: UserWarning: Overwriting convnext_base in registry with solo.backbones.convnext.convnext.convnext_base. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/convnext/convnext.py:47: UserWarning: Overwriting convnext_large in registry with solo.backbones.convnext.convnext.convnext_large. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/poolformer/poolformer.py:421: UserWarning: Overwriting poolformer_s12 in registry with solo.backbones.poolformer.poolformer.poolformer_s12. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/poolformer/poolformer.py:446: UserWarning: Overwriting poolformer_s24 in registry with solo.backbones.poolformer.poolformer.poolformer_s24. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/poolformer/poolformer.py:467: UserWarning: Overwriting poolformer_s36 in registry with solo.backbones.poolformer.poolformer.poolformer_s36. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/poolformer/poolformer.py:489: UserWarning: Overwriting poolformer_m36 in registry with solo.backbones.poolformer.poolformer.poolformer_m36. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/backbones/poolformer/poolformer.py:511: UserWarning: Overwriting poolformer_m48 in registry with solo.backbones.poolformer.poolformer.poolformer_m48. This is because the name being registered conflicts with an existing name. Please check if this is not expected.
+  @register_model
+/zhome/96/d/205311/02466-Project/solo-learn/solo/utils/whitening.py:43: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @custom_fwd(cast_inputs=torch.float32)
+/zhome/96/d/205311/02466-Project/solo-learn/solo/utils/whitening.py:220: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @custom_fwd(cast_inputs=torch.float32)
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/plugins/precision/amp.py:54: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/distributed/distributed_c10d.py:4631: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user. 
+  warnings.warn(  # warn only once
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/torch/distributed/distributed_c10d.py:4631: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user. 
+  warnings.warn(  # warn only once
+/work3/s234843/bin/miniconda3/envs/02466_cuda/lib/python3.12/site-packages/lightning/pytorch/loops/fit_loop.py:293: The number of training batches (36) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.

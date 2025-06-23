@@ -1,0 +1,63 @@
+Sanity Checking: |          | 0/? [00:00<?, ?it/s][1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mdino[0m at: [34mhttps://wandb.ai/aqraou13-danmarks-tekniske-universitet-dtu/solo-learn/runs/4zcs2d77[0m
+                                                  
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 25306209: <train_dino> in cluster <dcc> Exited
+
+Job <train_dino> was submitted from host <n-62-30-2> by user <s234843> in cluster <dcc> at Sun Jun 22 16:04:08 2025
+Job was executed on host(s) <8*n-62-18-5>, in queue <gpua10>, as user <s234843> in cluster <dcc> at Sun Jun 22 16:04:10 2025
+</zhome/96/d/205311> was used as the home directory.
+</zhome/96/d/205311/02466-Project> was used as the working directory.
+Started at Sun Jun 22 16:04:10 2025
+Terminated at Sun Jun 22 16:06:46 2025
+Results reported at Sun Jun 22 16:06:46 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -J train_dino
+#BSUB -q gpua10
+#BSUB -n 8
+#BSUB -gpu "num=2:mode=shared"
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=8GB]"
+#BSUB -W 24:00
+#BSUB -oo gpuout/dino/%J.out
+#BSUB -eo gpuout/dino/%J.err
+
+module load cuda/12.8.1
+
+# Activate conda environment
+source /work3/s234843/init_project.sh
+
+CUDA_VISIBLE_DEVICES=0,1 python solo-learn/main_pretrain.py \
+    --config-path scripts/pretrain/custom/ \
+    --config-name dino.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   76.00 sec.
+    Max Memory :                                 1356 MB
+    Average Memory :                             1026.75 MB
+    Total Requested Memory :                     65536.00 MB
+    Delta Memory :                               64180.00 MB
+    Max Swap :                                   -
+    Max Processes :                              7
+    Max Threads :                                54
+    Run time :                                   261 sec.
+    Turnaround time :                            158 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <gpuout/dino/25306209.err> for stderr output of this job.
+

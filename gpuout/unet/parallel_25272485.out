@@ -1,0 +1,37 @@
+Wed Jun 18 16:28:29 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A40                     On  |   00000000:65:00.0 Off |                    0 |
+|  0%   26C    P8             21W /  300W |       0MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Started at: 2025-06-18 16:29:02.945749
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Early stopping triggered after 50 epochs.
+Completed one combination

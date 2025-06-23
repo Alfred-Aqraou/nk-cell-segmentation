@@ -1,0 +1,131 @@
+Wed Jun 18 16:50:41 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A40                     On  |   00000000:65:00.0 Off |                    0 |
+|  0%   26C    P8             23W /  300W |       0MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Started at: 2025-06-18 16:51:16.009247
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Completed one combination
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Early stopping triggered after 65 epochs.
+Completed one combination
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Early stopping triggered after 89 epochs.
+Completed one combination
+Completed one combination
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Completed one combination
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Completed one combination
+Early stopping triggered after 69 epochs.
+Completed one combination
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Completed one combination
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Early stopping triggered after 76 epochs.
+Completed one combination
+Early stopping triggered after 90 epochs.
+Completed one combination
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Early stopping triggered after 88 epochs.
+Completed one combination
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Completed one combination
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Completed one combination
+Completed one combination
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Early stopping triggered after 91 epochs.
+Completed one combination
+Given arguments:
+Namespace(workers=8, epochs=100, encoders=['resnet18'], loss=['iou'], batchsizes=[8], freeze=['True'], optimizers=['adam'], lr=[0.0005], resize=[256], outer=5, inner=3)
+Completed one combination
+Early stopping triggered after 95 epochs.
+Completed one combination
+Config: BS=8, Loss=iou, Encoder=resnet18, Freeze=True, Opt=adam, LR=0.0005
+Mean Val Loss: 0.1540 ± 0.0136, Mean Val IoU: 0.8520 ± 0.0136
+Writing results.csv
+Finished writing results.csv
+Plotting top 10 configs
+Finished plotting
+Started at: 2025-06-18 16:51:16.009247
+Finished at: 2025-06-18 17:15:44.306393
+Time elapsed: 0:24:28.297146

@@ -1,0 +1,100 @@
+Fri Jun 20 13:16:38 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A100 80GB PCIe          On  |   00000000:65:00.0 Off |                    0 |
+| N/A   44C    P0             46W /  300W |       0MiB /  81920MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Namespace(workers=8, epochs=100, encoders=['resnet18', 'resnet50'], loss=['iou', 'dice', 'combined'], batchsizes=[4, 8, 16], freeze=[True, False], optimizers=['adam'], lr=[0.0005, 0.0001, 0.001], resize=[512], outer=3, inner=3)
+Using device: cuda
+Total combinations: 975
+Started at: 2025-06-20 13:17:06.517836
+🔁 Inner CV - Completed config: Val Loss = 0.1506, Val IoU = 0.8057.     
+🔁 Inner CV - Completed config: Val Loss = 0.1443, Val IoU = 0.8092.     
+🔁 Inner CV - Completed config: Val Loss = 0.1610, Val IoU = 0.7995.     
+🔁 Inner CV - Completed config: Val Loss = 0.1393, Val IoU = 0.8106.     
+🔁 Inner CV - Completed config: Val Loss = 0.1471, Val IoU = 0.8077.     
+🔁 Inner CV - Completed config: Val Loss = 0.1738, Val IoU = 0.7943.     
+🔁 Inner CV - Completed config: Val Loss = 0.1583, Val IoU = 0.8019.     
+🔁 Inner CV - Completed config: Val Loss = 0.1628, Val IoU = 0.8012.     
+🔁 Inner CV - Completed config: Val Loss = 0.1386, Val IoU = 0.8113.     
+🔁 Inner CV - Completed config: Val Loss = 0.1432, Val IoU = 0.8106.     
+🔁 Inner CV - Completed config: Val Loss = 0.0762, Val IoU = 0.8093.     
+🔁 Inner CV - Completed config: Val Loss = 0.1596, Val IoU = 0.7995.     
+🔁 Inner CV - Completed config: Val Loss = 0.0835, Val IoU = 0.8036.     
+🔁 Inner CV - Completed config: Val Loss = 0.0863, Val IoU = 0.7998.     
+🔁 Inner CV - Completed config: Val Loss = 0.1107, Val IoU = 0.7761.     
+🔁 Inner CV - Completed config: Val Loss = 0.1633, Val IoU = 0.8048.     
+🔁 Inner CV - Completed config: Val Loss = 0.0800, Val IoU = 0.8067.     
+🔁 Inner CV - Completed config: Val Loss = 0.0807, Val IoU = 0.8054.     
+🔁 Inner CV - Completed config: Val Loss = 0.0969, Val IoU = 0.7945.     
+🔁 Inner CV - Completed config: Val Loss = 0.0852, Val IoU = 0.8032.     
+🔁 Inner CV - Completed config: Val Loss = 0.0942, Val IoU = 0.7923.     
+🔁 Inner CV - Completed config: Val Loss = 0.0906, Val IoU = 0.7962.     
+🔁 Inner CV - Completed config: Val Loss = 0.0946, Val IoU = 0.7994.     
+🔁 Inner CV - Completed config: Val Loss = 0.1548, Val IoU = 0.8063.     
+🔁 Inner CV - Completed config: Val Loss = 0.1584, Val IoU = 0.8092.     
+🔁 Inner CV - Completed config: Val Loss = 0.1840, Val IoU = 0.7937.     
+🔁 Inner CV - Completed config: Val Loss = 0.1059, Val IoU = 0.7909.     
+🔁 Inner CV - Completed config: Val Loss = 0.2429, Val IoU = 0.7576.     
+🔁 Inner CV - Completed config: Val Loss = 0.1752, Val IoU = 0.7990.     
+🔁 Inner CV - Completed config: Val Loss = 0.1849, Val IoU = 0.7922.     
+🔁 Inner CV - Completed config: Val Loss = 0.1629, Val IoU = 0.8074.     
+🔁 Inner CV - Completed config: Val Loss = 0.1725, Val IoU = 0.8042.     
+🔁 Inner CV - Completed config: Val Loss = 0.1968, Val IoU = 0.7857.     
+🔁 Inner CV - Completed config: Val Loss = 0.1586, Val IoU = 0.8107.     
+🔁 Inner CV - Completed config: Val Loss = 0.1562, Val IoU = 0.7989.     
+🔁 Inner CV - Completed config: Val Loss = 0.1836, Val IoU = 0.8015.     
+🔁 Inner CV - Completed config: Val Loss = 0.1617, Val IoU = 0.7949.     
+🔁 Inner CV - Completed config: Val Loss = 0.1631, Val IoU = 0.8069.     
+🔁 Inner CV - Completed config: Val Loss = 0.1457, Val IoU = 0.8071.     
+🔁 Inner CV - Completed config: Val Loss = 0.1534, Val IoU = 0.8042.     
+🔁 Inner CV - Completed config: Val Loss = 0.1879, Val IoU = 0.7847.     
+🔁 Inner CV - Completed config: Val Loss = 0.1424, Val IoU = 0.8080.     
+🔁 Inner CV - Completed config: Val Loss = 0.1485, Val IoU = 0.8061.     
+🔁 Inner CV - Completed config: Val Loss = 0.2495, Val IoU = 0.7353.     
+🔁 Inner CV - Completed config: Val Loss = 0.1562, Val IoU = 0.8039.     
+🔁 Inner CV - Completed config: Val Loss = 0.0850, Val IoU = 0.8009.     
+🔁 Inner CV - Completed config: Val Loss = 0.0834, Val IoU = 0.8015.     
+🔁 Inner CV - Completed config: Val Loss = 0.1777, Val IoU = 0.7907.     
+🔁 Inner CV - Completed config: Val Loss = 0.2089, Val IoU = 0.7844.     
+🔁 Inner CV - Completed config: Val Loss = 0.1904, Val IoU = 0.7973.     
+🔁 Inner CV - Completed config: Val Loss = 0.1035, Val IoU = 0.7821.     
+🔁 Inner CV - Completed config: Val Loss = 0.0799, Val IoU = 0.8071.     
+🔁 Inner CV - Completed config: Val Loss = 0.1384, Val IoU = 0.7510.     
+🔁 Inner CV - Completed config: Val Loss = 0.0883, Val IoU = 0.7972.     
+🔁 Inner CV - Completed config: Val Loss = 0.0997, Val IoU = 0.7964.     
+🔁 Inner CV - Completed config: Val Loss = 0.1177, Val IoU = 0.7752.     
+🔁 Inner CV - Completed config: Val Loss = 0.0924, Val IoU = 0.7940.     
+🔁 Inner CV - Completed config: Val Loss = 0.0796, Val IoU = 0.8086.     
+🔁 Inner CV - Completed config: Val Loss = 0.1697, Val IoU = 0.8055.     
+🔁 Inner CV - Completed config: Val Loss = 0.1622, Val IoU = 0.8018.     
+🔁 Inner CV - Completed config: Val Loss = 0.0982, Val IoU = 0.7988.     
+🔁 Inner CV - Completed config: Val Loss = 0.1000, Val IoU = 0.7955.     
+🔁 Inner CV - Completed config: Val Loss = 0.1678, Val IoU = 0.7978.     
+🔁 Inner CV - Completed config: Val Loss = 0.2834, Val IoU = 0.7391.     
+🔁 Inner CV - Completed config: Val Loss = 0.1989, Val IoU = 0.7848.     
+🔁 Inner CV - Completed config: Val Loss = 0.1603, Val IoU = 0.8068.     
+🔁 Inner CV - Completed config: Val Loss = 0.1802, Val IoU = 0.7932.     
+🔁 Inner CV - Completed config: Val Loss = 0.1602, Val IoU = 0.8086.     
+🔁 Inner CV - Completed config: Val Loss = 0.2490, Val IoU = 0.7508.     
+🔁 Inner CV - Completed config: Val Loss = 0.1625, Val IoU = 0.8004.     
+🔁 Inner CV - Completed config: Val Loss = 0.2027, Val IoU = 0.7857.     
+🔁 Inner CV - Completed config: Val Loss = 0.1979, Val IoU = 0.7896.     
+🔁 Inner CV - Completed config: Val Loss = 0.2487, Val IoU = 0.7437.     
+🔁 Inner CV - Completed config: Val Loss = 0.3141, Val IoU = 0.6859.     
+🔁 Inner CV - Completed config: Val Loss = 0.1533, Val IoU = 0.8006.     
+🔁 Inner CV - Completed config: Val Loss = 0.1552, Val IoU = 0.8019.     
