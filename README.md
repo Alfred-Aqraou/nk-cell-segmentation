@@ -10,7 +10,7 @@ The project addresses automated segmentation of NK cells in a dataset of 16,038 
 
 ### Code Summary
 
-The main script (`unet/scripts/nested_CV.py`) implements a nested cross-validation pipeline for training and evaluating U-Net models. Key features include:
+The main script (`unet/nested_CV.py`) implements a nested cross-validation pipeline for training and evaluating U-Net models. Key features include:
 
 - **Dataset Handling**: `NKCellDataset` class loads images and masks, with joint transformations (resizing, flipping, rotation) for augmentation.
 - **Model Architecture**: U-Net models with ResNet18/34/50 encoders (ImageNet pretrained) or ResNet18 (DINO pretrained via solo-learn), configurable via command-line arguments.
@@ -25,7 +25,7 @@ The code ensures reproducibility with fixed seeds (`SEED=42`), detailed logging,
 
 Example run of the training script with configurable hyperparameters:
 ```bash
-python unet/scripts/nested_CV.py \
+python unet/nested_CV.py \
   --epochs 100 \
   --encoders resnet18 resnet50 dino/path/to/ckpt.ckpt \
   --loss dice iou combined \

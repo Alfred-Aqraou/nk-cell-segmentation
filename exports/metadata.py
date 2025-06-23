@@ -56,7 +56,7 @@ well_df['Concentration'] = well_df.apply(
 )
 
 # Directory after extracting dataset.tar
-base_dir = "C:/Users/mathi/Desktop/dataset"
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../dataset'))
 
 # Parse timestamp from filename
 def parse_timestamp(filename):
@@ -98,21 +98,24 @@ for root, _, files in os.walk(base_dir):
                 'mask': is_mask
             })
 
-# Create DataFrame
-df = pd.DataFrame(metadata)
 
-# Save as CSV
-csv_path = os.path.join(base_dir, 'metadata.csv')
-df.to_csv(csv_path, index=False)
-print(f"Generated {csv_path} with {len(df)} entries.")
+if __name__ == "__main__":
+    
+    # Create DataFrame
+    df = pd.DataFrame(metadata)
 
-# Save as Excel (easier readability)
-excel_path = os.path.join(base_dir, 'metadata.xlsx')
-df.to_excel(excel_path, index=False, engine='openpyxl')
-print(f"Generated {excel_path} with {len(df)} entries.")
+    # Save as CSV
+    csv_path = os.path.join(base_dir, 'metadata.csv')
+    df.to_csv(csv_path, index=False)
+    print(f"Generated {csv_path} with {len(df)} entries.")
 
-# Save transposed Excel for well plate view
-# well_df_transposed = well_df.set_index(['Well ID']).transpose()
-# transposed_excel_path = os.path.join(base_dir, 'well_plate_metadata_transposed.xlsx')
-# well_df_transposed.to_excel(transposed_excel_path, index=True, engine='openpyxl')
-# print(f"Generated {transposed_excel_path} for well plate view.")
+    # Save as Excel (easier readability)
+    excel_path = os.path.join(base_dir, 'metadata.xlsx')
+    df.to_excel(excel_path, index=False, engine='openpyxl')
+    print(f"Generated {excel_path} with {len(df)} entries.")
+
+    # Save transposed Excel for well plate view
+    well_df_transposed = well_df.set_index(['Well ID']).transpose()
+    transposed_excel_path = os.path.join(base_dir, 'well_plate_metadata_transposed.xlsx')
+    well_df_transposed.to_excel(transposed_excel_path, index=True, engine='openpyxl')
+    print(f"Generated {transposed_excel_path} for well plate view.")
