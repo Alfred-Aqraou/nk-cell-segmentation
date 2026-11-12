@@ -1,4 +1,23 @@
-# NK Cell Image Segmentation
+# Biomedical image analysis: NK-cell segmentation
+
+> **TL;DR:** Deep-learning segmentation of NK cells in microscopy images, comparing an OpenCV baseline with ImageNet- and DINO-pretrained U-Net models. I contributed training and cross-validation code, image/mask augmentation, evaluation and statistical comparisons.
+
+## My contribution - Alfred Aqraou
+
+- Developed and refined cross-validation and hyperparameter-search workflows, including nested cross-validation, multiprocessing and experiment logging.
+- Implemented and corrected joint image/mask transformations and per-sample seeding so geometric augmentations remain aligned and reproducible.
+- Added DINO-initialized U-Net support, IoU/Jaccard-loss work and evaluation outputs for comparing model configurations.
+- Built per-image IoU analysis, confidence-interval and boxplot comparisons, Friedman tests and predicted-versus-ground-truth visualizations.
+
+This was a collaborative DTU project. The original project documentation below reports the team's results; my individual work is summarized above.
+
+**Original team repository:** [MathiasKES/02466-Project](https://github.com/MathiasKES/02466-Project). This portfolio fork preserves the original history and attribution.
+
+**Selected contributions:** [Nested cross-validation and reproducibility](https://github.com/MathiasKES/02466-Project/commit/21ca34f33618b7e29aac6103714b0f550e6e79f3) · [DINO-initialized U-Net](https://github.com/MathiasKES/02466-Project/commit/93a637e17729d5c6915f784765122f57d7bac884) · [Statistical model comparisons](https://github.com/MathiasKES/02466-Project/commit/98c926566a3fe9c8b1fc4df1a2fe967a0107af33).
+
+---
+
+## Project documentation
 
 <img src="illustrations/gifs/transformed_fluorescent_grid_612x445.gif" alt="Fluorescent NK Cell Animation" />
 
